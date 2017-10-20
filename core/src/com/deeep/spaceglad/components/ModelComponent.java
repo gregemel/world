@@ -1,7 +1,6 @@
 package com.deeep.spaceglad.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;

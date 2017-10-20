@@ -10,8 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.deeep.spaceglad.Assets;
 import com.deeep.spaceglad.Core;
-import com.deeep.spaceglad.Settings;
-import com.deeep.spaceglad.components.PlayerComponent;
 import com.deeep.spaceglad.screens.GameScreen;
 import com.deeep.spaceglad.screens.LeaderboardsScreen;
 

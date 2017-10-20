@@ -106,7 +106,7 @@ public class EntityFactory {
         bulletSystem.collisionWorld.addAction(entity.getComponent(CharacterComponent.class).characterController);
         entity.add(new EnemyComponent(EnemyComponent.STATE.HUNTING));
         AnimationComponent animationComponent = new AnimationComponent(enemyModelComponent.instance);
-        animationComponent.animate(EnemyAnimations.id, EnemyAnimations.offsetRun1, EnemyAnimations.durationRun1, -1, 1);    //TODO variable animationspeed
+        animationComponent.animate(EnemyAnimations.id, EnemyAnimations.offsetRun1, EnemyAnimations.durationRun1, -1, 1);
         entity.add(animationComponent);
         entity.add(new StatusComponent(animationComponent));
         entity.add(new DieParticleComponent(renderSystem.particleSystem));
@@ -153,10 +153,4 @@ public class EntityFactory {
         entity.add(bulletComponent);
         return entity;
     }
-
-//    public static void dispose() {
-//        playerModel.dispose();
-//        playerTexture.dispose();
-//        boxModel.dispose();
-//    }
 }

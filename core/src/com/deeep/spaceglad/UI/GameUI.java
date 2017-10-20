@@ -27,7 +27,7 @@ public class GameUI {
         configureWidgets();
     }
 
-    public void setWidgets() {
+    private void setWidgets() {
         healthWidget = new HealthWidget();
         scoreWidget = new ScoreWidget();
         pauseWidget = new PauseWidget(game, stage);
@@ -37,7 +37,7 @@ public class GameUI {
         if (Gdx.app.getType() == Application.ApplicationType.Android) controllerWidget = new ControllerWidget();
     }
 
-    public void configureWidgets() {
+    private void configureWidgets() {
         healthWidget.setSize(140, 25);
         healthWidget.setPosition(Core.VIRTUAL_WIDTH / 2 - healthWidget.getWidth() / 2, 0);
         scoreWidget.setSize(140, 25);

@@ -82,7 +82,7 @@ public class GameWorld {
         }
     }
 
-    protected void renderWorld(float delta) {
+    private void renderWorld(float delta) {
         engine.update(delta);
         if (debug) {
             debugDrawer.begin(renderSystem.perspectiveCamera);
@@ -106,7 +106,6 @@ public class GameWorld {
         character.getComponent(CharacterComponent.class).characterController.dispose();
         character.getComponent(CharacterComponent.class).ghostObject.dispose();
         character.getComponent(CharacterComponent.class).ghostShape.dispose();
-//        EntityFactory.dispose();
     }
 
     public void remove(Entity entity) {
