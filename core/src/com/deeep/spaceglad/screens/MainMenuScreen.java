@@ -12,17 +12,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.deeep.spaceglad.Assets;
-import com.deeep.spaceglad.Core;
+import com.deeep.spaceglad.WorldGDXAdapter;
 
 public class MainMenuScreen implements Screen {
-    private Core game;
+    private WorldGDXAdapter game;
     private Stage stage;
     private Image backgroundImage, titleImage;
     private TextButton playButton, leaderboardsButton, quitButton;
 
-    public MainMenuScreen(Core game) {
+    public MainMenuScreen(WorldGDXAdapter game) {
         this.game = game;
-        stage = new Stage(new FitViewport(Core.VIRTUAL_WIDTH, Core.VIRTUAL_HEIGHT));
+        stage = new Stage(new FitViewport(WorldGDXAdapter.VIRTUAL_WIDTH, WorldGDXAdapter.VIRTUAL_HEIGHT));
         setWidgets();
         configureWidgers();
         setListeners();
@@ -39,23 +39,23 @@ public class MainMenuScreen implements Screen {
     }
 
     private void configureWidgers() {
-        backgroundImage.setSize(Core.VIRTUAL_WIDTH, Core.VIRTUAL_HEIGHT);
+        backgroundImage.setSize(WorldGDXAdapter.VIRTUAL_WIDTH, WorldGDXAdapter.VIRTUAL_HEIGHT);
         backgroundImage.setColor(1, 1, 1, 0);
         backgroundImage.addAction(Actions.fadeIn(0.65f));
         titleImage.setSize(620, 200);
-        titleImage.setPosition(Core.VIRTUAL_WIDTH / 2 - titleImage.getWidth() / 2, Core.VIRTUAL_HEIGHT / 2);
+        titleImage.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH / 2 - titleImage.getWidth() / 2, WorldGDXAdapter.VIRTUAL_HEIGHT / 2);
         titleImage.setColor(1, 1, 1, 0);
         titleImage.addAction(new SequenceAction(Actions.delay(0.65f), Actions.fadeIn(0.75f)));
         playButton.setSize(128, 64);
-        playButton.setPosition(Core.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, Core.VIRTUAL_HEIGHT / 2 - 100);
+        playButton.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, WorldGDXAdapter.VIRTUAL_HEIGHT / 2 - 100);
         playButton.setColor(1, 1, 1, 0);
         playButton.addAction(new SequenceAction(Actions.delay(0.65f), Actions.fadeIn(0.75f)));
         leaderboardsButton.setSize(128, 64);
-        leaderboardsButton.setPosition(Core.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, Core.VIRTUAL_HEIGHT / 2 - 170);
+        leaderboardsButton.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, WorldGDXAdapter.VIRTUAL_HEIGHT / 2 - 170);
         leaderboardsButton.setColor(1, 1, 1, 0);
         leaderboardsButton.addAction(new SequenceAction(Actions.delay(0.65f), Actions.fadeIn(0.75f)));
         quitButton.setSize(128, 64);
-        quitButton.setPosition(Core.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, Core.VIRTUAL_HEIGHT / 2 - 240);
+        quitButton.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, WorldGDXAdapter.VIRTUAL_HEIGHT / 2 - 240);
         quitButton.setColor(1, 1, 1, 0);
         quitButton.addAction(new SequenceAction(Actions.delay(0.65f), Actions.fadeIn(0.75f)));
 

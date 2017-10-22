@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.deeep.spaceglad.Core;
+import com.deeep.spaceglad.WorldGDXAdapter;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.components.*;
 
@@ -33,7 +33,7 @@ public class RenderSystem extends EntitySystem {
     public static ParticleSystem particleSystem;
 
     public RenderSystem() {
-        perspectiveCamera = new PerspectiveCamera(FOV, Core.VIRTUAL_WIDTH, Core.VIRTUAL_HEIGHT);
+        perspectiveCamera = new PerspectiveCamera(FOV, WorldGDXAdapter.VIRTUAL_WIDTH, WorldGDXAdapter.VIRTUAL_HEIGHT);
         perspectiveCamera.far = 10000f;
 
         environment = new Environment();
@@ -45,7 +45,7 @@ public class RenderSystem extends EntitySystem {
 
         batch = new ModelBatch();
 
-        gunCamera = new PerspectiveCamera(FOV, Core.VIRTUAL_WIDTH, Core.VIRTUAL_HEIGHT);
+        gunCamera = new PerspectiveCamera(FOV, WorldGDXAdapter.VIRTUAL_WIDTH, WorldGDXAdapter.VIRTUAL_HEIGHT);
         gunCamera.far = 100f;
 
         position = new Vector3();

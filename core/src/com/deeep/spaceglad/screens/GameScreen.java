@@ -2,17 +2,17 @@ package com.deeep.spaceglad.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.deeep.spaceglad.Core;
+import com.deeep.spaceglad.WorldGDXAdapter;
 import com.deeep.spaceglad.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
 
 public class GameScreen implements Screen {
-    private Core game;
+    private WorldGDXAdapter game;
     private GameUI gameUI;
     private GameWorld gameWorld;
 
-    public GameScreen(Core game) {
+    public GameScreen(WorldGDXAdapter game) {
         this.game = game;
         gameUI = new GameUI(game);
         gameWorld = new GameWorld(gameUI);
