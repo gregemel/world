@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.spaceglad.GameWorld;
 import com.deeep.spaceglad.components.*;
-import com.deeep.spaceglad.managers.EntityFactory;
+import com.deeep.spaceglad.services.EntityFactory;
 
 import java.util.Random;
 

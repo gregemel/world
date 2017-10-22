@@ -1,4 +1,4 @@
-package com.deeep.spaceglad.managers;
+package com.deeep.spaceglad.services;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Files;

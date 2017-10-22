@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.deeep.spaceglad.Assets;
 import com.deeep.spaceglad.Core;
-import com.deeep.spaceglad.managers.ControllerWidget;
+import com.deeep.spaceglad.services.ControllerWidget;
 
 public class GameUI {
     private Core game;

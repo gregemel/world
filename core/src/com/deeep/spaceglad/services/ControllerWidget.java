@@ -1,4 +1,4 @@
-package com.deeep.spaceglad.managers;
+package com.deeep.spaceglad.services;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

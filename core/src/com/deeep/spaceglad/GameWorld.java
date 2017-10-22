@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.components.CharacterComponent;
-import com.deeep.spaceglad.managers.EntityFactory;
+import com.deeep.spaceglad.services.EntityFactory;
 import com.deeep.spaceglad.systems.*;
 
 public class GameWorld {

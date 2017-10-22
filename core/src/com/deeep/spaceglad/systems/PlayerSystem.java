@@ -15,7 +15,7 @@ import com.deeep.spaceglad.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.components.*;
-import com.deeep.spaceglad.managers.ControllerWidget;
+import com.deeep.spaceglad.services.ControllerWidget;
 
 public class PlayerSystem extends EntitySystem implements EntityListener, InputProcessor {
     private Entity player;
