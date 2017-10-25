@@ -2,114 +2,89 @@ package com.deeep.spaceglad;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
-import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
-import com.deeep.spaceglad.UI.GameUI;
-import com.deeep.spaceglad.components.CharacterComponent;
-import com.deeep.spaceglad.services.EntityFactory;
 import com.deeep.spaceglad.systems.*;
 
 public class GameWorld {
-    private static final boolean debug = false;
+    private boolean debug = false;
     private DebugDrawer debugDrawer;
     private Engine engine;
-    private Entity character, gun, dome;
-    public BulletSystem bulletSystem;
+    private Entity character;
+    private Entity gun;
+    private Entity dome;
+    private BulletSystem bulletSystem;
     private PlayerSystem playerSystem;
     private RenderSystem renderSystem;
 
-    public GameWorld(GameUI gameUI) {
-        Bullet.init();
-        setDebug();
-        addSystems(gameUI);
-        addEntities();
+    public boolean isDebug() {
+        return debug;
     }
 
-    private void setDebug() {
-        if (debug) {
-            debugDrawer = new DebugDrawer();
-            debugDrawer.setDebugMode(btIDebugDraw.DebugDrawModes.DBG_MAX_DEBUG_DRAW_MODE);
-        }
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
-    private void addSystems(GameUI gameUI) {
-        engine = new Engine();
-        engine.addSystem(renderSystem = new RenderSystem());
-        EntityFactory.renderSystem = renderSystem;
-        engine.addSystem(bulletSystem = new BulletSystem());
-        engine.addSystem(playerSystem = new PlayerSystem(this, gameUI, renderSystem.perspectiveCamera));
-        engine.addSystem(new EnemySystem(this));
-        engine.addSystem(new StatusSystem(this));
-        if (debug) bulletSystem.collisionWorld.setDebugDrawer(this.debugDrawer);
+    public DebugDrawer getDebugDrawer() {
+        return debugDrawer;
     }
 
-    private void addEntities() {
-        loadLevel();
-        createPlayer(0, 6, 0);
+    public void setDebugDrawer(DebugDrawer debugDrawer) {
+        this.debugDrawer = debugDrawer;
     }
 
-    private void loadLevel() {
-        engine.addEntity(EntityFactory.loadScene(0, 0, 0));
-        engine.addEntity(dome = EntityFactory.loadDome(0, 0, 0));
-        playerSystem.dome = dome;
+    public Engine getEngine() {
+        return engine;
     }
 
-    private void createPlayer(float x, float y, float z) {
-        character = EntityFactory.createPlayer(bulletSystem, x, y, z);
-        engine.addEntity(character);
-        engine.addEntity(gun = EntityFactory.loadGun(2.5f, -1.9f, -4));
-        playerSystem.gun = gun;
-        renderSystem.gun = gun;
+    public void setEngine(Engine engine) {
+        this.engine = engine;
     }
 
-    public void render(float delta) {
-        renderWorld(delta);
-        checkPause();
+    public Entity getCharacter() {
+        return character;
     }
 
-    private void checkPause() {
-        if (Settings.Paused) {
-            engine.getSystem(PlayerSystem.class).setProcessing(false);
-            engine.getSystem(EnemySystem.class).setProcessing(false);
-            engine.getSystem(StatusSystem.class).setProcessing(false);
-            engine.getSystem(BulletSystem.class).setProcessing(false);
-        } else {
-            engine.getSystem(PlayerSystem.class).setProcessing(true);
-            engine.getSystem(EnemySystem.class).setProcessing(true);
-            engine.getSystem(StatusSystem.class).setProcessing(true);
-            engine.getSystem(BulletSystem.class).setProcessing(true);
-        }
+    public void setCharacter(Entity character) {
+        this.character = character;
     }
 
-    private void renderWorld(float delta) {
-        engine.update(delta);
-        if (debug) {
-            debugDrawer.begin(renderSystem.perspectiveCamera);
-            bulletSystem.collisionWorld.debugDrawWorld();
-            debugDrawer.end();
-        }
+    public Entity getGun() {
+        return gun;
     }
 
-    public void resize(int width, int height) {
-        renderSystem.resize(width, height);
+    public void setGun(Entity gun) {
+        this.gun = gun;
     }
 
-    public void dispose() {
-        bulletSystem.collisionWorld.removeAction(character.getComponent(CharacterComponent.class).characterController);
-        bulletSystem.collisionWorld.removeCollisionObject(character.getComponent(CharacterComponent.class).ghostObject);
-        bulletSystem.dispose();
-
-        bulletSystem = null;
-        renderSystem.dispose();
-
-        character.getComponent(CharacterComponent.class).characterController.dispose();
-        character.getComponent(CharacterComponent.class).ghostObject.dispose();
-        character.getComponent(CharacterComponent.class).ghostShape.dispose();
+    public Entity getDome() {
+        return dome;
     }
 
-    public void remove(Entity entity) {
-        engine.removeEntity(entity);
-        bulletSystem.removeBody(entity);
+    public void setDome(Entity dome) {
+        this.dome = dome;
+    }
+
+    public BulletSystem getBulletSystem() {
+        return bulletSystem;
+    }
+
+    public void setBulletSystem(BulletSystem bulletSystem) {
+        this.bulletSystem = bulletSystem;
+    }
+
+    public PlayerSystem getPlayerSystem() {
+        return playerSystem;
+    }
+
+    public void setPlayerSystem(PlayerSystem playerSystem) {
+        this.playerSystem = playerSystem;
+    }
+
+    public RenderSystem getRenderSystem() {
+        return renderSystem;
+    }
+
+    public void setRenderSystem(RenderSystem renderSystem) {
+        this.renderSystem = renderSystem;
     }
 }

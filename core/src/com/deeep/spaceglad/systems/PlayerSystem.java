@@ -118,7 +118,9 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         rayTestCB.setClosestHitFraction(1f);
         rayTestCB.setRayFromWorld(rayFrom);
         rayTestCB.setRayToWorld(rayTo);
-        gameWorld.bulletSystem.collisionWorld.rayTest(rayFrom, rayTo, rayTestCB);
+
+        gameWorld.getBulletSystem().collisionWorld.rayTest(rayFrom, rayTo, rayTestCB);
+
         if (rayTestCB.hasHit()) {
             final btCollisionObject obj = rayTestCB.getCollisionObject();
             if (((Entity) obj.userData).getComponent(EnemyComponent.class) != null) {

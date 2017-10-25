@@ -93,7 +93,7 @@ public class EnemySystem extends EntitySystem implements EntityListener {
     }
 
     private void spawnEnemy(int randomSpawnIndex) {
-        engine.addEntity(EntityFactory.createEnemy(gameWorld.bulletSystem, xSpawns[randomSpawnIndex], 33, zSpawns[randomSpawnIndex]));
+        engine.addEntity(EntityFactory.createEnemy(gameWorld.getBulletSystem(), xSpawns[randomSpawnIndex], 33, zSpawns[randomSpawnIndex]));
     }
 
     @Override
