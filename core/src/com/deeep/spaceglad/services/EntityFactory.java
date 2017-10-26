@@ -113,16 +113,6 @@ public class EntityFactory {
         return entity;
     }
 
-    public static Entity loadDome(int x, int y, int z) {
-        UBJsonReader jsonReader = new UBJsonReader();
-        G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
-        Model model = modelLoader.loadModel(Gdx.files.getFileHandle("data/spacedome.g3db", Files.FileType.Internal));
-        ModelComponent modelComponent = new ModelComponent(model, x, y, z);
-        Entity entity = new Entity();
-        entity.add(modelComponent);
-        return entity;
-    }
-
     public static Entity loadGun(float x, float y, float z) {
         ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
         ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/GUNMODEL.g3dj"));
@@ -136,21 +126,4 @@ public class EntityFactory {
         return gunEntity;
     }
 
-    public static Entity loadScene(int x, int y, int z) {
-        Entity entity = new Entity();
-        ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
-        ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/arena.g3dj"));
-        Model model = new Model(modelData, new TextureProvider.FileTextureProvider());
-        ModelComponent modelComponent = new ModelComponent(model, x, y, z);
-        entity.add(modelComponent);
-        BulletComponent bulletComponent = new BulletComponent();
-        btCollisionShape shape = Bullet.obtainStaticNodeShape(model.nodes);
-        bulletComponent.bodyInfo = new btRigidBody.btRigidBodyConstructionInfo(0, null, shape, Vector3.Zero);
-        bulletComponent.body = new btRigidBody(bulletComponent.bodyInfo);
-        bulletComponent.body.userData = entity;
-        bulletComponent.motionState = new MotionState(modelComponent.instance.transform);
-        ((btRigidBody) bulletComponent.body).setMotionState(bulletComponent.motionState);
-        entity.add(bulletComponent);
-        return entity;
-    }
 }

@@ -10,6 +10,7 @@ import com.deeep.spaceglad.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.components.CharacterComponent;
+import com.deeep.spaceglad.databags.Scene;
 import com.deeep.spaceglad.systems.BulletSystem;
 import com.deeep.spaceglad.systems.EnemySystem;
 import com.deeep.spaceglad.systems.PlayerSystem;
@@ -73,11 +74,11 @@ public class GameWorldService {
     }
 
     private void loadLevel() {
-        gameWorld.getEngine().addEntity(EntityFactory.loadScene(0, 0, 0));
-        Entity dome = EntityFactory.loadDome(0, 0, 0);
-        gameWorld.setDome(dome);
-        gameWorld.getEngine().addEntity(dome);
-        gameWorld.getPlayerSystem().dome = dome;
+        Scene area = SceneLoader.load("area", 0, 0, 0);
+        gameWorld.getEngine().addEntity(area.getGround());
+        gameWorld.setDome(area.getSky());
+        gameWorld.getEngine().addEntity(area.getSky());
+        gameWorld.getPlayerSystem().dome = area.getSky();
     }
 
     private void createPlayer(float x, float y, float z) {
