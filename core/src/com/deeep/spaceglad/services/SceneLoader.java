@@ -35,7 +35,7 @@ public class SceneLoader {
         UBJsonReader jsonReader = new UBJsonReader();
         G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
 
-        Model model = modelLoader.loadModel(Gdx.files.getFileHandle("data/spacedome.g3db", Files.FileType.Internal));
+        Model model = modelLoader.loadModel(Gdx.files.getFileHandle("data/" + name + ".g3db", Files.FileType.Internal));
         ModelComponent modelComponent = new ModelComponent(model, x, y, z);
 
         Entity entity = new Entity();
@@ -48,7 +48,7 @@ public class SceneLoader {
         Entity entity = new Entity();
 
         ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
-        ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/arena.g3dj"));
+        ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
 
         Model model = new Model(modelData, new TextureProvider.FileTextureProvider());
         ModelComponent modelComponent = new ModelComponent(model, x, y, z);

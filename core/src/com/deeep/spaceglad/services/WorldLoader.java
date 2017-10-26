@@ -6,7 +6,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
-import com.deeep.spaceglad.GameWorld;
+import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.components.CharacterComponent;
@@ -17,7 +17,7 @@ import com.deeep.spaceglad.systems.PlayerSystem;
 import com.deeep.spaceglad.systems.RenderSystem;
 import com.deeep.spaceglad.systems.StatusSystem;
 
-public class GameWorldService {
+public class WorldLoader {
 
     private GameWorld gameWorld;
     private GameUI gameUI;
@@ -30,7 +30,8 @@ public class GameWorldService {
 
         setDebug();
         addSystems();
-        addEntities();
+        loadLevel();
+        createPlayer(0, 6, 0);
 
         return gameWorld;
     }
@@ -68,17 +69,14 @@ public class GameWorldService {
         }
     }
 
-    private void addEntities() {
-        loadLevel();
-        createPlayer(0, 6, 0);
-    }
 
     private void loadLevel() {
         Scene area = SceneLoader.load("area", 0, 0, 0);
+        gameWorld.setCurrentScene(area);
         gameWorld.getEngine().addEntity(area.getGround());
-        gameWorld.setDome(area.getSky());
         gameWorld.getEngine().addEntity(area.getSky());
         gameWorld.getPlayerSystem().dome = area.getSky();
+        //gameWorld.setDome(area.getSky());
     }
 
     private void createPlayer(float x, float y, float z) {

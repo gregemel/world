@@ -3,22 +3,22 @@ package com.deeep.spaceglad.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.deeep.spaceglad.WorldGDXAdapter;
-import com.deeep.spaceglad.GameWorld;
+import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
-import com.deeep.spaceglad.services.GameWorldService;
+import com.deeep.spaceglad.services.WorldLoader;
 
 public class GameScreen implements Screen {
     private WorldGDXAdapter game;
     private GameUI gameUI;
     private GameWorld gameWorld;
 
-    private GameWorldService worldService;
+    private WorldLoader worldService;
 
     public GameScreen(WorldGDXAdapter game) {
         this.game = game;
         gameUI = new GameUI(game);
-        worldService = new GameWorldService();
+        worldService = new WorldLoader();
         gameWorld = worldService.create(gameUI);
 
         Settings.Paused = false;

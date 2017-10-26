@@ -11,11 +11,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
-import com.deeep.spaceglad.GameWorld;
+import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.components.*;
-import com.deeep.spaceglad.services.ControllerWidget;
+import com.deeep.spaceglad.UI.ControllerWidget;
 
 public class PlayerSystem extends EntitySystem implements EntityListener, InputProcessor {
     private Entity player;
@@ -109,6 +109,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     private void updateStatus() {
         gameUI.healthWidget.setValue(playerComponent.health);
     }
+
 
     private void fire() {
         Ray ray = camera.getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);

@@ -1,7 +1,7 @@
 package com.deeep.spaceglad.components;
 
 import com.badlogic.ashley.core.Component;
-import com.deeep.spaceglad.services.EnemyAnimations;
+import com.deeep.spaceglad.databags.EnemyAnimations;
 
 public class StatusComponent extends Component {
     private AnimationComponent animationComponent;

@@ -1,4 +1,4 @@
-package com.deeep.spaceglad;
+package com.deeep.spaceglad.databags;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -15,6 +15,15 @@ public class GameWorld {
     private BulletSystem bulletSystem;
     private PlayerSystem playerSystem;
     private RenderSystem renderSystem;
+    private Scene currentScene;
+
+    public Scene getCurrentScene() {
+        return currentScene;
+    }
+
+    public void setCurrentScene(Scene currentScene) {
+        this.currentScene = currentScene;
+    }
 
     public boolean isDebug() {
         return debug;

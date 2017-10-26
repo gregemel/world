@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.deeep.spaceglad.Assets;
 import com.deeep.spaceglad.WorldGDXAdapter;
-import com.deeep.spaceglad.services.ControllerWidget;
 
 public class GameUI {
     private WorldGDXAdapter game;

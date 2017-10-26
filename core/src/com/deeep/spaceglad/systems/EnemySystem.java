@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.deeep.spaceglad.GameWorld;
+import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.services.EntityFactory;
 

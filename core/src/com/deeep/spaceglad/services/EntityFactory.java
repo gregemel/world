@@ -1,7 +1,6 @@
 package com.deeep.spaceglad.services;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.ModelLoader;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,14 +17,9 @@ import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.collision.*;
 import com.badlogic.gdx.physics.bullet.dynamics.btKinematicCharacterController;
-import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.UBJsonReader;
-import com.deeep.spaceglad.bullet.MotionState;
 import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.systems.BulletSystem;
 import com.deeep.spaceglad.systems.RenderSystem;
@@ -106,7 +100,7 @@ public class EntityFactory {
         bulletSystem.collisionWorld.addAction(entity.getComponent(CharacterComponent.class).characterController);
         entity.add(new EnemyComponent(EnemyComponent.STATE.HUNTING));
         AnimationComponent animationComponent = new AnimationComponent(enemyModelComponent.instance);
-        animationComponent.animate(EnemyAnimations.id, EnemyAnimations.offsetRun1, EnemyAnimations.durationRun1, -1, 1);
+        animationComponent.animate(com.deeep.spaceglad.databags.EnemyAnimations.id, com.deeep.spaceglad.databags.EnemyAnimations.offsetRun1, com.deeep.spaceglad.databags.EnemyAnimations.durationRun1, -1, 1);
         entity.add(animationComponent);
         entity.add(new StatusComponent(animationComponent));
         entity.add(new DieParticleComponent(renderSystem.particleSystem));

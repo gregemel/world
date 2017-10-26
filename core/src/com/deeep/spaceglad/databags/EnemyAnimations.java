@@ -1,4 +1,4 @@
-package com.deeep.spaceglad.services;
+package com.deeep.spaceglad.databags;
 
 public class EnemyAnimations {
     public static final String id = "MilkShape3D Skele|DefaultAction";

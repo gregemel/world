@@ -5,14 +5,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.deeep.spaceglad.GameWorld;
+import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.components.StatusComponent;
-import com.deeep.spaceglad.services.GameWorldService;
+import com.deeep.spaceglad.services.WorldLoader;
 
 public class StatusSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
     private GameWorld gameWorld;
-    private GameWorldService worldService;
+    private WorldLoader worldService;
 
     public StatusSystem(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
@@ -30,7 +30,7 @@ public class StatusSystem extends EntitySystem {
             entity.getComponent(StatusComponent.class).update(delta);
             if (entity.getComponent(StatusComponent.class).aliveStateTime >= 3.4f) {
                 if(worldService == null) {
-                    worldService = new GameWorldService();
+                    worldService = new WorldLoader();
                 }
                 worldService.remove(gameWorld, entity);
             }

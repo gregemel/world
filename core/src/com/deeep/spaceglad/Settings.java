@@ -48,6 +48,7 @@ public class Settings {
             FileHandle filehandle = Gdx.files.external(file);
             String[] strings = filehandle.readString().split("\n");
             soundEnabled = Boolean.parseBoolean(strings[0]);
+            soundEnabled = true;
         } catch (Throwable e) {
         }
     }
