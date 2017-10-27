@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.badlogic.gdx.utils.JsonReader;
 import com.deeep.spaceglad.components.AnimationComponent;
-import com.deeep.spaceglad.components.GunComponent;
+import com.deeep.spaceglad.databags.GunComponent;
 import com.deeep.spaceglad.components.ModelComponent;
 
 public class PlayerItemFactory {

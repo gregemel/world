@@ -1,4 +1,4 @@
-package com.deeep.spaceglad.components;
+package com.deeep.spaceglad.databags;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector3;

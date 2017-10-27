@@ -20,6 +20,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.deeep.spaceglad.WorldGDXAdapter;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.components.*;
+import com.deeep.spaceglad.databags.GunComponent;
+import com.deeep.spaceglad.databags.PlayerComponent;
 
 public class RenderSystem extends EntitySystem {
     private static final float FOV = 67F;

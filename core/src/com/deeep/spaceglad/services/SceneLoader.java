@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.deeep.spaceglad.bullet.MotionState;
-import com.deeep.spaceglad.components.BulletComponent;
+import com.deeep.spaceglad.databags.BulletComponent;
 import com.deeep.spaceglad.components.ModelComponent;
 import com.deeep.spaceglad.databags.Scene;
 

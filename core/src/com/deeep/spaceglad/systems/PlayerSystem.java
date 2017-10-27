@@ -11,11 +11,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
+import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.UI.ControllerWidget;
+import com.deeep.spaceglad.databags.PlayerComponent;
 
 public class PlayerSystem extends EntitySystem implements EntityListener, InputProcessor {
     private Entity player;

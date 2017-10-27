@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.bullet.collision.*;
 import com.badlogic.gdx.physics.bullet.dynamics.btKinematicCharacterController;
 import com.badlogic.gdx.utils.JsonReader;
 import com.deeep.spaceglad.components.*;
+import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.systems.BulletSystem;
 
@@ -23,7 +24,7 @@ public class EntityFactory {
     private static Model enemyModel;
     private static ModelComponent enemyModelComponent;
 
-    public static Entity createEnemy(GameWorld gameWorld, float x, float y, float z) {
+    public static Entity create(String name, GameWorld gameWorld, float x, float y, float z) {
 
 
         BulletSystem bulletSystem = gameWorld.getBulletSystem();
@@ -31,7 +32,7 @@ public class EntityFactory {
         ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
 
         if (enemyModel == null) {
-            ModelData enemyModelData = modelLoader.loadModelData(Gdx.files.internal("data/monster.g3dj"));
+            ModelData enemyModelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
             enemyModel = new Model(enemyModelData, new TextureProvider.FileTextureProvider());
             for (Node node : enemyModel.nodes) node.scale.scl(0.0025f);
             enemyModel.calculateTransforms();

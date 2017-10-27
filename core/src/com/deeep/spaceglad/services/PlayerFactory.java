@@ -15,9 +15,9 @@ import com.badlogic.gdx.physics.bullet.collision.btCapsuleShape;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btPairCachingGhostObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btKinematicCharacterController;
-import com.deeep.spaceglad.components.CharacterComponent;
+import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.components.ModelComponent;
-import com.deeep.spaceglad.components.PlayerComponent;
+import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.systems.BulletSystem;
 
 public class PlayerFactory {

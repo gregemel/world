@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.UI.GameUI;
-import com.deeep.spaceglad.components.CharacterComponent;
+import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.Scene;
 import com.deeep.spaceglad.systems.BulletSystem;
 import com.deeep.spaceglad.systems.EnemySystem;

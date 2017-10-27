@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.components.*;
+import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.services.EntityFactory;
 
 import java.util.Random;
@@ -28,8 +30,8 @@ public class EnemySystem extends EntitySystem implements EntityListener {
     private float[] xSpawns = {12, -12, 112, -112};
     private float[] zSpawns = {-112, 112, -12, 12};
 
-    ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
-    ComponentMapper<StatusComponent> sm = ComponentMapper.getFor(StatusComponent.class);
+    private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
+    private ComponentMapper<StatusComponent> sm = ComponentMapper.getFor(StatusComponent.class);
 
     public EnemySystem(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
@@ -93,7 +95,7 @@ public class EnemySystem extends EntitySystem implements EntityListener {
     }
 
     private void spawnEnemy(int randomSpawnIndex) {
-        engine.addEntity(EntityFactory.createEnemy(gameWorld, xSpawns[randomSpawnIndex], 33, zSpawns[randomSpawnIndex]));
+        engine.addEntity(EntityFactory.create("monster", gameWorld, xSpawns[randomSpawnIndex], 33, zSpawns[randomSpawnIndex]));
     }
 
     @Override
@@ -105,7 +107,7 @@ public class EnemySystem extends EntitySystem implements EntityListener {
     public void entityRemoved(Entity entity) {
     }
 
-    public int getRandomSpawnIndex() {
+    private int getRandomSpawnIndex() {
         return random.nextInt(xSpawns.length);
     }
 }
