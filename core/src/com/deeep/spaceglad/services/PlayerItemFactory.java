@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.badlogic.gdx.utils.JsonReader;
-import com.deeep.spaceglad.components.AnimationComponent;
+import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.GunComponent;
 import com.deeep.spaceglad.components.ModelComponent;
 
@@ -25,7 +25,9 @@ public class PlayerItemFactory {
         Entity gunEntity = new Entity();
         gunEntity.add(modelComponent);
         gunEntity.add(new GunComponent());
-        gunEntity.add(new AnimationComponent(modelComponent.instance));
+        AnimationService animationService = new AnimationService();
+        AnimationComponent animationComponent = animationService.create(modelComponent.instance);
+        gunEntity.add(animationComponent);
 
         return gunEntity;
     }

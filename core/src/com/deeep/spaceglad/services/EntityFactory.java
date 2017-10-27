@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.bullet.collision.*;
 import com.badlogic.gdx.physics.bullet.dynamics.btKinematicCharacterController;
 import com.badlogic.gdx.utils.JsonReader;
 import com.deeep.spaceglad.components.*;
+import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.systems.BulletSystem;
@@ -65,8 +66,14 @@ public class EntityFactory {
 
         entity.add(new EnemyComponent(EnemyComponent.STATE.HUNTING));
 
-        AnimationComponent animationComponent = new AnimationComponent(enemyModelComponent.instance);
-        animationComponent.animate(com.deeep.spaceglad.databags.EnemyAnimations.id, com.deeep.spaceglad.databags.EnemyAnimations.offsetRun1, com.deeep.spaceglad.databags.EnemyAnimations.durationRun1, -1, 1);
+        AnimationService animationService = new AnimationService();
+        AnimationComponent animationComponent = animationService.create(enemyModelComponent.instance);
+        animationService.animate(
+                animationComponent,
+                com.deeep.spaceglad.databags.EnemyAnimations.id,
+                com.deeep.spaceglad.databags.EnemyAnimations.offsetRun1,
+                com.deeep.spaceglad.databags.EnemyAnimations.durationRun1,
+                -1, 1);
 
         entity.add(animationComponent);
         entity.add(new StatusComponent(animationComponent));

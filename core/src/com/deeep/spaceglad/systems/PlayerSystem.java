@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
+import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
@@ -18,6 +19,7 @@ import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.UI.ControllerWidget;
 import com.deeep.spaceglad.databags.PlayerComponent;
+import com.deeep.spaceglad.services.AnimationService;
 
 public class PlayerSystem extends EntitySystem implements EntityListener, InputProcessor {
     private Entity player;
@@ -36,6 +38,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     private float deltaY;
     private Vector3 translation = new Vector3();
     private Matrix4 ghost = new Matrix4();
+    private AnimationService animationService = new AnimationService();
 
     public PlayerSystem(GameWorld gameWorld, GameUI gameUI, Camera camera) {
         this.camera = camera;
@@ -133,7 +136,10 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
                 }
             }
         }
-        gun.getComponent(AnimationComponent.class).animate("Armature|shoot", 1, 3);
+
+        animationService.animate(
+            gun.getComponent(AnimationComponent.class), "Armature|shoot", 1, 3);
+
     }
 
     private void checkGameOver() {

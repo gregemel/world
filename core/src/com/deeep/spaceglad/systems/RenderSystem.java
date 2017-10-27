@@ -20,8 +20,10 @@ import com.badlogic.gdx.math.Vector3;
 import com.deeep.spaceglad.WorldGDXAdapter;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.components.*;
+import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.GunComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
+import com.deeep.spaceglad.services.AnimationService;
 
 public class RenderSystem extends EntitySystem {
     private static final float FOV = 67F;
@@ -31,6 +33,8 @@ public class RenderSystem extends EntitySystem {
     private DirectionalShadowLight shadowLight;
     public Entity gun;
     private Vector3 position;
+    private AnimationService animationService = new AnimationService();
+
 
     public PerspectiveCamera perspectiveCamera, gunCamera;
     public static ParticleSystem particleSystem;
@@ -82,8 +86,9 @@ public class RenderSystem extends EntitySystem {
                 ModelComponent mod = entities.get(x).getComponent(ModelComponent.class);
                 if (isVisible(perspectiveCamera, mod.instance)) batch.render(mod.instance);
             }
-            if (entities.get(x).getComponent(AnimationComponent.class) != null & Settings.Paused == false)
-                entities.get(x).getComponent(AnimationComponent.class).update(delta);
+            if (entities.get(x).getComponent(AnimationComponent.class) != null & Settings.Paused == false) {
+                animationService.update(entities.get(x).getComponent(AnimationComponent.class), delta);
+            }
         }
         batch.end();
         shadowLight.end();

@@ -1,7 +1,9 @@
 package com.deeep.spaceglad.components;
 
 import com.badlogic.ashley.core.Component;
+import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.EnemyAnimations;
+import com.deeep.spaceglad.services.AnimationService;
 
 public class StatusComponent extends Component {
     private AnimationComponent animationComponent;
@@ -24,6 +26,11 @@ public class StatusComponent extends Component {
     }
 
     private void playDeathAnim2() {
-        animationComponent.animate(EnemyAnimations.id, EnemyAnimations.offsetDeath2, EnemyAnimations.durationDeath2, 1, 3);
+        AnimationService animationService = new AnimationService();
+        animationService.animate(animationComponent,
+                EnemyAnimations.id,
+                EnemyAnimations.offsetDeath2,
+                EnemyAnimations.durationDeath2,
+                1, 3);
     }
 }
