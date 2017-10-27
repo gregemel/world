@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btPairCachingGhostObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btKinematicCharacterController;
 import com.deeep.spaceglad.databags.CharacterComponent;
-import com.deeep.spaceglad.components.ModelComponent;
+import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.systems.BulletSystem;
 
@@ -40,12 +40,13 @@ public class PlayerFactory {
         Model playerModel = modelBuilder.createCapsule(2f, 6f, 16, material, VertexAttributes.Usage.Position |
                 VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
 
-        ModelComponent modelComponent = new ModelComponent(playerModel, x, y, z);
+        ModelService modelService = new ModelService();
+        ModelComponent modelComponent = modelService.create(playerModel, x, y, z);
         entity.add(modelComponent);
 
         CharacterComponent characterComponent = new CharacterComponent();
         characterComponent.ghostObject = new btPairCachingGhostObject();
-        characterComponent.ghostObject.setWorldTransform(modelComponent.instance.transform);
+        characterComponent.ghostObject.setWorldTransform(modelComponent.getInstance().transform);
         characterComponent.ghostShape = new btCapsuleShape(2f, 2f);
         characterComponent.ghostObject.setCollisionShape(characterComponent.ghostShape);
         characterComponent.ghostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);

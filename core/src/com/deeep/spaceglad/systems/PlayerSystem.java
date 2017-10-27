@@ -17,13 +17,14 @@ import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
-import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.UI.ControllerWidget;
+import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.databags.StatusComponent;
 import com.deeep.spaceglad.services.AnimationService;
 
 public class PlayerSystem extends EntitySystem implements EntityListener, InputProcessor {
+    public Entity gun, dome;
     private Entity player;
     private PlayerComponent playerComponent;
     private CharacterComponent characterComponent;
@@ -32,12 +33,9 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     private final Vector3 tmp = new Vector3();
     private final Camera camera;
     private GameWorld gameWorld;
-    Vector3 rayFrom = new Vector3();
-    Vector3 rayTo = new Vector3();
-    ClosestRayResultCallback rayTestCB;
-    public Entity gun, dome;
-    private float deltaX;
-    private float deltaY;
+    private Vector3 rayFrom = new Vector3();
+    private Vector3 rayTo = new Vector3();
+    private ClosestRayResultCallback rayTestCB;
     private Vector3 translation = new Vector3();
     private Matrix4 ghost = new Matrix4();
     private AnimationService animationService = new AnimationService();
@@ -63,6 +61,9 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     }
 
     private void updateMovement(float delta) {
+        float deltaX;
+        float deltaY;
+
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             deltaX = -ControllerWidget.getWatchVector().x * 1.5f;
             deltaY = ControllerWidget.getWatchVector().y * 1.5f;
@@ -70,13 +71,15 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
             deltaX = -Gdx.input.getDeltaX() * 0.5f;
             deltaY = -Gdx.input.getDeltaY() * 0.5f;
         }
+
         tmp.set(0, 0, 0);
         camera.rotate(camera.up, deltaX);
         tmp.set(camera.direction).crs(camera.up).nor();
         camera.direction.rotate(tmp, deltaY);
         tmp.set(0, 0, 0);
-        characterComponent.characterDirection.set(-1, 0, 0).rot(modelComponent.instance.transform).nor();
+        characterComponent.characterDirection.set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
         characterComponent.walkDirection.set(0, 0, 0);
+
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             if (ControllerWidget.getMovementVector().y > 0) characterComponent.walkDirection.add(camera.direction);
             if (ControllerWidget.getMovementVector().y < 0) characterComponent.walkDirection.sub(camera.direction);
@@ -94,23 +97,27 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
             characterComponent.walkDirection.scl(10f * delta);
             characterComponent.characterController.setWalkDirection(characterComponent.walkDirection);
         }
+
         ghost.set(0, 0, 0, 0);
         translation.set(0, 0, 0);
         translation = new Vector3();
         characterComponent.ghostObject.getWorldTransform(ghost);   //TODO export this
         ghost.getTranslation(translation);
-        modelComponent.instance.transform.set(translation.x, translation.y, translation.z, camera.direction.x, camera.direction.y, camera.direction.z, 0);
+        modelComponent.getInstance().transform.set(translation.x, translation.y, translation.z, camera.direction.x, camera.direction.y, camera.direction.z, 0);
         camera.position.set(translation.x, translation.y, translation.z);
         camera.update(true);
 
-        dome.getComponent(ModelComponent.class).instance.transform.setToTranslation(translation.x, translation.y, translation.z);
+        dome.getComponent(ModelComponent.class).getInstance().transform.setToTranslation(translation.x, translation.y, translation.z);
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // TODO change this back to 25
             characterComponent.characterController.setJumpSpeed(25);
             characterComponent.characterController.jump();
         }
-        if (Gdx.input.justTouched()) fire();
+
+        if (Gdx.input.justTouched()) {
+            fire();
+        }
     }
 
     private void updateStatus() {

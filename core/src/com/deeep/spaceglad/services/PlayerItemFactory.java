@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.badlogic.gdx.utils.JsonReader;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.GunComponent;
-import com.deeep.spaceglad.components.ModelComponent;
+import com.deeep.spaceglad.databags.ModelComponent;
 
 public class PlayerItemFactory {
     public static Entity create(String name, float x, float y, float z) {
@@ -19,14 +19,15 @@ public class PlayerItemFactory {
         ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
         Model model = new Model(modelData, new TextureProvider.FileTextureProvider());
 
-        ModelComponent modelComponent = new ModelComponent(model, x, y, z);
-        modelComponent.instance.transform.rotate(0, 1, 0, 180);
+        ModelService modelService = new ModelService();
+        ModelComponent modelComponent = modelService.create(model, x, y, z);
+        modelComponent.getInstance().transform.rotate(0, 1, 0, 180);
 
         Entity gunEntity = new Entity();
         gunEntity.add(modelComponent);
         gunEntity.add(new GunComponent());
         AnimationService animationService = new AnimationService();
-        AnimationComponent animationComponent = animationService.create(modelComponent.instance);
+        AnimationComponent animationComponent = animationService.create(modelComponent.getInstance());
         gunEntity.add(animationComponent);
 
         return gunEntity;

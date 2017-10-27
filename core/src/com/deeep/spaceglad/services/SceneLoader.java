@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.UBJsonReader;
 import com.deeep.spaceglad.bullet.MotionState;
 import com.deeep.spaceglad.databags.BulletComponent;
-import com.deeep.spaceglad.components.ModelComponent;
+import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.Scene;
 
 public class SceneLoader {
@@ -36,7 +36,9 @@ public class SceneLoader {
         G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
 
         Model model = modelLoader.loadModel(Gdx.files.getFileHandle("data/" + name + ".g3db", Files.FileType.Internal));
-        ModelComponent modelComponent = new ModelComponent(model, x, y, z);
+
+        ModelService modelService = new ModelService();
+        ModelComponent modelComponent = modelService.create(model, x, y, z);
 
         Entity entity = new Entity();
         entity.add(modelComponent);
@@ -50,7 +52,8 @@ public class SceneLoader {
         ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
 
         Model model = new Model(modelData, new TextureProvider.FileTextureProvider());
-        ModelComponent modelComponent = new ModelComponent(model, x, y, z);
+        ModelService modelService = new ModelService();
+        ModelComponent modelComponent = modelService.create(model, x, y, z);
         entity.add(modelComponent);
 
         BulletComponent bulletComponent = new BulletComponent();
@@ -58,7 +61,7 @@ public class SceneLoader {
         bulletComponent.bodyInfo = new btRigidBody.btRigidBodyConstructionInfo(0, null, shape, Vector3.Zero);
         bulletComponent.body = new btRigidBody(bulletComponent.bodyInfo);
         bulletComponent.body.userData = entity;
-        bulletComponent.motionState = new MotionState(modelComponent.instance.transform);
+        bulletComponent.motionState = new MotionState(modelComponent.getInstance().transform);
         ((btRigidBody) bulletComponent.body).setMotionState(bulletComponent.motionState);
 
         entity.add(bulletComponent);

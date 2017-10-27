@@ -8,13 +8,14 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.spaceglad.databags.CharacterComponent;
+import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.ParticleComponent;
 import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.GameWorld;
-import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.databags.StatusComponent;
 import com.deeep.spaceglad.services.EntityFactory;
+import com.deeep.spaceglad.services.ModelService;
 
 import java.util.Random;
 
@@ -29,6 +30,7 @@ public class EnemySystem extends EntitySystem implements EntityListener {
     private Matrix4 ghost = new Matrix4();
     private Vector3 translation = new Vector3();
     private Random random = new Random();
+    private ModelService modelService = new ModelService();
 
     private float[] xSpawns = {12, -12, 112, -112};
     private float[] zSpawns = {-112, 112, -12, 12};
@@ -59,8 +61,9 @@ public class EnemySystem extends EntitySystem implements EntityListener {
 
             StatusComponent statusComponent = entity.getComponent(StatusComponent.class);
 
-            if (!statusComponent.isAlive())
-                modelComponent.update(delta);
+            if (!statusComponent.isAlive()) {
+                modelService.update(modelComponent, delta);
+            }
 
             ParticleComponent particleComponent = entity.getComponent(ParticleComponent.class);
 
@@ -70,7 +73,7 @@ public class EnemySystem extends EntitySystem implements EntityListener {
 
                 ParticleEffect effect = particleComponent.getOriginalEffect().copy();
                 ((RegularEmitter) effect.getControllers().first().emitter).setEmissionMode(RegularEmitter.EmissionMode.EnabledUntilCycleEnd);
-                effect.setTransform(modelComponent.instance.transform);
+                effect.setTransform(modelComponent.getInstance().transform);
                 effect.scale(3.25f, 1, 1.5f);
                 effect.init();
                 effect.start();
@@ -79,8 +82,8 @@ public class EnemySystem extends EntitySystem implements EntityListener {
 
             if (!sm.get(entity).alive) return;
 
-            playerModel.instance.transform.getTranslation(playerPosition);
-            modelComponent.instance.transform.getTranslation(enemyPosition);
+            playerModel.getInstance().transform.getTranslation(playerPosition);
+            modelComponent.getInstance().transform.getTranslation(enemyPosition);
 
             float dX = playerPosition.x - enemyPosition.x;
             float dZ = playerPosition.z - enemyPosition.z;
@@ -90,7 +93,7 @@ public class EnemySystem extends EntitySystem implements EntityListener {
             //Calculate the transforms
             Quaternion rot = quat.setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
 
-            cm.get(entity).characterDirection.set(-1, 0, 0).rot(modelComponent.instance.transform);
+            cm.get(entity).characterDirection.set(-1, 0, 0).rot(modelComponent.getInstance().transform);
             cm.get(entity).walkDirection.set(0, 0, 0);
             cm.get(entity).walkDirection.add(cm.get(entity).characterDirection);
             cm.get(entity).walkDirection.scl(10f * delta);   //TODO make this change on difficulty
@@ -101,7 +104,7 @@ public class EnemySystem extends EntitySystem implements EntityListener {
             cm.get(entity).ghostObject.getWorldTransform(ghost);
             ghost.getTranslation(translation);
 
-            modelComponent.instance.transform.set(translation.x, translation.y, translation.z, rot.x, rot.y, rot.z, rot.w);
+            modelComponent.getInstance().transform.set(translation.x, translation.y, translation.z, rot.x, rot.y, rot.z, rot.w);
         }
     }
 

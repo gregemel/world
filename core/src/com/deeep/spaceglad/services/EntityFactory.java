@@ -14,9 +14,9 @@ import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.badlogic.gdx.physics.bullet.collision.*;
 import com.badlogic.gdx.physics.bullet.dynamics.btKinematicCharacterController;
 import com.badlogic.gdx.utils.JsonReader;
-import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
+import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.ParticleComponent;
 import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.GameWorld;
@@ -30,31 +30,37 @@ public class EntityFactory {
 
     public static Entity create(String name, GameWorld gameWorld, float x, float y, float z) {
 
-
         BulletSystem bulletSystem = gameWorld.getBulletSystem();
         Entity entity = new Entity();
         ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
 
         if (enemyModel == null) {
+
             ModelData enemyModelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
             enemyModel = new Model(enemyModelData, new TextureProvider.FileTextureProvider());
-            for (Node node : enemyModel.nodes) node.scale.scl(0.0025f);
-            enemyModel.calculateTransforms();
-            enemyModelComponent = new ModelComponent(enemyModel, x, y, z);
 
-            Material material = enemyModelComponent.instance.materials.get(0);
+            for (Node node : enemyModel.nodes) {
+                node.scale.scl(0.0025f);
+            }
+
+            enemyModel.calculateTransforms();
+
+            ModelService modelService = new ModelService();
+            enemyModelComponent = modelService.create(enemyModel, x, y, z);
+
+            Material material = enemyModelComponent.getInstance().materials.get(0);
             BlendingAttribute blendingAttribute;
             material.set(blendingAttribute = new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA));
-            enemyModelComponent.blendingAttribute = blendingAttribute;
+            enemyModelComponent.setBlendingAttribute(blendingAttribute);
         }
 
-        ((BlendingAttribute) enemyModelComponent.instance.materials.get(0).get(BlendingAttribute.Type)).opacity = 1;
-        enemyModelComponent.instance.transform.set(enemyModelComponent.matrix4.setTranslation(x, y, z));
+        ((BlendingAttribute) enemyModelComponent.getInstance().materials.get(0).get(BlendingAttribute.Type)).opacity = 1;
+        enemyModelComponent.getInstance().transform.set(enemyModelComponent.getMatrix4().setTranslation(x, y, z));
         entity.add(enemyModelComponent);
 
         CharacterComponent characterComponent = new CharacterComponent();
         characterComponent.ghostObject = new btPairCachingGhostObject();
-        characterComponent.ghostObject.setWorldTransform(enemyModelComponent.instance.transform);
+        characterComponent.ghostObject.setWorldTransform(enemyModelComponent.getInstance().transform);
         characterComponent.ghostShape = new btCapsuleShape(2f, 2f);
         characterComponent.ghostObject.setCollisionShape(characterComponent.ghostShape);
         characterComponent.ghostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
@@ -70,7 +76,7 @@ public class EntityFactory {
         entity.add(new EnemyComponent(EnemyComponent.STATE.HUNTING));
 
         AnimationService animationService = new AnimationService();
-        AnimationComponent animationComponent = animationService.create(enemyModelComponent.instance);
+        AnimationComponent animationComponent = animationService.create(enemyModelComponent.getInstance());
         animationService.animate(
                 animationComponent,
                 com.deeep.spaceglad.databags.EnemyAnimations.id,
@@ -89,6 +95,4 @@ public class EntityFactory {
 
         return entity;
     }
-
-
 }

@@ -19,10 +19,10 @@ import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.spaceglad.WorldGDXAdapter;
 import com.deeep.spaceglad.Settings;
-import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.GunComponent;
+import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.services.AnimationService;
 
@@ -85,7 +85,7 @@ public class RenderSystem extends EntitySystem {
         for (int x = 0; x < entities.size(); x++) {
             if (entities.get(x).getComponent(PlayerComponent.class) != null || entities.get(x).getComponent(EnemyComponent.class) != null) {
                 ModelComponent mod = entities.get(x).getComponent(ModelComponent.class);
-                if (isVisible(perspectiveCamera, mod.instance)) batch.render(mod.instance);
+                if (isVisible(perspectiveCamera, mod.getInstance())) batch.render(mod.getInstance());
             }
             if (entities.get(x).getComponent(AnimationComponent.class) != null & Settings.Paused == false) {
                 animationService.update(entities.get(x).getComponent(AnimationComponent.class), delta);
@@ -100,7 +100,7 @@ public class RenderSystem extends EntitySystem {
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i).getComponent(GunComponent.class) == null) {
                 ModelComponent mod = entities.get(i).getComponent(ModelComponent.class);
-                batch.render(mod.instance, environment);
+                batch.render(mod.getInstance(), environment);
             }
         }
         batch.end();
@@ -123,7 +123,7 @@ public class RenderSystem extends EntitySystem {
     private void drawGun() {
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
         batch.begin(gunCamera);
-        batch.render(gun.getComponent(ModelComponent.class).instance);
+        batch.render(gun.getComponent(ModelComponent.class).getInstance());
         batch.end();
     }
 
