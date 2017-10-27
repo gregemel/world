@@ -53,7 +53,7 @@ public class GameWorld {
         return character;
     }
 
-    public void setCharacter(Entity character) {
+    public void setPlayer(Entity character) {
         this.character = character;
     }
 

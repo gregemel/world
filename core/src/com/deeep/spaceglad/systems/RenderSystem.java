@@ -27,9 +27,10 @@ public class RenderSystem extends EntitySystem {
     private ModelBatch batch;
     private Environment environment;
     private DirectionalShadowLight shadowLight;
-    public PerspectiveCamera perspectiveCamera, gunCamera;
     public Entity gun;
     private Vector3 position;
+
+    public PerspectiveCamera perspectiveCamera, gunCamera;
     public static ParticleSystem particleSystem;
 
     public RenderSystem() {

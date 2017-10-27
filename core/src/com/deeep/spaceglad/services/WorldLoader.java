@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.deeep.spaceglad.databags.GameWorld;
-import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.components.CharacterComponent;
 import com.deeep.spaceglad.databags.Scene;
@@ -50,7 +49,6 @@ public class WorldLoader {
         RenderSystem renderSystem = new RenderSystem();
         gameWorld.setRenderSystem(renderSystem);
         engine.addSystem(renderSystem);
-        EntityFactory.renderSystem = renderSystem;
 
         BulletSystem bulletSystem = new BulletSystem();
         gameWorld.setBulletSystem(bulletSystem);
@@ -80,11 +78,13 @@ public class WorldLoader {
     }
 
     private void createPlayer(float x, float y, float z) {
-        Entity character = EntityFactory.createPlayer(gameWorld.getBulletSystem(), x, y, z);
-        gameWorld.setCharacter(character);
-        gameWorld.getEngine().addEntity(character);
+        PlayerFactory playerFactory = new PlayerFactory();
+        Entity player = playerFactory.create(gameWorld.getBulletSystem(), x, y, z);
+        gameWorld.setPlayer(player);
+        gameWorld.getEngine().addEntity(player);
 
-        Entity gun = EntityFactory.loadGun(2.5f, -1.9f, -4);
+        PlayerItemFactory playerItemFactory = new PlayerItemFactory();
+        Entity gun = playerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4);
         gameWorld.setGun(gun);
         gameWorld.getEngine().addEntity(gun);
         gameWorld.getPlayerSystem().gun = gun;

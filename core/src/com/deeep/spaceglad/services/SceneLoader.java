@@ -43,8 +43,7 @@ public class SceneLoader {
         return entity;
     }
 
-
-    public static Entity loadGround(String name, int x, int y, int z) {
+    private static Entity loadGround(String name, int x, int y, int z) {
         Entity entity = new Entity();
 
         ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
@@ -66,6 +65,4 @@ public class SceneLoader {
 
         return entity;
     }
-
-
 }
