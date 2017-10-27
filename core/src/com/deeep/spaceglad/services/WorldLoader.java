@@ -91,38 +91,6 @@ public class WorldLoader {
         gameWorld.getRenderSystem().gun = gun;
     }
 
-    public void render(float delta) {
-        renderWorld(delta);
-        checkPause();
-    }
-
-    private void checkPause() {
-        if (Settings.Paused) {
-            gameWorld.getEngine().getSystem(PlayerSystem.class).setProcessing(false);
-            gameWorld.getEngine().getSystem(EnemySystem.class).setProcessing(false);
-            gameWorld.getEngine().getSystem(StatusSystem.class).setProcessing(false);
-            gameWorld.getEngine().getSystem(BulletSystem.class).setProcessing(false);
-        } else {
-            gameWorld.getEngine().getSystem(PlayerSystem.class).setProcessing(true);
-            gameWorld.getEngine().getSystem(EnemySystem.class).setProcessing(true);
-            gameWorld.getEngine().getSystem(StatusSystem.class).setProcessing(true);
-            gameWorld.getEngine().getSystem(BulletSystem.class).setProcessing(true);
-        }
-    }
-
-    private void renderWorld(float delta) {
-        gameWorld.getEngine().update(delta);
-        if (gameWorld.isDebug()) {
-            gameWorld.getDebugDrawer().begin(gameWorld.getRenderSystem().perspectiveCamera);
-            gameWorld.getBulletSystem().collisionWorld.debugDrawWorld();
-            gameWorld.getDebugDrawer().end();
-        }
-    }
-
-    public void resize(int width, int height) {
-        gameWorld.getRenderSystem().resize(width, height);
-    }
-
     public void dispose() {
         gameWorld.getBulletSystem().collisionWorld.removeAction(gameWorld.getCharacter().getComponent(CharacterComponent.class).characterController);
         gameWorld.getBulletSystem().collisionWorld.removeCollisionObject(gameWorld.getCharacter().getComponent(CharacterComponent.class).ghostObject);

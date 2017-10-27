@@ -7,19 +7,22 @@ import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.services.WorldLoader;
+import com.deeep.spaceglad.services.WorldRenderer;
 
 public class GameScreen implements Screen {
     private WorldGDXAdapter game;
     private GameUI gameUI;
     private GameWorld gameWorld;
 
-    private WorldLoader worldService;
+    private WorldLoader worldLoader;
+    private WorldRenderer worldRenderer;
 
     public GameScreen(WorldGDXAdapter game) {
         this.game = game;
         gameUI = new GameUI(game);
-        worldService = new WorldLoader();
-        gameWorld = worldService.create(gameUI);
+        worldLoader = new WorldLoader();
+        gameWorld = worldLoader.create(gameUI);
+        worldRenderer = new WorldRenderer();
 
         Settings.Paused = false;
         Gdx.input.setInputProcessor(gameUI.stage);
@@ -33,19 +36,19 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         gameUI.update(delta);
-        worldService.render(delta);
+        worldRenderer.render(gameWorld, delta);
         gameUI.render();
     }
 
     @Override
     public void resize(int width, int height) {
         gameUI.resize(width, height);
-        worldService.resize(width, height);
+        worldRenderer.resize(gameWorld, width, height);
     }
 
     @Override
     public void dispose() {
-        worldService.dispose();
+        worldLoader.dispose();
         gameUI.dispose();
     }
 
