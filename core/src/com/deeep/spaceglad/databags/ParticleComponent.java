@@ -1,0 +1,35 @@
+package com.deeep.spaceglad.databags;
+
+import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
+
+public class ParticleComponent extends Component {
+    private String name;
+    private ParticleEffect originalEffect;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ParticleEffect getOriginalEffect() {
+        return originalEffect;
+    }
+
+    public void setOriginalEffect(ParticleEffect originalEffect) {
+        this.originalEffect = originalEffect;
+    }
+
+    public boolean isUsed() {
+        return used;
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
+
+    private boolean used = false;
+}

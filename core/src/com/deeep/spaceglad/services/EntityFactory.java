@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
+import com.deeep.spaceglad.databags.ParticleComponent;
 import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.databags.StatusComponent;
@@ -81,7 +82,10 @@ public class EntityFactory {
         StatusService statusService = new StatusService();
         StatusComponent statusComponent = statusService.create(animationComponent);
         entity.add(statusComponent);
-        entity.add(new DieParticleComponent(gameWorld.getRenderSystem().particleSystem));
+
+        ParticleFactory particleFactory = new ParticleFactory();
+        ParticleComponent particleComponent = particleFactory.create(gameWorld.getRenderSystem().particleSystem);
+        entity.add(particleComponent);
 
         return entity;
     }
