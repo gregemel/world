@@ -6,13 +6,15 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.deeep.spaceglad.databags.GameWorld;
-import com.deeep.spaceglad.components.StatusComponent;
+import com.deeep.spaceglad.databags.StatusComponent;
+import com.deeep.spaceglad.services.StatusService;
 import com.deeep.spaceglad.services.WorldLoader;
 
 public class StatusSystem extends EntitySystem {
     private ImmutableArray<Entity> entities;
     private GameWorld gameWorld;
     private WorldLoader worldService;
+    private StatusService statusService = new StatusService();
 
     public StatusSystem(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
@@ -27,7 +29,7 @@ public class StatusSystem extends EntitySystem {
     public void update(float delta) {
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
-            entity.getComponent(StatusComponent.class).update(delta);
+            statusService.update(entity.getComponent(StatusComponent.class), delta);
             if (entity.getComponent(StatusComponent.class).aliveStateTime >= 3.4f) {
                 if(worldService == null) {
                     worldService = new WorldLoader();

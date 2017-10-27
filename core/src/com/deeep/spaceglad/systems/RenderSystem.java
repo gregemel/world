@@ -21,6 +21,7 @@ import com.deeep.spaceglad.WorldGDXAdapter;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.databags.AnimationComponent;
+import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.GunComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.services.AnimationService;

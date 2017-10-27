@@ -7,10 +7,11 @@ import com.badlogic.gdx.physics.bullet.dynamics.btConstraintSolver;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
-import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.databags.BulletComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
+import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
+import com.deeep.spaceglad.databags.StatusComponent;
 
 public class BulletSystem extends EntitySystem implements EntityListener {
     private final btCollisionConfiguration collisionConfiguration;

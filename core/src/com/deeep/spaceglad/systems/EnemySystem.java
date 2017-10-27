@@ -8,9 +8,11 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.spaceglad.databags.CharacterComponent;
+import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.components.*;
 import com.deeep.spaceglad.databags.PlayerComponent;
+import com.deeep.spaceglad.databags.StatusComponent;
 import com.deeep.spaceglad.services.EntityFactory;
 
 import java.util.Random;
