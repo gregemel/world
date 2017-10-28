@@ -12,7 +12,7 @@ public class GameWorld {
     private Entity character;
     private Entity gun;
     private Entity dome;
-    private BulletSystem bulletSystem;
+    private PhysicsSystem physicsSystem;
     private PlayerSystem playerSystem;
     private RenderSystem renderSystem;
     private Scene currentScene;
@@ -73,12 +73,12 @@ public class GameWorld {
         this.dome = dome;
     }
 
-    public BulletSystem getBulletSystem() {
-        return bulletSystem;
+    public PhysicsSystem getPhysicsSystem() {
+        return physicsSystem;
     }
 
-    public void setBulletSystem(BulletSystem bulletSystem) {
-        this.bulletSystem = bulletSystem;
+    public void setPhysicsSystem(PhysicsSystem physicsSystem) {
+        this.physicsSystem = physicsSystem;
     }
 
     public PlayerSystem getPlayerSystem() {

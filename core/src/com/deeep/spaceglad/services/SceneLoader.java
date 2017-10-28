@@ -14,8 +14,8 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.UBJsonReader;
-import com.deeep.spaceglad.bullet.MotionState;
-import com.deeep.spaceglad.databags.BulletComponent;
+import com.deeep.spaceglad.physics.MotionState;
+import com.deeep.spaceglad.databags.PhysicsComponent;
 import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.Scene;
 
@@ -56,23 +56,23 @@ public class SceneLoader {
         ModelComponent modelComponent = modelService.create(model, x, y, z);
         entity.add(modelComponent);
 
-        BulletComponent bulletComponent = new BulletComponent();
+        PhysicsComponent physicsComponent = new PhysicsComponent();
         btCollisionShape shape = Bullet.obtainStaticNodeShape(model.nodes);
 
-        bulletComponent.setBodyInfo(
+        physicsComponent.setBodyInfo(
                 new btRigidBody.btRigidBodyConstructionInfo(
                         0, null, shape, Vector3.Zero));
 
-        bulletComponent.setBody(
-                new btRigidBody(bulletComponent.getBodyInfo()));
+        physicsComponent.setBody(
+                new btRigidBody(physicsComponent.getBodyInfo()));
 
-        bulletComponent.getBody().userData = entity;
-        bulletComponent.setMotionState(
+        physicsComponent.getBody().userData = entity;
+        physicsComponent.setMotionState(
                 new MotionState(modelComponent.getInstance().transform));
 
-        ((btRigidBody) bulletComponent.getBody()).setMotionState(bulletComponent.getMotionState());
+        ((btRigidBody) physicsComponent.getBody()).setMotionState(physicsComponent.getMotionState());
 
-        entity.add(bulletComponent);
+        entity.add(physicsComponent);
 
         return entity;
     }

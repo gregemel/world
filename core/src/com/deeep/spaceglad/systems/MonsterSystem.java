@@ -19,7 +19,7 @@ import com.deeep.spaceglad.services.ModelService;
 
 import java.util.Random;
 
-public class EnemySystem extends EntitySystem implements EntityListener {
+public class MonsterSystem extends EntitySystem implements EntityListener {
     private ImmutableArray<Entity> entities;
     private Entity player;
     private Quaternion quat = new Quaternion();
@@ -38,7 +38,7 @@ public class EnemySystem extends EntitySystem implements EntityListener {
     private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
     private ComponentMapper<StatusComponent> sm = ComponentMapper.getFor(StatusComponent.class);
 
-    public EnemySystem(GameWorld gameWorld) {
+    public MonsterSystem(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
     }
 

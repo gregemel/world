@@ -8,10 +8,9 @@ import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.UI.GameUI;
-import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.Scene;
-import com.deeep.spaceglad.systems.BulletSystem;
-import com.deeep.spaceglad.systems.EnemySystem;
+import com.deeep.spaceglad.systems.PhysicsSystem;
+import com.deeep.spaceglad.systems.MonsterSystem;
 import com.deeep.spaceglad.systems.PlayerSystem;
 import com.deeep.spaceglad.systems.RenderSystem;
 import com.deeep.spaceglad.systems.StatusSystem;
@@ -50,20 +49,25 @@ public class WorldLoader {
         gameWorld.setRenderSystem(renderSystem);
         engine.addSystem(renderSystem);
 
-        BulletSystem bulletSystem = new BulletSystem();
-        gameWorld.setBulletSystem(bulletSystem);
-        engine.addSystem(bulletSystem);
+        PhysicsSystem physicsSystem = new PhysicsSystem();
+        gameWorld.setPhysicsSystem(physicsSystem);
+        engine.addSystem(physicsSystem);
 
-        PlayerSystem playerSystem = new PlayerSystem(gameWorld, gameUI, renderSystem.perspectiveCamera);
+        PlayerSystem playerSystem = new PlayerSystem(
+                gameWorld, gameUI, renderSystem.perspectiveCamera);
         gameWorld.setPlayerSystem(playerSystem);
         engine.addSystem(playerSystem);
-        engine.addSystem(new EnemySystem(gameWorld));
-        engine.addSystem(new StatusSystem(gameWorld));
+
+        MonsterSystem monsterSystem = new MonsterSystem(gameWorld);
+        engine.addSystem(monsterSystem);
+
+        StatusSystem statusSystem = new StatusSystem(gameWorld);
+        engine.addSystem(statusSystem);
 
         gameWorld.setEngine(engine);
 
         if (gameWorld.isDebug()) {
-            bulletSystem.collisionWorld.setDebugDrawer(gameWorld.getDebugDrawer());
+            physicsSystem.collisionWorld.setDebugDrawer(gameWorld.getDebugDrawer());
         }
     }
 
@@ -74,12 +78,11 @@ public class WorldLoader {
         gameWorld.getEngine().addEntity(area.getGround());
         gameWorld.getEngine().addEntity(area.getSky());
         gameWorld.getPlayerSystem().dome = area.getSky();
-        //gameWorld.setDome(area.getSky());
     }
 
     private void createPlayer(float x, float y, float z) {
         PlayerFactory playerFactory = new PlayerFactory();
-        Entity player = playerFactory.create(gameWorld.getBulletSystem(), x, y, z);
+        Entity player = playerFactory.create(gameWorld.getPhysicsSystem(), x, y, z);
         gameWorld.setPlayer(player);
         gameWorld.getEngine().addEntity(player);
 
@@ -94,6 +97,6 @@ public class WorldLoader {
 
     public static void remove(GameWorld gameWorld, Entity entity) {
         gameWorld.getEngine().removeEntity(entity);
-        gameWorld.getBulletSystem().removeBody(entity);
+        gameWorld.getPhysicsSystem().removeBody(entity);
     }
 }

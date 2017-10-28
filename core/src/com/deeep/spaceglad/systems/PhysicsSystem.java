@@ -7,13 +7,13 @@ import com.badlogic.gdx.physics.bullet.dynamics.btConstraintSolver;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
-import com.deeep.spaceglad.databags.BulletComponent;
+import com.deeep.spaceglad.databags.PhysicsComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.databags.StatusComponent;
 
-public class BulletSystem extends EntitySystem implements EntityListener {
+public class PhysicsSystem extends EntitySystem implements EntityListener {
     private final btCollisionConfiguration collisionConfiguration;
     private final btCollisionDispatcher dispatcher;
     private final btBroadphaseInterface broadphase;
@@ -46,10 +46,10 @@ public class BulletSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine(Engine engine) {
-        engine.addEntityListener(Family.all(BulletComponent.class).get(), this);
+        engine.addEntityListener(Family.all(PhysicsComponent.class).get(), this);
     }
 
-    public BulletSystem() {
+    public PhysicsSystem() {
         MyContactListener myContactListener = new MyContactListener();
         myContactListener.enable();
         collisionConfiguration = new btDefaultCollisionConfiguration();
@@ -91,15 +91,15 @@ public class BulletSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityAdded(Entity entity) {
-        BulletComponent bulletComponent = entity.getComponent(BulletComponent.class);
+        PhysicsComponent physicsComponent = entity.getComponent(PhysicsComponent.class);
 
-        if (bulletComponent.getBody() != null) {
-            collisionWorld.addRigidBody((btRigidBody) bulletComponent.getBody());
+        if (physicsComponent.getBody() != null) {
+            collisionWorld.addRigidBody((btRigidBody) physicsComponent.getBody());
         }
     }
 
     public void removeBody(Entity entity) {
-        BulletComponent comp = entity.getComponent(BulletComponent.class);
+        PhysicsComponent comp = entity.getComponent(PhysicsComponent.class);
 
         if (comp != null) {
             collisionWorld.removeCollisionObject(comp.getBody());

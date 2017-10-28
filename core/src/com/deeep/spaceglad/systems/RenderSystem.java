@@ -21,7 +21,7 @@ import com.deeep.spaceglad.WorldGDXAdapter;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.EnemyComponent;
-import com.deeep.spaceglad.databags.GunComponent;
+import com.deeep.spaceglad.databags.ItemComponent;
 import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.services.AnimationService;
@@ -113,7 +113,7 @@ public class RenderSystem extends EntitySystem {
         batch.begin(perspectiveCamera);
 
         for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i).getComponent(GunComponent.class) == null) {
+            if (entities.get(i).getComponent(ItemComponent.class) == null) {
                 ModelComponent mod = entities.get(i).getComponent(ModelComponent.class);
                 batch.render(mod.getInstance(), environment);
             }

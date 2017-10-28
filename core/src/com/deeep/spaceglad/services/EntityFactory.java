@@ -21,7 +21,7 @@ import com.deeep.spaceglad.databags.ParticleComponent;
 import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.databags.StatusComponent;
-import com.deeep.spaceglad.systems.BulletSystem;
+import com.deeep.spaceglad.systems.PhysicsSystem;
 
 public class EntityFactory {
 
@@ -30,7 +30,7 @@ public class EntityFactory {
 
     public static Entity create(String name, GameWorld gameWorld, float x, float y, float z) {
 
-        BulletSystem bulletSystem = gameWorld.getBulletSystem();
+        PhysicsSystem physicsSystem = gameWorld.getPhysicsSystem();
         Entity entity = new Entity();
         ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
 
@@ -78,10 +78,10 @@ public class EntityFactory {
         characterComponent.getGhostObject().userData = entity;
         entity.add(characterComponent);
 
-        bulletSystem.collisionWorld.addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
+        physicsSystem.collisionWorld.addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
                 (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
                 (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
-        bulletSystem.collisionWorld.addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
+        physicsSystem.collisionWorld.addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
 
         entity.add(new EnemyComponent(EnemyComponent.STATE.HUNTING));
 

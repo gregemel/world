@@ -1,4 +1,4 @@
-package com.deeep.spaceglad.bullet;
+package com.deeep.spaceglad.physics;
 
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.bullet.linearmath.btMotionState;

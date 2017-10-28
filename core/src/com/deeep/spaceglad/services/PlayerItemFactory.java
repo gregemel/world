@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
 import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.badlogic.gdx.utils.JsonReader;
 import com.deeep.spaceglad.databags.AnimationComponent;
-import com.deeep.spaceglad.databags.GunComponent;
+import com.deeep.spaceglad.databags.ItemComponent;
 import com.deeep.spaceglad.databags.ModelComponent;
 
 public class PlayerItemFactory {
-    public static Entity create(String name, float x, float y, float z) {
+    public Entity create(String name, float x, float y, float z) {
 
         ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
         ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
@@ -25,7 +25,7 @@ public class PlayerItemFactory {
 
         Entity gunEntity = new Entity();
         gunEntity.add(modelComponent);
-        gunEntity.add(new GunComponent());
+        gunEntity.add(new ItemComponent());
         AnimationService animationService = new AnimationService();
         AnimationComponent animationComponent = animationService.create(modelComponent.getInstance());
         gunEntity.add(animationComponent);

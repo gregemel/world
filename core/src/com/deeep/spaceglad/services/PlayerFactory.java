@@ -18,18 +18,18 @@ import com.badlogic.gdx.physics.bullet.dynamics.btKinematicCharacterController;
 import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
-import com.deeep.spaceglad.systems.BulletSystem;
+import com.deeep.spaceglad.systems.PhysicsSystem;
 
 public class PlayerFactory {
 
-    public Entity create(BulletSystem bulletSystem, float x, float y, float z) {
+    public Entity create(PhysicsSystem physicsSystem, float x, float y, float z) {
 
-        Entity entity = createCharacter(bulletSystem, x, y, z);
+        Entity entity = createCharacter(physicsSystem, x, y, z);
         entity.add(new PlayerComponent());
         return entity;
     }
 
-    private Entity createCharacter(BulletSystem bulletSystem, float x, float y, float z) {
+    private Entity createCharacter(PhysicsSystem physicsSystem, float x, float y, float z) {
         Entity entity = new Entity();
 
         ModelBuilder modelBuilder = new ModelBuilder();
@@ -65,11 +65,11 @@ public class PlayerFactory {
 
         entity.add(characterComponent);
 
-        bulletSystem.collisionWorld.addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
+        physicsSystem.collisionWorld.addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
                 (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
                 (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
 
-        bulletSystem.collisionWorld.addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
+        physicsSystem.collisionWorld.addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
 
         return entity;
     }
