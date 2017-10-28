@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 public class ParticleComponent extends Component {
     private String name;
     private ParticleEffect originalEffect;
+    private boolean used = false;
 
     public String getName() {
         return name;
@@ -30,6 +31,4 @@ public class ParticleComponent extends Component {
     public void setUsed(boolean used) {
         this.used = used;
     }
-
-    private boolean used = false;
 }

@@ -58,11 +58,19 @@ public class SceneLoader {
 
         BulletComponent bulletComponent = new BulletComponent();
         btCollisionShape shape = Bullet.obtainStaticNodeShape(model.nodes);
-        bulletComponent.bodyInfo = new btRigidBody.btRigidBodyConstructionInfo(0, null, shape, Vector3.Zero);
-        bulletComponent.body = new btRigidBody(bulletComponent.bodyInfo);
-        bulletComponent.body.userData = entity;
-        bulletComponent.motionState = new MotionState(modelComponent.getInstance().transform);
-        ((btRigidBody) bulletComponent.body).setMotionState(bulletComponent.motionState);
+
+        bulletComponent.setBodyInfo(
+                new btRigidBody.btRigidBodyConstructionInfo(
+                        0, null, shape, Vector3.Zero));
+
+        bulletComponent.setBody(
+                new btRigidBody(bulletComponent.getBodyInfo()));
+
+        bulletComponent.getBody().userData = entity;
+        bulletComponent.setMotionState(
+                new MotionState(modelComponent.getInstance().transform));
+
+        ((btRigidBody) bulletComponent.getBody()).setMotionState(bulletComponent.getMotionState());
 
         entity.add(bulletComponent);
 

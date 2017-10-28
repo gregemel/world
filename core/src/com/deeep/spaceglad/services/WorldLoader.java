@@ -91,18 +91,6 @@ public class WorldLoader {
         gameWorld.getRenderSystem().gun = gun;
     }
 
-    public void dispose() {
-        gameWorld.getBulletSystem().collisionWorld.removeAction(gameWorld.getCharacter().getComponent(CharacterComponent.class).characterController);
-        gameWorld.getBulletSystem().collisionWorld.removeCollisionObject(gameWorld.getCharacter().getComponent(CharacterComponent.class).ghostObject);
-        gameWorld.getBulletSystem().dispose();
-
-        gameWorld.setBulletSystem(null);
-        gameWorld.getRenderSystem().dispose();
-
-        gameWorld.getCharacter().getComponent(CharacterComponent.class).characterController.dispose();
-        gameWorld.getCharacter().getComponent(CharacterComponent.class).ghostObject.dispose();
-        gameWorld.getCharacter().getComponent(CharacterComponent.class).ghostShape.dispose();
-    }
 
     public static void remove(GameWorld gameWorld, Entity entity) {
         gameWorld.getEngine().removeEntity(entity);

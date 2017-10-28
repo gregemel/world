@@ -10,6 +10,7 @@ public class ModelComponent extends Component {
     private Model model;
     private ModelInstance instance;
     private Matrix4 matrix4;
+    private BlendingAttribute blendingAttribute;
 
     public Model getModel() {
         return model;
@@ -42,6 +43,4 @@ public class ModelComponent extends Component {
     public void setBlendingAttribute(BlendingAttribute blendingAttribute) {
         this.blendingAttribute = blendingAttribute;
     }
-
-    private BlendingAttribute blendingAttribute;
 }

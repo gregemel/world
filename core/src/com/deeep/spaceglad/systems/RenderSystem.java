@@ -26,7 +26,9 @@ import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.services.AnimationService;
 
+
 public class RenderSystem extends EntitySystem {
+
     private static final float FOV = 67F;
     private ImmutableArray<Entity> entities;
     private ModelBatch batch;
@@ -37,7 +39,8 @@ public class RenderSystem extends EntitySystem {
     private AnimationService animationService = new AnimationService();
 
 
-    public PerspectiveCamera perspectiveCamera, gunCamera;
+    public PerspectiveCamera perspectiveCamera;
+    public PerspectiveCamera gunCamera;
     public static ParticleSystem particleSystem;
 
     public RenderSystem() {
@@ -59,14 +62,14 @@ public class RenderSystem extends EntitySystem {
         position = new Vector3();
 
         particleSystem = ParticleSystem.get();
+
         BillboardParticleBatch billboardParticleBatch = new BillboardParticleBatch();
         billboardParticleBatch.setCamera(perspectiveCamera);
+
         particleSystem.add(billboardParticleBatch);
     }
 
-    // Event called when an entity is added to the engine
     public void addedToEngine(Engine e) {
-        // Grabs all entities with desired components
         entities = e.getEntitiesFor(Family.all(ModelComponent.class).get());
     }
 
@@ -80,23 +83,35 @@ public class RenderSystem extends EntitySystem {
     }
 
     private void drawShadows(float delta) {
+
         shadowLight.begin(Vector3.Zero, perspectiveCamera.direction);
+
         batch.begin(shadowLight.getCamera());
+
         for (int x = 0; x < entities.size(); x++) {
+
             if (entities.get(x).getComponent(PlayerComponent.class) != null || entities.get(x).getComponent(EnemyComponent.class) != null) {
+
                 ModelComponent mod = entities.get(x).getComponent(ModelComponent.class);
-                if (isVisible(perspectiveCamera, mod.getInstance())) batch.render(mod.getInstance());
+
+                if (isVisible(perspectiveCamera, mod.getInstance())) {
+                    batch.render(mod.getInstance());
+                }
             }
-            if (entities.get(x).getComponent(AnimationComponent.class) != null & Settings.Paused == false) {
+
+            if (entities.get(x).getComponent(AnimationComponent.class) != null & !Settings.Paused) {
                 animationService.update(entities.get(x).getComponent(AnimationComponent.class), delta);
             }
         }
+
         batch.end();
         shadowLight.end();
     }
 
     private void drawModels() {
+
         batch.begin(perspectiveCamera);
+
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i).getComponent(GunComponent.class) == null) {
                 ModelComponent mod = entities.get(i).getComponent(ModelComponent.class);
@@ -111,6 +126,7 @@ public class RenderSystem extends EntitySystem {
     }
 
     private void renderParticleEffects() {
+
         batch.begin(perspectiveCamera);
         particleSystem.update(); // technically not necessary for rendering
         particleSystem.begin();

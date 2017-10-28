@@ -6,6 +6,7 @@ import com.deeep.spaceglad.WorldGDXAdapter;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
+import com.deeep.spaceglad.services.WorldDisposer;
 import com.deeep.spaceglad.services.WorldLoader;
 import com.deeep.spaceglad.services.WorldRenderer;
 
@@ -16,6 +17,7 @@ public class GameScreen implements Screen {
 
     private WorldLoader worldLoader;
     private WorldRenderer worldRenderer;
+    private WorldDisposer worldDisposer;
 
     public GameScreen(WorldGDXAdapter game) {
         this.game = game;
@@ -48,8 +50,15 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        worldLoader.dispose();
+        getWorldDisposer().dispose(gameWorld);
         gameUI.dispose();
+    }
+
+    private WorldDisposer getWorldDisposer() {
+        if(worldDisposer == null) {
+            worldDisposer = new WorldDisposer();
+        }
+        return worldDisposer;
     }
 
     @Override

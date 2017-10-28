@@ -79,15 +79,15 @@ public class BulletSystem extends EntitySystem implements EntityListener {
     @Override
     public void entityAdded(Entity entity) {
         BulletComponent bulletComponent = entity.getComponent(BulletComponent.class);
-        if (bulletComponent.body != null) {
-            collisionWorld.addRigidBody((btRigidBody) bulletComponent.body);
+        if (bulletComponent.getBody() != null) {
+            collisionWorld.addRigidBody((btRigidBody) bulletComponent.getBody());
         }
     }
 
     public void removeBody(Entity entity) {
         BulletComponent comp = entity.getComponent(BulletComponent.class);
         if (comp != null)
-            collisionWorld.removeCollisionObject(comp.body);
+            collisionWorld.removeCollisionObject(comp.getBody());
         CharacterComponent character = entity.getComponent(CharacterComponent.class);
         if (character != null) {
             collisionWorld.removeAction(character.characterController);
