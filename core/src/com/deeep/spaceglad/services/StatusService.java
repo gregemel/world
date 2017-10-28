@@ -23,9 +23,9 @@ public class StatusService {
         statusComponent.setAlive(alive);
         AnimationService animationService = new AnimationService();
         animationService.animate(animationComponent,
-                EnemyAnimations.id,
-                EnemyAnimations.offsetDeath2,
-                EnemyAnimations.durationDeath2,
+                EnemyAnimations.getId(),
+                EnemyAnimations.getOffsetDeath2(),
+                EnemyAnimations.getDurationDeath2(),
                 1, 3);
     }
 }

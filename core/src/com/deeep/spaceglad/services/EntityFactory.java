@@ -89,9 +89,9 @@ public class EntityFactory {
         AnimationComponent animationComponent = animationService.create(enemyModelComponent.getInstance());
         animationService.animate(
                 animationComponent,
-                com.deeep.spaceglad.databags.EnemyAnimations.id,
-                com.deeep.spaceglad.databags.EnemyAnimations.offsetRun1,
-                com.deeep.spaceglad.databags.EnemyAnimations.durationRun1,
+                com.deeep.spaceglad.databags.EnemyAnimations.getId(),
+                com.deeep.spaceglad.databags.EnemyAnimations.getOffsetRun1(),
+                com.deeep.spaceglad.databags.EnemyAnimations.getDurationRun1(),
                 -1, 1);
 
         entity.add(animationComponent);
