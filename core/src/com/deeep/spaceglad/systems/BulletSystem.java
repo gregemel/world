@@ -69,16 +69,30 @@ public class BulletSystem extends EntitySystem implements EntityListener {
 
     public void dispose() {
         collisionWorld.dispose();
-        if (solver != null) solver.dispose();
-        if (broadphase != null) broadphase.dispose();
-        if (dispatcher != null) dispatcher.dispose();
-        if (collisionConfiguration != null) collisionConfiguration.dispose();
+
+        if (solver != null) {
+            solver.dispose();
+        }
+
+        if (broadphase != null) {
+            broadphase.dispose();
+        }
+
+        if (dispatcher != null) {
+            dispatcher.dispose();
+        }
+
+        if (collisionConfiguration != null) {
+            collisionConfiguration.dispose();
+        }
+
         ghostPairCallback.dispose();
     }
 
     @Override
     public void entityAdded(Entity entity) {
         BulletComponent bulletComponent = entity.getComponent(BulletComponent.class);
+
         if (bulletComponent.getBody() != null) {
             collisionWorld.addRigidBody((btRigidBody) bulletComponent.getBody());
         }
@@ -86,12 +100,16 @@ public class BulletSystem extends EntitySystem implements EntityListener {
 
     public void removeBody(Entity entity) {
         BulletComponent comp = entity.getComponent(BulletComponent.class);
-        if (comp != null)
+
+        if (comp != null) {
             collisionWorld.removeCollisionObject(comp.getBody());
+        }
+
         CharacterComponent character = entity.getComponent(CharacterComponent.class);
+
         if (character != null) {
-            collisionWorld.removeAction(character.characterController);
-            collisionWorld.removeCollisionObject(character.ghostObject);
+            collisionWorld.removeAction(character.getCharacterController());
+            collisionWorld.removeCollisionObject(character.getGhostObject());
         }
     }
 

@@ -45,19 +45,31 @@ public class PlayerFactory {
         entity.add(modelComponent);
 
         CharacterComponent characterComponent = new CharacterComponent();
-        characterComponent.ghostObject = new btPairCachingGhostObject();
-        characterComponent.ghostObject.setWorldTransform(modelComponent.getInstance().transform);
-        characterComponent.ghostShape = new btCapsuleShape(2f, 2f);
-        characterComponent.ghostObject.setCollisionShape(characterComponent.ghostShape);
-        characterComponent.ghostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
-        characterComponent.characterController = new btKinematicCharacterController(characterComponent.ghostObject, characterComponent.ghostShape, .35f);
-        characterComponent.ghostObject.userData = entity;
+        characterComponent.setGhostObject(
+                new btPairCachingGhostObject());
+
+        characterComponent.getGhostObject().setWorldTransform(modelComponent.getInstance().transform);
+        characterComponent.setGhostShape(
+                new btCapsuleShape(2f, 2f));
+
+        characterComponent.getGhostObject().setCollisionShape(characterComponent.getGhostShape());
+        characterComponent.getGhostObject().setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
+
+        characterComponent.setCharacterController(
+                new btKinematicCharacterController(
+                        characterComponent.getGhostObject(),
+                        characterComponent.getGhostShape(),
+                        .35f));
+
+        characterComponent.getGhostObject().userData = entity;
+
         entity.add(characterComponent);
 
-        bulletSystem.collisionWorld.addCollisionObject(entity.getComponent(CharacterComponent.class).ghostObject,
+        bulletSystem.collisionWorld.addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
                 (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
                 (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
-        bulletSystem.collisionWorld.addAction(entity.getComponent(CharacterComponent.class).characterController);
+
+        bulletSystem.collisionWorld.addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
 
         return entity;
     }

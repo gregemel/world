@@ -80,7 +80,9 @@ public class EnemySystem extends EntitySystem implements EntityListener {
                 RenderSystem.particleSystem.add(effect);
             }
 
-            if (!sm.get(entity).alive) return;
+            if (!sm.get(entity).alive) {
+                return;
+            }
 
             playerModel.getInstance().transform.getTranslation(playerPosition);
             modelComponent.getInstance().transform.getTranslation(enemyPosition);
@@ -93,15 +95,15 @@ public class EnemySystem extends EntitySystem implements EntityListener {
             //Calculate the transforms
             Quaternion rot = quat.setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
 
-            cm.get(entity).characterDirection.set(-1, 0, 0).rot(modelComponent.getInstance().transform);
-            cm.get(entity).walkDirection.set(0, 0, 0);
-            cm.get(entity).walkDirection.add(cm.get(entity).characterDirection);
-            cm.get(entity).walkDirection.scl(10f * delta);   //TODO make this change on difficulty
-            cm.get(entity).characterController.setWalkDirection(cm.get(entity).walkDirection);
+            cm.get(entity).getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform);
+            cm.get(entity).getWalkDirection().set(0, 0, 0);
+            cm.get(entity).getWalkDirection().add(cm.get(entity).getCharacterDirection());
+            cm.get(entity).getWalkDirection().scl(10f * delta);   //TODO make this change on difficulty
+            cm.get(entity).getCharacterController().setWalkDirection(cm.get(entity).getWalkDirection());
 
             ghost.set(0, 0, 0, 0);
             translation.set(0, 0, 0);
-            cm.get(entity).ghostObject.getWorldTransform(ghost);
+            cm.get(entity).getGhostObject().getWorldTransform(ghost);
             ghost.getTranslation(translation);
 
             modelComponent.getInstance().transform.set(translation.x, translation.y, translation.z, rot.x, rot.y, rot.z, rot.w);
