@@ -43,32 +43,58 @@ public class WorldLoader {
     }
 
     private void addSystems() {
-        Engine engine = new Engine();
+        Engine engine = createEntitySystem();
 
+        RenderSystem renderSystem = createRenderSystem(engine);
+
+        createPhysicsSystem(engine);
+
+        createPlayerSystem(engine, renderSystem);
+
+        createMonsterSystem(engine);
+
+        createStatusSystem(engine);
+
+        gameWorld.setEngine(engine);
+    }
+
+    private Engine createEntitySystem() {
+        return new Engine();
+    }
+
+    private RenderSystem createRenderSystem(Engine engine) {
         RenderSystem renderSystem = new RenderSystem();
         gameWorld.setRenderSystem(renderSystem);
         engine.addSystem(renderSystem);
+        return renderSystem;
+    }
 
+    private PhysicsSystem createPhysicsSystem(Engine engine) {
         PhysicsSystem physicsSystem = new PhysicsSystem();
         gameWorld.setPhysicsSystem(physicsSystem);
         engine.addSystem(physicsSystem);
+        if (gameWorld.isDebug()) {
+            physicsSystem.collisionWorld.setDebugDrawer(gameWorld.getDebugDrawer());
+        }
+        return physicsSystem;
+    }
 
+    private void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
         PlayerSystem playerSystem = new PlayerSystem(
                 gameWorld, gameUI, renderSystem.perspectiveCamera);
         gameWorld.setPlayerSystem(playerSystem);
         engine.addSystem(playerSystem);
+    }
 
-        MonsterSystem monsterSystem = new MonsterSystem(gameWorld);
-        engine.addSystem(monsterSystem);
-
+    private void createStatusSystem(Engine engine) {
         StatusSystem statusSystem = new StatusSystem(gameWorld);
         engine.addSystem(statusSystem);
+    }
 
-        gameWorld.setEngine(engine);
-
-        if (gameWorld.isDebug()) {
-            physicsSystem.collisionWorld.setDebugDrawer(gameWorld.getDebugDrawer());
-        }
+    private void createMonsterSystem(Engine engine) {
+        MonsterSystemFactory monsterSystemFactory = new MonsterSystemFactory();
+        MonsterSystem monsterSystem = monsterSystemFactory.create(gameWorld);
+        engine.addSystem(monsterSystem);
     }
 
 
@@ -95,7 +121,7 @@ public class WorldLoader {
     }
 
 
-    public static void remove(GameWorld gameWorld, Entity entity) {
+    public void remove(GameWorld gameWorld, Entity entity) {
         gameWorld.getEngine().removeEntity(entity);
         gameWorld.getPhysicsSystem().removeBody(entity);
     }
