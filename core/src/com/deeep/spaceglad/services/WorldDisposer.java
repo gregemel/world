@@ -5,10 +5,10 @@ import com.deeep.spaceglad.databags.GameWorld;
 
 public class WorldDisposer {
     public void dispose(GameWorld gameWorld) {
-        gameWorld.getPhysicsSystem().collisionWorld.removeAction(
+        gameWorld.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().removeAction(
                 gameWorld.getCharacter().getComponent(CharacterComponent.class).getCharacterController());
 
-        gameWorld.getPhysicsSystem().collisionWorld.removeCollisionObject(
+        gameWorld.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().removeCollisionObject(
                 gameWorld.getCharacter().getComponent(CharacterComponent.class).getGhostObject());
 
         gameWorld.getPhysicsSystem().dispose();

@@ -1,47 +1,25 @@
 package com.deeep.spaceglad.systems;
 
-import com.badlogic.ashley.core.*;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.bullet.collision.*;
-import com.badlogic.gdx.physics.bullet.dynamics.btConstraintSolver;
-import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntityListener;
+import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
-import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
-import com.deeep.spaceglad.databags.PhysicsComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
-import com.deeep.spaceglad.databags.EnemyComponent;
-import com.deeep.spaceglad.databags.PlayerComponent;
-import com.deeep.spaceglad.databags.StatusComponent;
+import com.deeep.spaceglad.databags.PhysicsComponent;
+import com.deeep.spaceglad.databags.PhysicsSystemState;
 
 public class PhysicsSystem extends EntitySystem implements EntityListener {
-    private final btCollisionConfiguration collisionConfiguration;
-    private final btCollisionDispatcher dispatcher;
-    private final btBroadphaseInterface broadphase;
-    private final btConstraintSolver solver;
-    public final btDiscreteDynamicsWorld collisionWorld;
-    private btGhostPairCallback ghostPairCallback;
-    public int maxSubSteps = 5;
-    public float fixedTimeStep = 1f / 60f;
 
-    private class MyContactListener extends ContactListener {
-        @Override
-        public void onContactStarted(btCollisionObject colObj0, btCollisionObject colObj1) {
-            if (colObj0.userData instanceof Entity && colObj0.userData instanceof Entity) {
-                Entity entity0 = (Entity) colObj0.userData;
-                Entity entity1 = (Entity) colObj1.userData;
-                if (entity0.getComponent(CharacterComponent.class) != null && entity1.getComponent(CharacterComponent.class) != null) {
-                    if (entity0.getComponent(EnemyComponent.class) != null) {
-                        if (entity0.getComponent(StatusComponent.class).alive)
-                            entity1.getComponent(PlayerComponent.class).health -= 10;
-                        entity0.getComponent(StatusComponent.class).alive = false;
-                    } else {
-                        if (entity1.getComponent(StatusComponent.class).alive)
-                            entity0.getComponent(PlayerComponent.class).health -= 10;
-                        entity1.getComponent(StatusComponent.class).alive = false;
-                    }
-                }
-            }
-        }
+    private PhysicsSystemState physicsSystemState;
+
+    public PhysicsSystemState getPhysicsSystemState() {
+        return physicsSystemState;
+    }
+
+    public void setPhysicsSystemState(PhysicsSystemState physicsSystemState) {
+        this.physicsSystemState = physicsSystemState;
     }
 
     @Override
@@ -49,44 +27,31 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
         engine.addEntityListener(Family.all(PhysicsComponent.class).get(), this);
     }
 
-    public PhysicsSystem() {
-        MyContactListener myContactListener = new MyContactListener();
-        myContactListener.enable();
-        collisionConfiguration = new btDefaultCollisionConfiguration();
-        dispatcher = new btCollisionDispatcher(collisionConfiguration);
-        broadphase = new btAxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
-        solver = new btSequentialImpulseConstraintSolver();
-        collisionWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
-        ghostPairCallback = new btGhostPairCallback();
-        broadphase.getOverlappingPairCache().setInternalGhostPairCallback(ghostPairCallback);
-        this.collisionWorld.setGravity(new Vector3(0, -0.5f, 0));
-    }
-
     @Override
     public void update(float deltaTime) {
-        collisionWorld.stepSimulation(deltaTime);
+        physicsSystemState.getCollisionWorld().stepSimulation(deltaTime);
     }
 
     public void dispose() {
-        collisionWorld.dispose();
+        physicsSystemState.getCollisionWorld().dispose();
 
-        if (solver != null) {
-            solver.dispose();
+        if (physicsSystemState.getSolver() != null) {
+            physicsSystemState.getSolver().dispose();
         }
 
-        if (broadphase != null) {
-            broadphase.dispose();
+        if (physicsSystemState.getBroadphase() != null) {
+            physicsSystemState.getBroadphase().dispose();
         }
 
-        if (dispatcher != null) {
-            dispatcher.dispose();
+        if (physicsSystemState.getDispatcher() != null) {
+            physicsSystemState.getDispatcher().dispose();
         }
 
-        if (collisionConfiguration != null) {
-            collisionConfiguration.dispose();
+        if (physicsSystemState.getCollisionConfiguration() != null) {
+            physicsSystemState.getCollisionConfiguration().dispose();
         }
 
-        ghostPairCallback.dispose();
+        physicsSystemState.getGhostPairCallback().dispose();
     }
 
     @Override
@@ -94,7 +59,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
         PhysicsComponent physicsComponent = entity.getComponent(PhysicsComponent.class);
 
         if (physicsComponent.getBody() != null) {
-            collisionWorld.addRigidBody((btRigidBody) physicsComponent.getBody());
+            physicsSystemState.getCollisionWorld().addRigidBody((btRigidBody)physicsComponent.getBody());
         }
     }
 
@@ -102,18 +67,19 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
         PhysicsComponent comp = entity.getComponent(PhysicsComponent.class);
 
         if (comp != null) {
-            collisionWorld.removeCollisionObject(comp.getBody());
+            physicsSystemState.getCollisionWorld().removeCollisionObject(comp.getBody());
         }
 
         CharacterComponent character = entity.getComponent(CharacterComponent.class);
 
         if (character != null) {
-            collisionWorld.removeAction(character.getCharacterController());
-            collisionWorld.removeCollisionObject(character.getGhostObject());
+            physicsSystemState.getCollisionWorld().removeAction(character.getCharacterController());
+            physicsSystemState.getCollisionWorld().removeCollisionObject(character.getGhostObject());
         }
     }
 
     @Override
     public void entityRemoved(Entity entity) {
     }
+
 }

@@ -65,11 +65,11 @@ public class PlayerFactory {
 
         entity.add(characterComponent);
 
-        physicsSystem.collisionWorld.addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
+        physicsSystem.getPhysicsSystemState().getCollisionWorld().addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
                 (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
                 (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
 
-        physicsSystem.collisionWorld.addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
+        physicsSystem.getPhysicsSystemState().getCollisionWorld().addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
 
         return entity;
     }

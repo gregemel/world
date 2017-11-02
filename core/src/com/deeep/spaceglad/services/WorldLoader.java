@@ -70,11 +70,12 @@ public class WorldLoader {
     }
 
     private PhysicsSystem createPhysicsSystem(Engine engine) {
-        PhysicsSystem physicsSystem = new PhysicsSystem();
+        PhysicsSystemFactory physicsSystemFactory = new PhysicsSystemFactory();
+        PhysicsSystem physicsSystem = physicsSystemFactory.create();
         gameWorld.setPhysicsSystem(physicsSystem);
         engine.addSystem(physicsSystem);
         if (gameWorld.isDebug()) {
-            physicsSystem.collisionWorld.setDebugDrawer(gameWorld.getDebugDrawer());
+            physicsSystem.getPhysicsSystemState().getCollisionWorld().setDebugDrawer(gameWorld.getDebugDrawer());
         }
         return physicsSystem;
     }

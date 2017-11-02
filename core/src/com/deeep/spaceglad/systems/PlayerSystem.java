@@ -1,6 +1,10 @@
 package com.deeep.spaceglad.systems;
 
-import com.badlogic.ashley.core.*;
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntityListener;
+import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,27 +15,27 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
+import com.deeep.spaceglad.Settings;
+import com.deeep.spaceglad.UI.ControllerWidget;
+import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.EnemyComponent;
 import com.deeep.spaceglad.databags.GameWorld;
-import com.deeep.spaceglad.Settings;
-import com.deeep.spaceglad.UI.GameUI;
-import com.deeep.spaceglad.UI.ControllerWidget;
 import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.databags.StatusComponent;
 import com.deeep.spaceglad.services.AnimationService;
 
 public class PlayerSystem extends EntitySystem implements EntityListener, InputProcessor {
+    private final Vector3 tmp = new Vector3();
+    private final Camera camera;
     public Entity gun, dome;
     private Entity player;
     private PlayerComponent playerComponent;
     private CharacterComponent characterComponent;
     private ModelComponent modelComponent;
     private GameUI gameUI;
-    private final Vector3 tmp = new Vector3();
-    private final Camera camera;
     private GameWorld gameWorld;
     private Vector3 rayFrom = new Vector3();
     private Vector3 rayTo = new Vector3();
@@ -135,7 +139,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         rayTestCB.setRayFromWorld(rayFrom);
         rayTestCB.setRayToWorld(rayTo);
 
-        gameWorld.getPhysicsSystem().collisionWorld.rayTest(rayFrom, rayTo, rayTestCB);
+        gameWorld.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().rayTest(rayFrom, rayTo, rayTestCB);
 
         if (rayTestCB.hasHit()) {
             final btCollisionObject obj = rayTestCB.getCollisionObject();
