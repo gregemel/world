@@ -9,7 +9,7 @@ import com.deeep.spaceglad.screens.MainMenuScreen;
 public class WorldGDXAdapter extends ApplicationAdapter {
     public static final float VIRTUAL_WIDTH = 960;
     public static final float VIRTUAL_HEIGHT = 540;
-    Screen screen;
+    private Screen screen;
 
     @Override
     public void create() {

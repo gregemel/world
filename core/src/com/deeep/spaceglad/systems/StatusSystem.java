@@ -5,36 +5,34 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.databags.StatusComponent;
-import com.deeep.spaceglad.services.StatusService;
-import com.deeep.spaceglad.services.WorldLoader;
+import com.deeep.spaceglad.databags.StatusSystemState;
 
 public class StatusSystem extends EntitySystem {
-    private ImmutableArray<Entity> entities;
-    private GameWorld gameWorld;
-    private WorldLoader worldService;
-    private StatusService statusService = new StatusService();
 
-    public StatusSystem(GameWorld gameWorld) {
-        this.gameWorld = gameWorld;
+    private StatusSystemState statusSystemState;
+
+    public StatusSystemState getStatusSystemState() {
+        return statusSystemState;
+    }
+
+    public void setStatusSystemState(StatusSystemState statusSystemState) {
+        this.statusSystemState = statusSystemState;
     }
 
     @Override
     public void addedToEngine(Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(StatusComponent.class).get());
+        statusSystemState.setEntities(engine.getEntitiesFor(Family.all(StatusComponent.class).get()));
     }
 
     @Override
     public void update(float delta) {
+        ImmutableArray<Entity> entities = statusSystemState.getEntities();
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
-            statusService.update(entity.getComponent(StatusComponent.class), delta);
+            statusSystemState.getStatusService().update(entity.getComponent(StatusComponent.class), delta);
             if (entity.getComponent(StatusComponent.class).aliveStateTime >= 3.4f) {
-                if(worldService == null) {
-                    worldService = new WorldLoader();
-                }
-                worldService.remove(gameWorld, entity);
+                statusSystemState.getWorldService().remove(statusSystemState.getGameWorld(), entity);
             }
         }
     }

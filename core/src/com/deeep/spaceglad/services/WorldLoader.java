@@ -3,12 +3,14 @@ package com.deeep.spaceglad.services;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.databags.Scene;
+import com.deeep.spaceglad.databags.StatusSystemState;
 import com.deeep.spaceglad.systems.PhysicsSystem;
 import com.deeep.spaceglad.systems.MonsterSystem;
 import com.deeep.spaceglad.systems.PlayerSystem;
@@ -89,7 +91,14 @@ public class WorldLoader {
     }
 
     private void createStatusSystem(Engine engine) {
-        StatusSystem statusSystem = new StatusSystem(gameWorld);
+        StatusSystem statusSystem = new StatusSystem();
+        StatusSystemState statusSystemState = new StatusSystemState();
+
+        statusSystemState.setGameWorld(gameWorld);
+        statusSystemState.setStatusService(new StatusService());
+        statusSystem.setStatusSystemState(statusSystemState);
+        statusSystemState.setWorldService(this);
+
         engine.addSystem(statusSystem);
     }
 
