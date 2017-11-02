@@ -34,7 +34,7 @@ public class WorldRenderer {
     private void renderWorld(GameWorld gameWorld, float delta) {
         gameWorld.getEngine().update(delta);
         if (gameWorld.isDebug()) {
-            gameWorld.getDebugDrawer().begin(gameWorld.getRenderSystem().perspectiveCamera);
+            gameWorld.getDebugDrawer().begin(gameWorld.getRenderSystem().getRenderSystemState().getPerspectiveCamera());
             gameWorld.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().debugDrawWorld();
             gameWorld.getDebugDrawer().end();
         }

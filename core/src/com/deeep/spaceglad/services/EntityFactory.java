@@ -100,7 +100,7 @@ public class EntityFactory {
         entity.add(statusComponent);
 
         ParticleFactory particleFactory = new ParticleFactory();
-        ParticleComponent particleComponent = particleFactory.create(gameWorld.getRenderSystem().particleSystem);
+        ParticleComponent particleComponent = particleFactory.create(gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem());
         entity.add(particleComponent);
 
         return entity;

@@ -63,7 +63,8 @@ public class WorldLoader {
     }
 
     private RenderSystem createRenderSystem(Engine engine) {
-        RenderSystem renderSystem = new RenderSystem();
+        RenderSystemFactory renderSystemFactory = new RenderSystemFactory();
+        RenderSystem renderSystem = renderSystemFactory.create();
         gameWorld.setRenderSystem(renderSystem);
         engine.addSystem(renderSystem);
         return renderSystem;
@@ -82,7 +83,7 @@ public class WorldLoader {
     private void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
         PlayerSystemFactory playerSystemFactory = new PlayerSystemFactory();
         PlayerSystem playerSystem = playerSystemFactory.create(
-                gameWorld, gameUI, renderSystem.perspectiveCamera);
+                gameWorld, gameUI, renderSystem.getRenderSystemState().getPerspectiveCamera());
         gameWorld.setPlayerSystem(playerSystem);
         engine.addSystem(playerSystem);
     }
@@ -118,7 +119,7 @@ public class WorldLoader {
         gameWorld.setGun(gun);
         gameWorld.getEngine().addEntity(gun);
         gameWorld.getPlayerSystem().getPlayerSystemState().setGun(gun);
-        gameWorld.getRenderSystem().gun = gun;
+        gameWorld.getRenderSystem().getRenderSystemState().setGun(gun);
     }
 
 

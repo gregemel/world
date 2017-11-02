@@ -63,7 +63,7 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
                 effect.scale(3.25f, 1, 1.5f);
                 effect.init();
                 effect.start();
-                RenderSystem.particleSystem.add(effect);
+                monsterSystemState.getGameWorld().getRenderSystem().getRenderSystemState().getParticleSystem().add(effect);
             }
 
             if (!monsterSystemState.getSm().get(entity).alive) {
