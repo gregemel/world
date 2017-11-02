@@ -69,7 +69,7 @@ public class WorldLoader {
         return renderSystem;
     }
 
-    private PhysicsSystem createPhysicsSystem(Engine engine) {
+    private void createPhysicsSystem(Engine engine) {
         PhysicsSystemFactory physicsSystemFactory = new PhysicsSystemFactory();
         PhysicsSystem physicsSystem = physicsSystemFactory.create();
         gameWorld.setPhysicsSystem(physicsSystem);
@@ -77,11 +77,11 @@ public class WorldLoader {
         if (gameWorld.isDebug()) {
             physicsSystem.getPhysicsSystemState().getCollisionWorld().setDebugDrawer(gameWorld.getDebugDrawer());
         }
-        return physicsSystem;
     }
 
     private void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
-        PlayerSystem playerSystem = new PlayerSystem(
+        PlayerSystemFactory playerSystemFactory = new PlayerSystemFactory();
+        PlayerSystem playerSystem = playerSystemFactory.create(
                 gameWorld, gameUI, renderSystem.perspectiveCamera);
         gameWorld.setPlayerSystem(playerSystem);
         engine.addSystem(playerSystem);
@@ -104,7 +104,7 @@ public class WorldLoader {
         gameWorld.setCurrentScene(area);
         gameWorld.getEngine().addEntity(area.getGround());
         gameWorld.getEngine().addEntity(area.getSky());
-        gameWorld.getPlayerSystem().dome = area.getSky();
+        gameWorld.getPlayerSystem().getPlayerSystemState().setDome(area.getSky());
     }
 
     private void createPlayer(float x, float y, float z) {
@@ -117,7 +117,7 @@ public class WorldLoader {
         Entity gun = playerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4);
         gameWorld.setGun(gun);
         gameWorld.getEngine().addEntity(gun);
-        gameWorld.getPlayerSystem().gun = gun;
+        gameWorld.getPlayerSystem().getPlayerSystemState().setGun(gun);
         gameWorld.getRenderSystem().gun = gun;
     }
 

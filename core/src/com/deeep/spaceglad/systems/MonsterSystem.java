@@ -19,7 +19,7 @@ import com.deeep.spaceglad.services.EntityFactory;
 
 public class MonsterSystem extends EntitySystem implements EntityListener {
 
-    MonsterSystemState monsterSystemState;
+    private MonsterSystemState monsterSystemState;
 
     public void setMonsterSystemState(MonsterSystemState monsterSystemState) {
         this.monsterSystemState = monsterSystemState;

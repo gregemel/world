@@ -21,34 +21,21 @@ import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.EnemyComponent;
-import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
+import com.deeep.spaceglad.databags.PlayerSystemState;
 import com.deeep.spaceglad.databags.StatusComponent;
-import com.deeep.spaceglad.services.AnimationService;
 
 public class PlayerSystem extends EntitySystem implements EntityListener, InputProcessor {
-    private final Vector3 tmp = new Vector3();
-    private final Camera camera;
-    public Entity gun, dome;
-    private Entity player;
-    private PlayerComponent playerComponent;
-    private CharacterComponent characterComponent;
-    private ModelComponent modelComponent;
-    private GameUI gameUI;
-    private GameWorld gameWorld;
-    private Vector3 rayFrom = new Vector3();
-    private Vector3 rayTo = new Vector3();
-    private ClosestRayResultCallback rayTestCB;
-    private Vector3 translation = new Vector3();
-    private Matrix4 ghost = new Matrix4();
-    private AnimationService animationService = new AnimationService();
 
-    public PlayerSystem(GameWorld gameWorld, GameUI gameUI, Camera camera) {
-        this.camera = camera;
-        this.gameWorld = gameWorld;
-        this.gameUI = gameUI;
-        rayTestCB = new ClosestRayResultCallback(Vector3.Zero, Vector3.Z);
+    private PlayerSystemState playerSystemState;
+
+    public PlayerSystemState getPlayerSystemState() {
+        return playerSystemState;
+    }
+
+    public void setPlayerSystemState(PlayerSystemState playerSystemState) {
+        this.playerSystemState = playerSystemState;
     }
 
     @Override
@@ -58,7 +45,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
     @Override
     public void update(float delta) {
-        if (player == null) return;
+        if (getPlayerSystemState().getPlayer() == null) return;
         updateMovement(delta);
         updateStatus();
         checkGameOver();
@@ -76,11 +63,16 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
             deltaY = -Gdx.input.getDeltaY() * 0.5f;
         }
 
+        Vector3 tmp = getPlayerSystemState().getTmp();
         tmp.set(0, 0, 0);
+        Camera camera = getPlayerSystemState().getCamera();
         camera.rotate(camera.up, deltaX);
         tmp.set(camera.direction).crs(camera.up).nor();
         camera.direction.rotate(tmp, deltaY);
         tmp.set(0, 0, 0);
+
+        CharacterComponent characterComponent = getPlayerSystemState().getCharacterComponent();
+        ModelComponent modelComponent = getPlayerSystemState().getModelComponent();
 
         characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
         characterComponent.getWalkDirection().set(0, 0, 0);
@@ -103,6 +95,9 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
             characterComponent.getCharacterController().setWalkDirection(characterComponent.getWalkDirection());
         }
 
+        Matrix4 ghost = getPlayerSystemState().getGhost();
+        Vector3 translation = getPlayerSystemState().getTranslation();
+
         ghost.set(0, 0, 0, 0);
         translation.set(0, 0, 0);
         translation = new Vector3();
@@ -112,7 +107,8 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         camera.position.set(translation.x, translation.y, translation.z);
         camera.update(true);
 
-        dome.getComponent(ModelComponent.class).getInstance().transform.setToTranslation(translation.x, translation.y, translation.z);
+        playerSystemState.getDome().getComponent(ModelComponent.class).getInstance()
+                .transform.setToTranslation(translation.x, translation.y, translation.z);
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             // TODO change this back to 25
@@ -126,12 +122,18 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     }
 
     private void updateStatus() {
+        GameUI gameUI = playerSystemState.getGameUI();
+        PlayerComponent playerComponent = playerSystemState.getPlayerComponent();
         gameUI.healthWidget.setValue(playerComponent.health);
     }
 
 
     private void fire() {
-        Ray ray = camera.getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        Ray ray = playerSystemState.getCamera().getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        Vector3 rayFrom = playerSystemState.getRayFrom();
+        Vector3 rayTo = playerSystemState.getRayTo();
+        ClosestRayResultCallback rayTestCB = playerSystemState.getRayTestCB();
+
         rayFrom.set(ray.origin);
         rayTo.set(ray.direction).scl(50f).add(rayFrom);
         rayTestCB.setCollisionObject(null);
@@ -139,7 +141,8 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         rayTestCB.setRayFromWorld(rayFrom);
         rayTestCB.setRayToWorld(rayTo);
 
-        gameWorld.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().rayTest(rayFrom, rayTo, rayTestCB);
+        playerSystemState.getGameWorld().getPhysicsSystem().getPhysicsSystemState()
+                .getCollisionWorld().rayTest(rayFrom, rayTo, rayTestCB);
 
         if (rayTestCB.hasHit()) {
             final btCollisionObject obj = rayTestCB.getCollisionObject();
@@ -151,25 +154,24 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
             }
         }
 
-        animationService.animate(
-            gun.getComponent(AnimationComponent.class), "Armature|shoot", 1, 3);
+        playerSystemState.getAnimationService().animate(
+                playerSystemState.getGun().getComponent(AnimationComponent.class), "Armature|shoot", 1, 3);
 
     }
 
     private void checkGameOver() {
-        if (playerComponent.health <= 0 && !Settings.Paused) {
+        if (playerSystemState.getPlayerComponent().health <= 0 && !Settings.Paused) {
             Settings.Paused = true;
-            gameUI.gameOverWidget.gameOver();
+            playerSystemState.getGameUI().gameOverWidget.gameOver();
         }
     }
 
     @Override
     public void entityAdded(Entity entity) {
-        player = entity;
-        playerComponent = entity.getComponent(PlayerComponent.class);
-        characterComponent = entity.getComponent(CharacterComponent.class);
-        modelComponent = entity.getComponent(ModelComponent.class);
-        //
+        playerSystemState.setPlayer(entity);
+        playerSystemState.setPlayerComponent(entity.getComponent(PlayerComponent.class));
+        playerSystemState.setCharacterComponent(entity.getComponent(CharacterComponent.class));
+        playerSystemState.setModelComponent(entity.getComponent(ModelComponent.class));
     }
 
     @Override
