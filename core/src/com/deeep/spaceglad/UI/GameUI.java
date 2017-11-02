@@ -6,14 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.deeep.spaceglad.Assets;
-import com.deeep.spaceglad.Core;
-import com.deeep.spaceglad.managers.ControllerWidget;
+import com.deeep.spaceglad.WorldGDXAdapter;
 
-/**
- * Created by scanevaro on 31/07/2015.
- */
 public class GameUI {
-    private Core game;
+    private WorldGDXAdapter game;
     public Stage stage;
     public HealthWidget healthWidget;
     private ScoreWidget scoreWidget;
@@ -23,14 +19,14 @@ public class GameUI {
     private Label fpsLabel;
     private ControllerWidget controllerWidget;
 
-    public GameUI(Core game) {
+    public GameUI(WorldGDXAdapter game) {
         this.game = game;
-        stage = new Stage(new FitViewport(Core.VIRTUAL_WIDTH, Core.VIRTUAL_HEIGHT));
+        stage = new Stage(new FitViewport(WorldGDXAdapter.VIRTUAL_WIDTH, WorldGDXAdapter.VIRTUAL_HEIGHT));
         setWidgets();
         configureWidgets();
     }
 
-    public void setWidgets() {
+    private void setWidgets() {
         healthWidget = new HealthWidget();
         scoreWidget = new ScoreWidget();
         pauseWidget = new PauseWidget(game, stage);
@@ -40,16 +36,16 @@ public class GameUI {
         if (Gdx.app.getType() == Application.ApplicationType.Android) controllerWidget = new ControllerWidget();
     }
 
-    public void configureWidgets() {
+    private void configureWidgets() {
         healthWidget.setSize(140, 25);
-        healthWidget.setPosition(Core.VIRTUAL_WIDTH / 2 - healthWidget.getWidth() / 2, 0);
+        healthWidget.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH / 2 - healthWidget.getWidth() / 2, 0);
         scoreWidget.setSize(140, 25);
-        scoreWidget.setPosition(0, Core.VIRTUAL_HEIGHT - scoreWidget.getHeight());
+        scoreWidget.setPosition(0, WorldGDXAdapter.VIRTUAL_HEIGHT - scoreWidget.getHeight());
         pauseWidget.setSize(64, 64);
-        pauseWidget.setPosition(Core.VIRTUAL_WIDTH - pauseWidget.getWidth(), Core.VIRTUAL_HEIGHT - pauseWidget.getHeight());
+        pauseWidget.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH - pauseWidget.getWidth(), WorldGDXAdapter.VIRTUAL_HEIGHT - pauseWidget.getHeight());
         gameOverWidget.setSize(280, 100);
-        gameOverWidget.setPosition(Core.VIRTUAL_WIDTH / 2 - 280 / 2, Core.VIRTUAL_HEIGHT / 2);
-        crosshairWidget.setPosition(Core.VIRTUAL_WIDTH / 2 - 16, Core.VIRTUAL_HEIGHT / 2 - 16);
+        gameOverWidget.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH / 2 - 280 / 2, WorldGDXAdapter.VIRTUAL_HEIGHT / 2);
+        crosshairWidget.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH / 2 - 16, WorldGDXAdapter.VIRTUAL_HEIGHT / 2 - 16);
         crosshairWidget.setSize(32, 32);
 
         fpsLabel.setPosition(0, 10);

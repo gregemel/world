@@ -2,23 +2,30 @@ package com.deeep.spaceglad.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.deeep.spaceglad.Core;
-import com.deeep.spaceglad.GameWorld;
+import com.deeep.spaceglad.WorldGDXAdapter;
+import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
+import com.deeep.spaceglad.services.WorldDisposer;
+import com.deeep.spaceglad.services.WorldLoader;
+import com.deeep.spaceglad.services.WorldRenderer;
 
-/**
- * Created by scanevaro on 31/07/2015.
- */
 public class GameScreen implements Screen {
-    Core game;
-    GameUI gameUI;
-    GameWorld gameWorld;
+    private WorldGDXAdapter game;
+    private GameUI gameUI;
+    private GameWorld gameWorld;
 
-    public GameScreen(Core game) {
+    private WorldLoader worldLoader;
+    private WorldRenderer worldRenderer;
+    private WorldDisposer worldDisposer;
+
+    public GameScreen(WorldGDXAdapter game) {
         this.game = game;
         gameUI = new GameUI(game);
-        gameWorld = new GameWorld(gameUI);
+        worldLoader = new WorldLoader();
+        gameWorld = worldLoader.create(gameUI);
+        worldRenderer = new WorldRenderer();
+
         Settings.Paused = false;
         Gdx.input.setInputProcessor(gameUI.stage);
         Gdx.input.setCursorCatched(true);
@@ -30,23 +37,28 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        /** Updates */
         gameUI.update(delta);
-        /** Draw */
-        gameWorld.render(delta);
+        worldRenderer.render(gameWorld, delta);
         gameUI.render();
     }
 
     @Override
     public void resize(int width, int height) {
         gameUI.resize(width, height);
-        gameWorld.resize(width, height);
+        worldRenderer.resize(gameWorld, width, height);
     }
 
     @Override
     public void dispose() {
-        gameWorld.dispose();
+        getWorldDisposer().dispose(gameWorld);
         gameUI.dispose();
+    }
+
+    private WorldDisposer getWorldDisposer() {
+        if(worldDisposer == null) {
+            worldDisposer = new WorldDisposer();
+        }
+        return worldDisposer;
     }
 
     @Override

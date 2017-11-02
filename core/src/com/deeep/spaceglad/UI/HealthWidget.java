@@ -9,9 +9,6 @@ import com.badlogic.gdx.utils.Align;
 import com.deeep.spaceglad.Assets;
 import com.deeep.spaceglad.Settings;
 
-/**
- * Created by scanevaro on 01/08/2015.
- */
 public class HealthWidget extends Actor {
     private ProgressBar healthBar;
     private ProgressBar.ProgressBarStyle progressBarStyle;

@@ -9,22 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.deeep.spaceglad.Assets;
-import com.deeep.spaceglad.Core;
-import com.deeep.spaceglad.Settings;
-import com.deeep.spaceglad.components.PlayerComponent;
+import com.deeep.spaceglad.WorldGDXAdapter;
 import com.deeep.spaceglad.screens.GameScreen;
 import com.deeep.spaceglad.screens.LeaderboardsScreen;
 
-/**
- * Created by scanevaro on 04/08/2015.
- */
 public class GameOverWidget extends Actor {
-    private Core game;
+    private WorldGDXAdapter game;
     private Stage stage;
     private Image image;
     private TextButton retryB, leaderB, quitB;
 
-    public GameOverWidget(Core game, Stage stage) {
+    public GameOverWidget(WorldGDXAdapter game, Stage stage) {
         this.game = game;
         this.stage = stage;
         setWidgets();
@@ -70,7 +65,7 @@ public class GameOverWidget extends Actor {
 
     @Override
     public void setSize(float width, float height) {
-        super.setSize(Core.VIRTUAL_WIDTH, Core.VIRTUAL_HEIGHT);
+        super.setSize(WorldGDXAdapter.VIRTUAL_WIDTH, WorldGDXAdapter.VIRTUAL_HEIGHT);
         image.setSize(width, height);
         retryB.setSize(width / 2.5f, height / 2);
         leaderB.setSize(width / 2.5f, height / 2);
@@ -84,6 +79,5 @@ public class GameOverWidget extends Actor {
         stage.addActor(quitB);
         stage.unfocus(stage.getKeyboardFocus());
         Gdx.input.setCursorCatched(false);
-        Settings.sendScore(PlayerComponent.score);
     }
 }

@@ -7,11 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.deeep.spaceglad.Assets;
-import com.deeep.spaceglad.components.PlayerComponent;
+import com.deeep.spaceglad.databags.PlayerComponent;
 
-/**
- * Created by scanevaro on 04/08/2015.
- */
 public class ScoreWidget extends Actor {
     private Label label;
     private Container container;

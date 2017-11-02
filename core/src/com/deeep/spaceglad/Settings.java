@@ -5,12 +5,9 @@ import com.badlogic.gdx.Net;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-/**
- * Created by scanevaro on 18/08/2015.
- */
 public class Settings {
     public static boolean Paused;
-    public static boolean soundEnabled = true;
+    private static boolean soundEnabled = true;
     public final static String file = ".spaceglad";
     private static final String leaderURL = "http://dreamlo.com/lb/PLfBGtHgG02wU0lSzVNrPAG0uQf3J3-UGzK1i7mXmmxA";
     private static final String request5 = "/pipe/5";
@@ -51,6 +48,7 @@ public class Settings {
             FileHandle filehandle = Gdx.files.external(file);
             String[] strings = filehandle.readString().split("\n");
             soundEnabled = Boolean.parseBoolean(strings[0]);
+            soundEnabled = true;
         } catch (Throwable e) {
         }
     }

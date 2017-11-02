@@ -6,9 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-/**
- * Created by scanevaro on 01/08/2015.
- */
+//this appears to only apply to gui elements
 public class Assets {
     public static Skin skin;
     public static AssetManager assetManager;

@@ -1,0 +1,45 @@
+package com.deeep.spaceglad.databags;
+
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
+import com.deeep.spaceglad.services.StatusService;
+import com.deeep.spaceglad.services.WorldLoader;
+
+public class StatusSystemState {
+    private ImmutableArray<Entity> entities;
+    private GameWorld gameWorld;
+    private WorldLoader worldService;
+    private StatusService statusService;
+
+    public ImmutableArray<Entity> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(ImmutableArray<Entity> entities) {
+        this.entities = entities;
+    }
+
+    public GameWorld getGameWorld() {
+        return gameWorld;
+    }
+
+    public void setGameWorld(GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
+    }
+
+    public WorldLoader getWorldService() {
+        return worldService;
+    }
+
+    public void setWorldService(WorldLoader worldService) {
+        this.worldService = worldService;
+    }
+
+    public StatusService getStatusService() {
+        return statusService;
+    }
+
+    public void setStatusService(StatusService statusService) {
+        this.statusService = statusService;
+    }
+}
