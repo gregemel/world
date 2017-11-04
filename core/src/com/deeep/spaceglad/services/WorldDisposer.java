@@ -1,10 +1,10 @@
 package com.deeep.spaceglad.services;
 
 import com.deeep.spaceglad.databags.CharacterComponent;
-import com.deeep.spaceglad.databags.GameWorld;
+import com.deeep.spaceglad.databags.World;
 
 public class WorldDisposer {
-    public void dispose(GameWorld gameWorld) {
+    public void dispose(World gameWorld) {
         gameWorld.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().removeAction(
                 gameWorld.getCharacter().getComponent(CharacterComponent.class).getCharacterController());
 

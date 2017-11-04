@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.deeep.spaceglad.databags.StatusComponent;
 import com.deeep.spaceglad.databags.StatusSystemState;
 
@@ -22,6 +23,7 @@ public class StatusSystem extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
+        Gdx.app.log("StatusSystem", "addedToEngine");
         statusSystemState.setEntities(engine.getEntitiesFor(Family.all(StatusComponent.class).get()));
     }
 

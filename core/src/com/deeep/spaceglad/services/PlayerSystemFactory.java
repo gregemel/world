@@ -4,12 +4,12 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
 import com.deeep.spaceglad.UI.GameUI;
-import com.deeep.spaceglad.databags.GameWorld;
+import com.deeep.spaceglad.databags.World;
 import com.deeep.spaceglad.databags.PlayerSystemState;
 import com.deeep.spaceglad.systems.PlayerSystem;
 
 public class PlayerSystemFactory {
-    public PlayerSystem create(GameWorld gameWorld, GameUI gameUI, Camera camera) {
+    public PlayerSystem create(World gameWorld, GameUI gameUI, Camera camera) {
         PlayerSystem playerSystem = new PlayerSystem();
         PlayerSystemState playerSystemState = new PlayerSystemState();
 

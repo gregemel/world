@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
 import com.badlogic.gdx.math.Quaternion;
@@ -27,6 +28,7 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine(Engine e) {
+        Gdx.app.log("MonsterSystem", "adding to engine.");
         monsterSystemState.setMonsters(e.getEntitiesFor(
                 Family.all(MonsterComponent.class, CharacterComponent.class, StatusComponent.class).get()));
         e.addEntityListener(Family.one(PlayerComponent.class).get(), this);
@@ -35,6 +37,7 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
 
     public void update(float delta) {
         if (monsterSystemState.getMonsters().size() < 1) {
+            Gdx.app.log("MonsterSystem", "spawning monster...");
             spawnMonster(getRandomSpawnIndex());
         }
 
@@ -101,13 +104,14 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
     }
 
     private void spawnMonster(int randomSpawnIndex) {
-
-        monsterSystemState.getEntityEngine().addEntity(MonsterFactory.create(
+        Entity monster = MonsterFactory.create(
                 "monster",
                 monsterSystemState.getGameWorld(),
                 monsterSystemState.getxSpawns()[randomSpawnIndex],
                 33,
-                monsterSystemState.getzSpawns()[randomSpawnIndex]));
+                monsterSystemState.getzSpawns()[randomSpawnIndex]);
+
+        monsterSystemState.getEntityEngine().addEntity(monster);
     }
 
     @Override

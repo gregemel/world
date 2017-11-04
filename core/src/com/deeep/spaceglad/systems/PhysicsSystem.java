@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.PhysicsComponent;
@@ -24,6 +25,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine(Engine engine) {
+        Gdx.app.log("PhysicsSystem", "addedToEngine.");
         engine.addEntityListener(Family.all(PhysicsComponent.class).get(), this);
     }
 
@@ -56,6 +58,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityAdded(Entity entity) {
+        Gdx.app.log("PhysicsSystem", "entity added.");
         PhysicsComponent physicsComponent = entity.getComponent(PhysicsComponent.class);
 
         if (physicsComponent.getBody() != null) {
@@ -64,6 +67,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
     }
 
     public void removeBody(Entity entity) {
+        Gdx.app.log("PhysicsSystem", "body removed.");
         PhysicsComponent comp = entity.getComponent(PhysicsComponent.class);
 
         if (comp != null) {
@@ -80,6 +84,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityRemoved(Entity entity) {
+        Gdx.app.log("PhysicsSystem", "entity removed.");
     }
 
 }

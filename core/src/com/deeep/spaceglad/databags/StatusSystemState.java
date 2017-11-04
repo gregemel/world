@@ -7,7 +7,7 @@ import com.deeep.spaceglad.services.WorldLoader;
 
 public class StatusSystemState {
     private ImmutableArray<Entity> entities;
-    private GameWorld gameWorld;
+    private World gameWorld;
     private WorldLoader worldService;
     private StatusService statusService;
 
@@ -19,11 +19,11 @@ public class StatusSystemState {
         this.entities = entities;
     }
 
-    public GameWorld getGameWorld() {
+    public World getGameWorld() {
         return gameWorld;
     }
 
-    public void setGameWorld(GameWorld gameWorld) {
+    public void setGameWorld(World gameWorld) {
         this.gameWorld = gameWorld;
     }
 

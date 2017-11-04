@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.deeep.spaceglad.systems.*;
 
-public class GameWorld {
+public class World {
     private boolean debug = false;
     private DebugDrawer debugDrawer;
     private Engine engine;

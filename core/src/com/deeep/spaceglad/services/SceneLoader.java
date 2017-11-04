@@ -32,12 +32,8 @@ public class SceneLoader {
     }
 
     private static Entity loadSky(String name, int x, int y, int z) {
-        UBJsonReader jsonReader = new UBJsonReader();
-        G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
-
-        Model model = modelLoader.loadModel(Gdx.files.getFileHandle("data/" + name + ".g3db", Files.FileType.Internal));
-
         ModelService modelService = new ModelService();
+        Model model = modelService.getSkyModel(name);
         ModelComponent modelComponent = modelService.create(model, x, y, z);
 
         Entity entity = new Entity();
@@ -48,11 +44,8 @@ public class SceneLoader {
     private static Entity loadGround(String name, int x, int y, int z) {
         Entity entity = new Entity();
 
-        ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
-        ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
-
-        Model model = new Model(modelData, new TextureProvider.FileTextureProvider());
         ModelService modelService = new ModelService();
+        Model model = modelService.loadModel(name);
         ModelComponent modelComponent = modelService.create(model, x, y, z);
         entity.add(modelComponent);
 
@@ -76,4 +69,5 @@ public class SceneLoader {
 
         return entity;
     }
+
 }

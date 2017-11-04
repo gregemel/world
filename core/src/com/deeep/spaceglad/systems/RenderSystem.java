@@ -19,6 +19,8 @@ import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.databags.RenderSystemState;
 
+import static java.lang.String.*;
+
 
 public class RenderSystem extends EntitySystem {
 
@@ -33,6 +35,7 @@ public class RenderSystem extends EntitySystem {
     }
 
     public void addedToEngine(Engine e) {
+        Gdx.app.log("RenderSystem", format("addedToEngine: %s", e.toString()));
         renderSystemState.setEntities(e.getEntitiesFor(Family.all(ModelComponent.class).get()));
     }
 
@@ -87,7 +90,6 @@ public class RenderSystem extends EntitySystem {
     }
 
     private void renderParticleEffects() {
-
         renderSystemState.getBatch().begin(renderSystemState.getPerspectiveCamera());
         ParticleSystem particleSystem = renderSystemState.getParticleSystem();
         particleSystem.update(); // not necessary
@@ -106,6 +108,7 @@ public class RenderSystem extends EntitySystem {
     }
 
     public void resize(int width, int height) {
+        Gdx.app.log("RenderSystem", String.format("resizing (%d, %d)", width, height));
         renderSystemState.getPerspectiveCamera().viewportHeight = height;
         renderSystemState.getPerspectiveCamera().viewportWidth = width;
         renderSystemState.getGunCamera().viewportHeight = height;
@@ -113,6 +116,7 @@ public class RenderSystem extends EntitySystem {
     }
 
     public void dispose() {
+        Gdx.app.log("RenderSystem", "disposing");
         renderSystemState.getBatch().dispose();
         renderSystemState.setBatch(null);
     }

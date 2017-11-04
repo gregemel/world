@@ -40,6 +40,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
     @Override
     public void addedToEngine(Engine engine) {
+        Gdx.app.log("PlayerSystem", String.format("addedToEngine: %s", engine.toString()));
         engine.addEntityListener(Family.all(PlayerComponent.class).get(), this);
     }
 
@@ -129,6 +130,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
 
     private void fire() {
+        Gdx.app.log("PlayerSystem", "fire");
         Ray ray = playerSystemState.getCamera().getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         Vector3 rayFrom = playerSystemState.getRayFrom();
         Vector3 rayTo = playerSystemState.getRayTo();
@@ -168,6 +170,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
     @Override
     public void entityAdded(Entity entity) {
+        Gdx.app.log("PlayerSystem", "entityAdded");
         playerSystemState.setPlayer(entity);
         playerSystemState.setPlayerComponent(entity.getComponent(PlayerComponent.class));
         playerSystemState.setCharacterComponent(entity.getComponent(CharacterComponent.class));

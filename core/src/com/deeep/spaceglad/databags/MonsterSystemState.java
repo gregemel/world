@@ -15,7 +15,7 @@ import java.util.Random;
 public class MonsterSystemState {
     private ImmutableArray<Entity> monsters;
     private Entity player;
-    private GameWorld gameWorld;
+    private World gameWorld;
 
     private Engine entityEngine;
     private ModelService modelService = new ModelService();
@@ -65,11 +65,11 @@ public class MonsterSystemState {
         this.entityEngine = entityEngine;
     }
 
-    public GameWorld getGameWorld() {
+    public World getGameWorld() {
         return gameWorld;
     }
 
-    public void setGameWorld(GameWorld gameWorld) {
+    public void setGameWorld(World gameWorld) {
         this.gameWorld = gameWorld;
     }
 

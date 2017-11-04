@@ -13,6 +13,7 @@ public class WorldCore extends ApplicationAdapter {
 
     @Override
     public void create() {
+        Gdx.app.log("WorldCore", "create");
         new Assets();
         new Settings().load();
         Gdx.input.setCatchBackKey(true);
@@ -28,6 +29,7 @@ public class WorldCore extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
+        Gdx.app.log("WorldCore", "resize");
         screen.resize(width, height);
     }
 
@@ -45,6 +47,7 @@ public class WorldCore extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        Gdx.app.log("WorldCore", "dispose");
         Settings.save();
         Assets.dispose();
     }

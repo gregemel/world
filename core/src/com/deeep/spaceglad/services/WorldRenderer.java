@@ -1,23 +1,23 @@
 package com.deeep.spaceglad.services;
 
 import com.deeep.spaceglad.Settings;
-import com.deeep.spaceglad.databags.GameWorld;
+import com.deeep.spaceglad.databags.World;
 import com.deeep.spaceglad.systems.PhysicsSystem;
 import com.deeep.spaceglad.systems.MonsterSystem;
 import com.deeep.spaceglad.systems.PlayerSystem;
 import com.deeep.spaceglad.systems.StatusSystem;
 
 public class WorldRenderer {
-    public void render(GameWorld gameWorld, float delta) {
+    public void render(World gameWorld, float delta) {
         renderWorld(gameWorld, delta);
         checkPause(gameWorld);
     }
 
-    public void resize(GameWorld gameWorld, int width, int height) {
+    public void resize(World gameWorld, int width, int height) {
         gameWorld.getRenderSystem().resize(width, height);
     }
 
-    private void checkPause(GameWorld gameWorld) {
+    private void checkPause(World gameWorld) {
         if (Settings.Paused) {
             gameWorld.getEngine().getSystem(PlayerSystem.class).setProcessing(false);
             gameWorld.getEngine().getSystem(MonsterSystem.class).setProcessing(false);
@@ -31,7 +31,7 @@ public class WorldRenderer {
         }
     }
 
-    private void renderWorld(GameWorld gameWorld, float delta) {
+    private void renderWorld(World gameWorld, float delta) {
         gameWorld.getEngine().update(delta);
         if (gameWorld.isDebug()) {
             gameWorld.getDebugDrawer().begin(gameWorld.getRenderSystem().getRenderSystemState().getPerspectiveCamera());

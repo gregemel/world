@@ -3,11 +3,11 @@ package com.deeep.spaceglad.services;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
-import com.deeep.spaceglad.databags.GameWorld;
+import com.deeep.spaceglad.databags.World;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.databags.Scene;
 import com.deeep.spaceglad.databags.StatusSystemState;
@@ -19,13 +19,15 @@ import com.deeep.spaceglad.systems.StatusSystem;
 
 public class WorldLoader {
 
-    private GameWorld gameWorld;
+    private World gameWorld;
     private GameUI gameUI;
 
-    public GameWorld create(GameUI ui) {
+    public World create(String name, GameUI ui) {
+
+        Gdx.app.log("WorldLoader", String.format("creating world: %s", name));
         Bullet.init();
 
-        gameWorld = new GameWorld();
+        gameWorld = new World();
         gameUI = ui;
 
         setDebug();
@@ -45,6 +47,9 @@ public class WorldLoader {
     }
 
     private void addSystems() {
+
+        Gdx.app.log("WorldLoader", "adding systems");
+
         Engine engine = createEntitySystem();
 
         RenderSystem renderSystem = createRenderSystem(engine);
@@ -61,10 +66,12 @@ public class WorldLoader {
     }
 
     private Engine createEntitySystem() {
+        Gdx.app.log("WorldLoader", "createEntitySystem");
         return new Engine();
     }
 
     private RenderSystem createRenderSystem(Engine engine) {
+        Gdx.app.log("WorldLoader", "createRenderSystem");
         RenderSystemFactory renderSystemFactory = new RenderSystemFactory();
         RenderSystem renderSystem = renderSystemFactory.create();
         gameWorld.setRenderSystem(renderSystem);
@@ -73,6 +80,7 @@ public class WorldLoader {
     }
 
     private void createPhysicsSystem(Engine engine) {
+        Gdx.app.log("WorldLoader", "createPhysicsSystem");
         PhysicsSystemFactory physicsSystemFactory = new PhysicsSystemFactory();
         PhysicsSystem physicsSystem = physicsSystemFactory.create();
         gameWorld.setPhysicsSystem(physicsSystem);
@@ -83,6 +91,7 @@ public class WorldLoader {
     }
 
     private void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
+        Gdx.app.log("WorldLoader", "createPlayerSystem");
         PlayerSystemFactory playerSystemFactory = new PlayerSystemFactory();
         PlayerSystem playerSystem = playerSystemFactory.create(
                 gameWorld, gameUI, renderSystem.getRenderSystemState().getPerspectiveCamera());
@@ -91,6 +100,7 @@ public class WorldLoader {
     }
 
     private void createStatusSystem(Engine engine) {
+        Gdx.app.log("WorldLoader", "createStatusSystem");
         StatusSystem statusSystem = new StatusSystem();
         StatusSystemState statusSystemState = new StatusSystemState();
 
@@ -103,6 +113,7 @@ public class WorldLoader {
     }
 
     private void createMonsterSystem(Engine engine) {
+        Gdx.app.log("WorldLoader", "createMonsterSystem");
         MonsterSystemFactory monsterSystemFactory = new MonsterSystemFactory();
         MonsterSystem monsterSystem = monsterSystemFactory.create(gameWorld);
         engine.addSystem(monsterSystem);
@@ -110,7 +121,8 @@ public class WorldLoader {
 
 
     private void loadLevel() {
-        Scene area = SceneLoader.load("area", 0, 0, 0);
+        Gdx.app.log("WorldLoader", "loadLevel");
+        Scene area = SceneLoader.load("arena", 0, 0, 0);
         gameWorld.setCurrentScene(area);
         gameWorld.getEngine().addEntity(area.getGround());
         gameWorld.getEngine().addEntity(area.getSky());
@@ -118,6 +130,7 @@ public class WorldLoader {
     }
 
     private void createPlayer(float x, float y, float z) {
+        Gdx.app.log("WorldLoader", "createPlayer");
         PlayerFactory playerFactory = new PlayerFactory();
         Entity player = playerFactory.create(gameWorld.getPhysicsSystem(), x, y, z);
         gameWorld.setPlayer(player);
@@ -132,7 +145,8 @@ public class WorldLoader {
     }
 
 
-    public void remove(GameWorld gameWorld, Entity entity) {
+    public void remove(World gameWorld, Entity entity) {
+        Gdx.app.log("WorldLoader", "remove");
         gameWorld.getEngine().removeEntity(entity);
         gameWorld.getPhysicsSystem().removeBody(entity);
     }
