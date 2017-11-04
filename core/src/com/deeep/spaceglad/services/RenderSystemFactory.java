@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.deeep.spaceglad.WorldGDXAdapter;
+import com.deeep.spaceglad.WorldCore;
 import com.deeep.spaceglad.databags.RenderSystemState;
 import com.deeep.spaceglad.systems.RenderSystem;
 
@@ -22,8 +22,8 @@ public class RenderSystemFactory {
 
         PerspectiveCamera perspectiveCamera = new PerspectiveCamera(
                 renderSystemState.getFOV(),
-                WorldGDXAdapter.VIRTUAL_WIDTH,
-                WorldGDXAdapter.VIRTUAL_HEIGHT);
+                WorldCore.VIRTUAL_WIDTH,
+                WorldCore.VIRTUAL_HEIGHT);
 
         perspectiveCamera.far = 10000f;
         renderSystemState.setPerspectiveCamera(perspectiveCamera);
@@ -47,7 +47,7 @@ public class RenderSystemFactory {
         ModelBatch batch = new ModelBatch();
         renderSystemState.setBatch(batch);
 
-        PerspectiveCamera gunCamera = new PerspectiveCamera(renderSystemState.getFOV(), WorldGDXAdapter.VIRTUAL_WIDTH, WorldGDXAdapter.VIRTUAL_HEIGHT);
+        PerspectiveCamera gunCamera = new PerspectiveCamera(renderSystemState.getFOV(), WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT);
         gunCamera.far = 100f;
         renderSystemState.setGunCamera(gunCamera);
 

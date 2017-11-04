@@ -11,20 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.deeep.spaceglad.Assets;
-import com.deeep.spaceglad.WorldGDXAdapter;
+import com.deeep.spaceglad.WorldCore;
 import com.deeep.spaceglad.Settings;
 
 public class LeaderboardsScreen implements Screen {
-    private WorldGDXAdapter game;
+    private WorldCore game;
     private Stage stage;
     private Image backgroundImage;
     private TextButton backButton;
     private Label label[];
     private boolean loaded;
 
-    public LeaderboardsScreen(WorldGDXAdapter game) {
+    public LeaderboardsScreen(WorldCore game) {
         this.game = game;
-        stage = new Stage(new FitViewport(WorldGDXAdapter.VIRTUAL_WIDTH, WorldGDXAdapter.VIRTUAL_HEIGHT));
+        stage = new Stage(new FitViewport(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT));
         setWidgets();
         configureWidgers();
         setListeners();
@@ -40,15 +40,15 @@ public class LeaderboardsScreen implements Screen {
     }
 
     private void configureWidgers() {
-        backgroundImage.setSize(WorldGDXAdapter.VIRTUAL_WIDTH, WorldGDXAdapter.VIRTUAL_HEIGHT);
+        backgroundImage.setSize(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT);
         backButton.setSize(128, 64);
-        backButton.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH - backButton.getWidth() - 5, 5);
+        backButton.setPosition(WorldCore.VIRTUAL_WIDTH - backButton.getWidth() - 5, 5);
 
         stage.addActor(backgroundImage);
         stage.addActor(backButton);
 
         label[0].setFontScale(3);
-        label[0].setPosition(15, WorldGDXAdapter.VIRTUAL_HEIGHT - label[0].getHeight() - 25);
+        label[0].setPosition(15, WorldCore.VIRTUAL_HEIGHT - label[0].getHeight() - 25);
         stage.addActor(label[0]);
     }
 
@@ -76,7 +76,7 @@ public class LeaderboardsScreen implements Screen {
             int y = 0;
             for (int i = 0; i < label.length; i++) {
                 label[i].setFontScale(3);
-                label[i].setPosition(15, WorldGDXAdapter.VIRTUAL_HEIGHT - label[i].getHeight() - 25 - y);
+                label[i].setPosition(15, WorldCore.VIRTUAL_HEIGHT - label[i].getHeight() - 25 - y);
                 y += 96;
                 stage.addActor(label[i]);
             }

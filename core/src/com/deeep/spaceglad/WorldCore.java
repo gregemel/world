@@ -6,7 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.deeep.spaceglad.screens.MainMenuScreen;
 
-public class WorldGDXAdapter extends ApplicationAdapter {
+public class WorldCore extends ApplicationAdapter {
     public static final float VIRTUAL_WIDTH = 960;
     public static final float VIRTUAL_HEIGHT = 540;
     private Screen screen;

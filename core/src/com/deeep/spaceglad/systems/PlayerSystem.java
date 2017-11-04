@@ -20,7 +20,7 @@ import com.deeep.spaceglad.UI.ControllerWidget;
 import com.deeep.spaceglad.UI.GameUI;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
-import com.deeep.spaceglad.databags.EnemyComponent;
+import com.deeep.spaceglad.databags.MonsterComponent;
 import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.databags.PlayerSystemState;
@@ -146,7 +146,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
         if (rayTestCB.hasHit()) {
             final btCollisionObject obj = rayTestCB.getCollisionObject();
-            if (((Entity) obj.userData).getComponent(EnemyComponent.class) != null) {
+            if (((Entity) obj.userData).getComponent(MonsterComponent.class) != null) {
                 if(((Entity) obj.userData).getComponent(StatusComponent.class).alive) {
                     ((Entity) obj.userData).getComponent(StatusComponent.class).setAlive(false);
                     PlayerComponent.score += 100;

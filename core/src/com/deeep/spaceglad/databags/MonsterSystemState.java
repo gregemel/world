@@ -13,17 +13,19 @@ import com.deeep.spaceglad.services.ModelService;
 import java.util.Random;
 
 public class MonsterSystemState {
-    private ImmutableArray<Entity> entities;
+    private ImmutableArray<Entity> monsters;
     private Entity player;
-    private Quaternion quat = new Quaternion();
-    private Engine engine;
     private GameWorld gameWorld;
+
+    private Engine entityEngine;
+    private ModelService modelService = new ModelService();
+
     private Vector3 playerPosition = new Vector3();
     private Vector3 enemyPosition = new Vector3();
     private Matrix4 ghost = new Matrix4();
     private Vector3 translation = new Vector3();
+    private Quaternion quaternion = new Quaternion();
     private Random random = new Random();
-    private ModelService modelService = new ModelService();
 
     private float[] xSpawns = {12, -12, 112, -112};
     private float[] zSpawns = {-112, 112, -12, 12};
@@ -31,12 +33,12 @@ public class MonsterSystemState {
     private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
     private ComponentMapper<StatusComponent> sm = ComponentMapper.getFor(StatusComponent.class);
 
-    public ImmutableArray<Entity> getEntities() {
-        return entities;
+    public ImmutableArray<Entity> getMonsters() {
+        return monsters;
     }
 
-    public void setEntities(ImmutableArray<Entity> entities) {
-        this.entities = entities;
+    public void setMonsters(ImmutableArray<Entity> monsters) {
+        this.monsters = monsters;
     }
 
     public Entity getPlayer() {
@@ -47,20 +49,20 @@ public class MonsterSystemState {
         this.player = player;
     }
 
-    public Quaternion getQuat() {
-        return quat;
+    public Quaternion getQuaternion() {
+        return quaternion;
     }
 
-    public void setQuat(Quaternion quat) {
-        this.quat = quat;
+    public void setQuaternion(Quaternion quaternion) {
+        this.quaternion = quaternion;
     }
 
-    public Engine getEngine() {
-        return engine;
+    public Engine getEntityEngine() {
+        return entityEngine;
     }
 
-    public void setEngine(Engine engine) {
-        this.engine = engine;
+    public void setEntityEngine(Engine entityEngine) {
+        this.entityEngine = entityEngine;
     }
 
     public GameWorld getGameWorld() {

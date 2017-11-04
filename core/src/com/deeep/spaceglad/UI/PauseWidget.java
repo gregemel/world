@@ -10,17 +10,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.deeep.spaceglad.Assets;
-import com.deeep.spaceglad.WorldGDXAdapter;
+import com.deeep.spaceglad.WorldCore;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.screens.GameScreen;
 
 public class PauseWidget extends Actor {
-    private WorldGDXAdapter game;
+    private WorldCore game;
     private Window window;
     private TextButton closeDialog, restartButton, quitButton;
     private Stage stage;
 
-    public PauseWidget(WorldGDXAdapter game, Stage stage) {
+    public PauseWidget(WorldCore game, Stage stage) {
         this.game = game;
         this.stage = stage;
         setWidgets();
@@ -87,7 +87,7 @@ public class PauseWidget extends Actor {
     @Override
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
-        window.setPosition(WorldGDXAdapter.VIRTUAL_WIDTH / 2 - window.getWidth() / 2, WorldGDXAdapter.VIRTUAL_HEIGHT / 2 - window.getHeight() / 2);
+        window.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - window.getWidth() / 2, WorldCore.VIRTUAL_HEIGHT / 2 - window.getHeight() / 2);
     }
 
     @Override

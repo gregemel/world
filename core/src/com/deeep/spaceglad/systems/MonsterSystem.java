@@ -9,13 +9,13 @@ import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
 import com.badlogic.gdx.math.Quaternion;
 import com.deeep.spaceglad.databags.CharacterComponent;
-import com.deeep.spaceglad.databags.EnemyComponent;
+import com.deeep.spaceglad.databags.MonsterComponent;
 import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.MonsterSystemState;
 import com.deeep.spaceglad.databags.ParticleComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.databags.StatusComponent;
-import com.deeep.spaceglad.services.EntityFactory;
+import com.deeep.spaceglad.services.MonsterFactory;
 
 public class MonsterSystem extends EntitySystem implements EntityListener {
 
@@ -27,20 +27,20 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine(Engine e) {
-        monsterSystemState.setEntities(e.getEntitiesFor(
-                Family.all(EnemyComponent.class, CharacterComponent.class, StatusComponent.class).get()));
+        monsterSystemState.setMonsters(e.getEntitiesFor(
+                Family.all(MonsterComponent.class, CharacterComponent.class, StatusComponent.class).get()));
         e.addEntityListener(Family.one(PlayerComponent.class).get(), this);
-        monsterSystemState.setEngine(e);
+        monsterSystemState.setEntityEngine(e);
     }
 
     public void update(float delta) {
-        if (monsterSystemState.getEntities().size() < 1) {
-            spawnEnemy(getRandomSpawnIndex());
+        if (monsterSystemState.getMonsters().size() < 1) {
+            spawnMonster(getRandomSpawnIndex());
         }
 
-        for (int i = 0; i < monsterSystemState.getEntities().size(); i++) {
+        for (int i = 0; i < monsterSystemState.getMonsters().size(); i++) {
 
-            Entity entity = monsterSystemState.getEntities().get(i);
+            Entity entity = monsterSystemState.getMonsters().get(i);
 
             ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
             ModelComponent playerModel = monsterSystemState.getPlayer().getComponent(ModelComponent.class);
@@ -79,7 +79,7 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
             float theta = (float) (Math.atan2(dX, dZ));
 
             //Calculate the transforms
-            Quaternion rot = monsterSystemState.getQuat().setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
+            Quaternion rot = monsterSystemState.getQuaternion().setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
 
             monsterSystemState.getCm().get(entity).getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform);
             monsterSystemState.getCm().get(entity).getWalkDirection().set(0, 0, 0);
@@ -100,8 +100,9 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
         }
     }
 
-    private void spawnEnemy(int randomSpawnIndex) {
-        monsterSystemState.getEngine().addEntity(EntityFactory.create(
+    private void spawnMonster(int randomSpawnIndex) {
+
+        monsterSystemState.getEntityEngine().addEntity(MonsterFactory.create(
                 "monster",
                 monsterSystemState.getGameWorld(),
                 monsterSystemState.getxSpawns()[randomSpawnIndex],

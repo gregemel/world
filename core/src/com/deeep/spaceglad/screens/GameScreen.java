@@ -2,7 +2,7 @@ package com.deeep.spaceglad.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.deeep.spaceglad.WorldGDXAdapter;
+import com.deeep.spaceglad.WorldCore;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.GameUI;
@@ -11,7 +11,7 @@ import com.deeep.spaceglad.services.WorldLoader;
 import com.deeep.spaceglad.services.WorldRenderer;
 
 public class GameScreen implements Screen {
-    private WorldGDXAdapter game;
+    private WorldCore game;
     private GameUI gameUI;
     private GameWorld gameWorld;
 
@@ -19,7 +19,7 @@ public class GameScreen implements Screen {
     private WorldRenderer worldRenderer;
     private WorldDisposer worldDisposer;
 
-    public GameScreen(WorldGDXAdapter game) {
+    public GameScreen(WorldCore game) {
         this.game = game;
         gameUI = new GameUI(game);
         worldLoader = new WorldLoader();

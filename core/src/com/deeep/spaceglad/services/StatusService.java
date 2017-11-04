@@ -2,7 +2,7 @@ package com.deeep.spaceglad.services;
 
 import com.deeep.spaceglad.databags.StatusComponent;
 import com.deeep.spaceglad.databags.AnimationComponent;
-import com.deeep.spaceglad.databags.EnemyAnimations;
+import com.deeep.spaceglad.databags.MonsterAnimations;
 
 public class StatusService {
     public StatusComponent create(AnimationComponent animationComponent) {
@@ -23,9 +23,9 @@ public class StatusService {
         statusComponent.setAlive(alive);
         AnimationService animationService = new AnimationService();
         animationService.animate(animationComponent,
-                EnemyAnimations.getId(),
-                EnemyAnimations.getOffsetDeath2(),
-                EnemyAnimations.getDurationDeath2(),
+                MonsterAnimations.getId(),
+                MonsterAnimations.getOffsetDeath2(),
+                MonsterAnimations.getDurationDeath2(),
                 1, 3);
     }
 }

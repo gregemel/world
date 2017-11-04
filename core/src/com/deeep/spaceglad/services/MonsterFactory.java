@@ -17,47 +17,71 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.CharacterComponent;
 import com.deeep.spaceglad.databags.ModelComponent;
+import com.deeep.spaceglad.databags.MonsterAnimations;
 import com.deeep.spaceglad.databags.ParticleComponent;
-import com.deeep.spaceglad.databags.EnemyComponent;
+import com.deeep.spaceglad.databags.MonsterComponent;
 import com.deeep.spaceglad.databags.GameWorld;
 import com.deeep.spaceglad.databags.StatusComponent;
 import com.deeep.spaceglad.systems.PhysicsSystem;
 
-public class EntityFactory {
+public class MonsterFactory {
 
     private static Model enemyModel;
     private static ModelComponent enemyModelComponent;
 
     public static Entity create(String name, GameWorld gameWorld, float x, float y, float z) {
 
-        PhysicsSystem physicsSystem = gameWorld.getPhysicsSystem();
         Entity entity = new Entity();
-        ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
+
+        ModelService modelService = new ModelService();
 
         if (enemyModel == null) {
-
-            ModelData enemyModelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
-            enemyModel = new Model(enemyModelData, new TextureProvider.FileTextureProvider());
-
-            for (Node node : enemyModel.nodes) {
-                node.scale.scl(0.0025f);
-            }
-
-            enemyModel.calculateTransforms();
-
-            ModelService modelService = new ModelService();
-            enemyModelComponent = modelService.create(enemyModel, x, y, z);
-
-            Material material = enemyModelComponent.getInstance().materials.get(0);
-            BlendingAttribute blendingAttribute;
-            material.set(blendingAttribute = new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA));
-            enemyModelComponent.setBlendingAttribute(blendingAttribute);
+            float modelScalar = 0.0025f;
+            enemyModel = modelService.loadModel(name, modelScalar);
         }
+
+        enemyModelComponent = modelService.create(enemyModel, x, y, z);
+
+        Material material = enemyModelComponent.getInstance().materials.get(0);
+        BlendingAttribute blendingAttribute;
+        material.set(blendingAttribute = new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA));
+        enemyModelComponent.setBlendingAttribute(blendingAttribute);
+
 
         ((BlendingAttribute) enemyModelComponent.getInstance().materials.get(0).get(BlendingAttribute.Type)).opacity = 1;
         enemyModelComponent.getInstance().transform.set(enemyModelComponent.getMatrix4().setTranslation(x, y, z));
         entity.add(enemyModelComponent);
 
+        CharacterComponent characterComponent = getCharacterComponent(entity);
+        entity.add(characterComponent);
+
+        PhysicsSystem physicsSystem = gameWorld.getPhysicsSystem();
+        setPhysics(physicsSystem, entity);
+
+        entity.add(new MonsterComponent(MonsterComponent.STATE.HUNTING));
+
+        AnimationService animationService = new AnimationService();
+        AnimationComponent animationComponent = animationService.create(enemyModelComponent.getInstance());
+        animationService.animate(
+                animationComponent,
+                MonsterAnimations.getId(),
+                MonsterAnimations.getOffsetRun1(),
+                MonsterAnimations.getDurationRun1(),
+                -1, 1);
+
+        entity.add(animationComponent);
+        StatusService statusService = new StatusService();
+        StatusComponent statusComponent = statusService.create(animationComponent);
+        entity.add(statusComponent);
+
+        ParticleFactory particleFactory = new ParticleFactory();
+        ParticleComponent particleComponent = particleFactory.create(gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem());
+        entity.add(particleComponent);
+
+        return entity;
+    }
+
+    private static CharacterComponent getCharacterComponent(Entity entity) {
         CharacterComponent characterComponent = new CharacterComponent();
         characterComponent.setGhostObject(
                 new btPairCachingGhostObject());
@@ -76,33 +100,13 @@ public class EntityFactory {
                         .35f));
 
         characterComponent.getGhostObject().userData = entity;
-        entity.add(characterComponent);
+        return characterComponent;
+    }
 
+    private static void setPhysics(PhysicsSystem physicsSystem, Entity entity) {
         physicsSystem.getPhysicsSystemState().getCollisionWorld().addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
                 (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
                 (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
         physicsSystem.getPhysicsSystemState().getCollisionWorld().addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
-
-        entity.add(new EnemyComponent(EnemyComponent.STATE.HUNTING));
-
-        AnimationService animationService = new AnimationService();
-        AnimationComponent animationComponent = animationService.create(enemyModelComponent.getInstance());
-        animationService.animate(
-                animationComponent,
-                com.deeep.spaceglad.databags.EnemyAnimations.getId(),
-                com.deeep.spaceglad.databags.EnemyAnimations.getOffsetRun1(),
-                com.deeep.spaceglad.databags.EnemyAnimations.getDurationRun1(),
-                -1, 1);
-
-        entity.add(animationComponent);
-        StatusService statusService = new StatusService();
-        StatusComponent statusComponent = statusService.create(animationComponent);
-        entity.add(statusComponent);
-
-        ParticleFactory particleFactory = new ParticleFactory();
-        ParticleComponent particleComponent = particleFactory.create(gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem());
-        entity.add(particleComponent);
-
-        return entity;
     }
 }

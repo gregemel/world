@@ -1,6 +1,6 @@
 package com.deeep.spaceglad.databags;
 
-public class EnemyAnimations {
+public class MonsterAnimations {
     private static final String id = "MilkShape3D Skele|DefaultAction";
     private static final float offsetDeath2 = 22.6f;
     private static final float durationDeath2 = 3.4f;

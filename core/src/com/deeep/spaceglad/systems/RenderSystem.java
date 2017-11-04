@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.math.Vector3;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.databags.AnimationComponent;
-import com.deeep.spaceglad.databags.EnemyComponent;
+import com.deeep.spaceglad.databags.MonsterComponent;
 import com.deeep.spaceglad.databags.ItemComponent;
 import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
@@ -52,7 +52,7 @@ public class RenderSystem extends EntitySystem {
 
         for (int x = 0; x < entities.size(); x++) {
 
-            if (entities.get(x).getComponent(PlayerComponent.class) != null || entities.get(x).getComponent(EnemyComponent.class) != null) {
+            if (entities.get(x).getComponent(PlayerComponent.class) != null || entities.get(x).getComponent(MonsterComponent.class) != null) {
 
                 ModelComponent mod = entities.get(x).getComponent(ModelComponent.class);
 

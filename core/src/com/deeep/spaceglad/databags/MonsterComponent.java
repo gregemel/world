@@ -2,7 +2,7 @@ package com.deeep.spaceglad.databags;
 
 import com.badlogic.ashley.core.Component;
 
-public class EnemyComponent extends Component {
+public class MonsterComponent extends Component {
 
     public enum STATE {
         IDLE,
@@ -12,7 +12,7 @@ public class EnemyComponent extends Component {
 
     private  STATE state = STATE.IDLE;
 
-    public EnemyComponent(STATE state){
+    public MonsterComponent(STATE state){
         this.state = state;
     }
 }

@@ -15,12 +15,10 @@ import com.deeep.spaceglad.databags.ModelComponent;
 public class PlayerItemFactory {
     public Entity create(String name, float x, float y, float z) {
 
-        ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
-        ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
-        Model model = new Model(modelData, new TextureProvider.FileTextureProvider());
-
         ModelService modelService = new ModelService();
+        Model model = modelService.loadModel(name);
         ModelComponent modelComponent = modelService.create(model, x, y, z);
+
         modelComponent.getInstance().transform.rotate(0, 1, 0, 180);
 
         Entity gunEntity = new Entity();
