@@ -11,8 +11,9 @@ import com.emelwerx.world.services.AnimationService;
 public class PlayerSystemState {
     private Vector3 tmp = new Vector3();
     private Camera camera;
-    private Entity gun, dome;
-    private Entity player;
+    private Entity itemEntity;
+    private Entity skyEntity;
+    private Entity playerEntity;
     private PlayerComponent playerComponent;
     private CharacterComponent characterComponent;
     private ModelComponent modelComponent;
@@ -24,6 +25,15 @@ public class PlayerSystemState {
     private Vector3 translation = new Vector3();
     private Matrix4 ghost = new Matrix4();
     private AnimationService animationService = new AnimationService();
+    private float jumpForce = 25f;
+
+    public float getJumpForce() {
+        return jumpForce;
+    }
+
+    public void setJumpForce(float jumpForce) {
+        this.jumpForce = jumpForce;
+    }
 
     public Vector3 getTmp() {
         return tmp;
@@ -42,27 +52,27 @@ public class PlayerSystemState {
     }
 
     public Entity getItem() {
-        return gun;
+        return itemEntity;
     }
 
-    public void setGun(Entity gun) {
-        this.gun = gun;
+    public void setItemEntity(Entity itemEntity) {
+        this.itemEntity = itemEntity;
     }
 
-    public Entity getDome() {
-        return dome;
+    public Entity getSkyEntity() {
+        return skyEntity;
     }
 
-    public void setDome(Entity dome) {
-        this.dome = dome;
+    public void setSkyEntity(Entity skyEntity) {
+        this.skyEntity = skyEntity;
     }
 
-    public Entity getPlayer() {
-        return player;
+    public Entity getPlayerEntity() {
+        return playerEntity;
     }
 
-    public void setPlayer(Entity player) {
-        this.player = player;
+    public void setPlayerEntity(Entity playerEntity) {
+        this.playerEntity = playerEntity;
     }
 
     public PlayerComponent getPlayerComponent() {

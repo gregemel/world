@@ -8,7 +8,9 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.math.Vector3;
 import com.emelwerx.world.Settings;
@@ -49,28 +51,33 @@ public class RenderSystem extends EntitySystem {
     }
 
     private void drawShadows(float delta) {
-        renderSystemState.getShadowLight().begin(Vector3.Zero, renderSystemState.getPerspectiveCamera().direction);
-        renderSystemState.getBatch().begin(renderSystemState.getShadowLight().getCamera());
+        DirectionalShadowLight shadowLight = renderSystemState.getShadowLight();
+        shadowLight.begin(Vector3.Zero, renderSystemState.getPerspectiveCamera().direction);
+
+        ModelBatch modelBatch = renderSystemState.getBatch();
+        modelBatch.begin(shadowLight.getCamera());
+
         ImmutableArray<Entity> entities = renderSystemState.getEntities();
 
-        for (int x = 0; x < entities.size(); x++) {
-
-            if (entities.get(x).getComponent(PlayerComponent.class) != null || entities.get(x).getComponent(MonsterComponent.class) != null) {
-
-                ModelComponent mod = entities.get(x).getComponent(ModelComponent.class);
-
+        for(Entity entity : entities) {
+            boolean playerOrMonster = entity.getComponent(PlayerComponent.class) != null
+                    || entity.getComponent(MonsterComponent.class) != null;
+            if (playerOrMonster) {
+                ModelComponent mod = entity.getComponent(ModelComponent.class);
                 if (isVisible(renderSystemState.getPerspectiveCamera(), mod.getInstance())) {
-                    renderSystemState.getBatch().render(mod.getInstance());
+                    modelBatch.render(mod.getInstance());
                 }
             }
 
-            if (entities.get(x).getComponent(AnimationComponent.class) != null & !Settings.Paused) {
-                renderSystemState.getAnimationService().update(entities.get(x).getComponent(AnimationComponent.class), delta);
+            AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
+            boolean hasAnimation = animationComponent != null & !Settings.Paused;
+            if (hasAnimation) {
+                renderSystemState.getAnimationService().update(animationComponent, delta);
             }
         }
 
-        renderSystemState.getBatch().end();
-        renderSystemState.getShadowLight().end();
+        modelBatch.end();
+        shadowLight.end();
     }
 
     private void drawModels() {
