@@ -13,7 +13,7 @@ import com.deeep.spaceglad.services.WorldRenderer;
 public class GameScreen implements Screen {
     private WorldCore game;
     private GameUI gameUI;
-    private World gameWorld;
+    private World world;
 
     private WorldLoader worldLoader;
     private WorldRenderer worldRenderer;
@@ -23,7 +23,7 @@ public class GameScreen implements Screen {
         this.game = game;
         gameUI = new GameUI(game);
         worldLoader = new WorldLoader();
-        gameWorld = worldLoader.create("arena", gameUI);
+        world = worldLoader.create("arena", gameUI);
         worldRenderer = new WorldRenderer();
 
         Settings.Paused = false;
@@ -38,19 +38,19 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         gameUI.update(delta);
-        worldRenderer.render(gameWorld, delta);
+        worldRenderer.render(world, delta);
         gameUI.render();
     }
 
     @Override
     public void resize(int width, int height) {
         gameUI.resize(width, height);
-        worldRenderer.resize(gameWorld, width, height);
+        worldRenderer.resize(world, width, height);
     }
 
     @Override
     public void dispose() {
-        getWorldDisposer().dispose(gameWorld);
+        getWorldDisposer().dispose(world);
         gameUI.dispose();
     }
 

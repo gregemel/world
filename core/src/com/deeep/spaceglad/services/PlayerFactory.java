@@ -20,9 +20,12 @@ import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.systems.PhysicsSystem;
 
+import static java.lang.String.format;
+
 public class PlayerFactory {
 
     public Entity create(PhysicsSystem physicsSystem, float x, float y, float z) {
+        Gdx.app.log("PlayerFactory", format("creating entity %s, %f, %f, %f", physicsSystem.toString(), x, y, z));
 
         Entity entity = createCharacter(physicsSystem, x, y, z);
         entity.add(new PlayerComponent());
@@ -32,18 +35,32 @@ public class PlayerFactory {
     private Entity createCharacter(PhysicsSystem physicsSystem, float x, float y, float z) {
         Entity entity = new Entity();
 
-        ModelBuilder modelBuilder = new ModelBuilder();
-        Texture playerTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
-        Material material = new Material(TextureAttribute.createDiffuse(playerTexture),
-                ColorAttribute.createSpecular(1, 1, 1, 1), FloatAttribute.createShininess(8f));
-
-        Model playerModel = modelBuilder.createCapsule(2f, 6f, 16, material, VertexAttributes.Usage.Position |
-                VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
-
-        ModelService modelService = new ModelService();
-        ModelComponent modelComponent = modelService.create(playerModel, x, y, z);
+        ModelComponent modelComponent = getModelComponent(x, y, z);
         entity.add(modelComponent);
 
+        CharacterComponent characterComponent = getCharacterComponent(entity, modelComponent);
+        entity.add(characterComponent);
+
+        setPhysicsSystem(physicsSystem, entity);
+
+        return entity;
+    }
+
+    private void setPhysicsSystem(PhysicsSystem physicsSystem, Entity entity) {
+        physicsSystem.getPhysicsSystemState().getCollisionWorld().addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
+                (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
+                (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
+
+        physicsSystem.getPhysicsSystemState().getCollisionWorld().addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
+    }
+
+    private ModelComponent getModelComponent(float x, float y, float z) {
+        Model playerModel = getModel();
+        ModelService modelService = new ModelService();
+        return modelService.create(playerModel, x, y, z);
+    }
+
+    private CharacterComponent getCharacterComponent(Entity entity, ModelComponent modelComponent) {
         CharacterComponent characterComponent = new CharacterComponent();
         characterComponent.setGhostObject(
                 new btPairCachingGhostObject());
@@ -62,15 +79,16 @@ public class PlayerFactory {
                         .35f));
 
         characterComponent.getGhostObject().userData = entity;
+        return characterComponent;
+    }
 
-        entity.add(characterComponent);
+    private Model getModel() {
+        ModelBuilder modelBuilder = new ModelBuilder();
+        Texture playerTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
+        Material material = new Material(TextureAttribute.createDiffuse(playerTexture),
+                ColorAttribute.createSpecular(1, 1, 1, 1), FloatAttribute.createShininess(8f));
 
-        physicsSystem.getPhysicsSystemState().getCollisionWorld().addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
-                (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
-                (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
-
-        physicsSystem.getPhysicsSystemState().getCollisionWorld().addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
-
-        return entity;
+        return modelBuilder.createCapsule(2f, 6f, 16, material, VertexAttributes.Usage.Position |
+                VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
     }
 }

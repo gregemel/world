@@ -13,7 +13,7 @@ import static java.lang.String.format;
 public class ParticleFactory {
 
     public ParticleComponent create(ParticleSystem particleSystem) {
-        Gdx.app.log("ParticleComponent", "creating");
+        Gdx.app.log("ParticleFactory", "creating particle component");
 
 
         ParticleComponent particleComponent = new ParticleComponent();

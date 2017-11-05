@@ -1,11 +1,14 @@
 package com.deeep.spaceglad.services;
 
+import com.badlogic.gdx.Gdx;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.databags.World;
 import com.deeep.spaceglad.systems.PhysicsSystem;
 import com.deeep.spaceglad.systems.MonsterSystem;
 import com.deeep.spaceglad.systems.PlayerSystem;
 import com.deeep.spaceglad.systems.StatusSystem;
+
+import static java.lang.String.format;
 
 public class WorldRenderer {
     public void render(World gameWorld, float delta) {
@@ -14,6 +17,7 @@ public class WorldRenderer {
     }
 
     public void resize(World gameWorld, int width, int height) {
+        Gdx.app.log("resize", format("load %s, %d, %d", gameWorld.toString(), width, height));
         gameWorld.getRenderSystem().resize(width, height);
     }
 

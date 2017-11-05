@@ -1,11 +1,15 @@
 package com.deeep.spaceglad.services;
 
+import com.badlogic.gdx.Gdx;
 import com.deeep.spaceglad.databags.StatusComponent;
 import com.deeep.spaceglad.databags.AnimationComponent;
 import com.deeep.spaceglad.databags.MonsterAnimations;
 
+import static java.lang.String.format;
+
 public class StatusService {
     public StatusComponent create(AnimationComponent animationComponent) {
+        Gdx.app.log("StatusService", format("create %s", animationComponent.toString()));
         StatusComponent statusComponent = new StatusComponent();
         statusComponent.setAnimationComponent(animationComponent);
         statusComponent.setAlive(true);
