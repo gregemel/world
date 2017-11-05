@@ -110,7 +110,7 @@ public class WorldLoader {
         gameWorld.setCurrentScene(area);
         gameWorld.getEntityEngine().addEntity(area.getGround());
         gameWorld.getEntityEngine().addEntity(area.getSky());
-        gameWorld.getPlayerSystem().getPlayerSystemState().setDome(area.getSky());
+        gameWorld.getPlayerSystem().getPlayerSystemState().setSkyEntity(area.getSky());
     }
 
     private void createPlayer(float x, float y, float z) {
@@ -123,7 +123,7 @@ public class WorldLoader {
         Entity gun = playerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4);
         gameWorld.setEntityPlayerItem(gun);
         gameWorld.getEntityEngine().addEntity(gun);
-        gameWorld.getPlayerSystem().getPlayerSystemState().setGun(gun);
+        gameWorld.getPlayerSystem().getPlayerSystemState().setItemEntity(gun);
         gameWorld.getRenderSystem().getRenderSystemState().setGun(gun);
     }
 

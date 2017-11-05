@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.physics.bullet.collision.btBroadphaseProxy;
 import com.badlogic.gdx.physics.bullet.collision.btCapsuleShape;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
+import com.badlogic.gdx.physics.bullet.collision.btConvexShape;
 import com.badlogic.gdx.physics.bullet.collision.btPairCachingGhostObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btKinematicCharacterController;
 import com.emelwerx.world.databags.AnimationComponent;
@@ -122,28 +123,32 @@ public class MonsterFactory {
         characterComponent.setGhostObject(
                 new btPairCachingGhostObject());
 
-        characterComponent.getGhostObject().setWorldTransform(enemyModelComponent.getInstance().transform);
+        btPairCachingGhostObject pairCachingGhostObject = characterComponent.getGhostObject();
+        pairCachingGhostObject.setWorldTransform(enemyModelComponent.getInstance().transform);
         characterComponent.setGhostShape(
                 new btCapsuleShape(2f, 2f));
 
-        characterComponent.getGhostObject().setCollisionShape(characterComponent.getGhostShape());
-        characterComponent.getGhostObject().setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
+        btConvexShape ghostShape = characterComponent.getGhostShape();
+        pairCachingGhostObject.setCollisionShape(ghostShape);
+        pairCachingGhostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
 
         characterComponent.setCharacterController(
                 new btKinematicCharacterController(
-                    characterComponent.getGhostObject(),
-                        characterComponent.getGhostShape(),
+                        pairCachingGhostObject,
+                        ghostShape,
                         .35f));
 
-        characterComponent.getGhostObject().userData = entity;
+        pairCachingGhostObject.userData = entity;
         return characterComponent;
     }
 
     private static void setPhysics(PhysicsSystem physicsSystem, Entity entity) {
         Gdx.app.log("MonsterFactory", "setPhysics");
-        physicsSystem.getPhysicsSystemState().getCollisionWorld().addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
+        physicsSystem.getPhysicsSystemState().getCollisionWorld().addCollisionObject(
+                entity.getComponent(CharacterComponent.class).getGhostObject(),
                 (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
                 (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
-        physicsSystem.getPhysicsSystemState().getCollisionWorld().addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
+        physicsSystem.getPhysicsSystemState().getCollisionWorld().addAction(
+                entity.getComponent(CharacterComponent.class).getCharacterController());
     }
 }

@@ -49,7 +49,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
     @Override
     public void update(float delta) {
-        if (getPlayerSystemState().getPlayer() == null) return;
+        if (getPlayerSystemState().getPlayerEntity() == null) return;
         updateMovement(delta);
         updateStatus();
         checkGameOver();
@@ -98,12 +98,11 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         camera.position.set(translation.x, translation.y, translation.z);
         camera.update(true);
 
-        playerSystemState.getDome().getComponent(ModelComponent.class).getInstance()
+        playerSystemState.getSkyEntity().getComponent(ModelComponent.class).getInstance()
                 .transform.setToTranslation(translation.x, translation.y, translation.z);
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            // TODO change this back to 25
-            characterComponent.getCharacterController().setJumpSpeed(25);
+            characterComponent.getCharacterController().setJumpSpeed(playerSystemState.getJumpForce());
             characterComponent.getCharacterController().jump();
         }
 
@@ -206,7 +205,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     @Override
     public void entityAdded(Entity entity) {
         Gdx.app.log("PlayerSystem", "entityAdded");
-        playerSystemState.setPlayer(entity);
+        playerSystemState.setPlayerEntity(entity);
         playerSystemState.setPlayerComponent(entity.getComponent(PlayerComponent.class));
         playerSystemState.setCharacterComponent(entity.getComponent(CharacterComponent.class));
         playerSystemState.setModelComponent(entity.getComponent(ModelComponent.class));
