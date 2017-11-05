@@ -1,5 +1,6 @@
 package com.deeep.spaceglad.services;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.databags.World;
@@ -22,21 +23,22 @@ public class WorldRenderer {
     }
 
     private void checkPause(World gameWorld) {
+        Engine entityEngine = gameWorld.getEntityEngine();
         if (Settings.Paused) {
-            gameWorld.getEngine().getSystem(PlayerSystem.class).setProcessing(false);
-            gameWorld.getEngine().getSystem(MonsterSystem.class).setProcessing(false);
-            gameWorld.getEngine().getSystem(StatusSystem.class).setProcessing(false);
-            gameWorld.getEngine().getSystem(PhysicsSystem.class).setProcessing(false);
+            entityEngine.getSystem(PlayerSystem.class).setProcessing(false);
+            entityEngine.getSystem(MonsterSystem.class).setProcessing(false);
+            entityEngine.getSystem(StatusSystem.class).setProcessing(false);
+            entityEngine.getSystem(PhysicsSystem.class).setProcessing(false);
         } else {
-            gameWorld.getEngine().getSystem(PlayerSystem.class).setProcessing(true);
-            gameWorld.getEngine().getSystem(MonsterSystem.class).setProcessing(true);
-            gameWorld.getEngine().getSystem(StatusSystem.class).setProcessing(true);
-            gameWorld.getEngine().getSystem(PhysicsSystem.class).setProcessing(true);
+            entityEngine.getSystem(PlayerSystem.class).setProcessing(true);
+            entityEngine.getSystem(MonsterSystem.class).setProcessing(true);
+            entityEngine.getSystem(StatusSystem.class).setProcessing(true);
+            entityEngine.getSystem(PhysicsSystem.class).setProcessing(true);
         }
     }
 
     private void renderWorld(World gameWorld, float delta) {
-        gameWorld.getEngine().update(delta);
+        gameWorld.getEntityEngine().update(delta);
         if (gameWorld.isDebug()) {
             gameWorld.getDebugDrawer().begin(gameWorld.getRenderSystem().getRenderSystemState().getPerspectiveCamera());
             gameWorld.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().debugDrawWorld();

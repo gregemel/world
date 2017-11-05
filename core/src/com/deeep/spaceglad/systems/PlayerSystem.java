@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
+import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.deeep.spaceglad.Settings;
 import com.deeep.spaceglad.UI.ControllerWidget;
 import com.deeep.spaceglad.UI.GameUI;
@@ -25,6 +26,8 @@ import com.deeep.spaceglad.databags.ModelComponent;
 import com.deeep.spaceglad.databags.PlayerComponent;
 import com.deeep.spaceglad.databags.PlayerSystemState;
 import com.deeep.spaceglad.databags.StatusComponent;
+
+import static java.lang.String.format;
 
 public class PlayerSystem extends EntitySystem implements EntityListener, InputProcessor {
 
@@ -40,7 +43,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
     @Override
     public void addedToEngine(Engine engine) {
-        Gdx.app.log("PlayerSystem", String.format("addedToEngine: %s", engine.toString()));
+        Gdx.app.log("PlayerSystem", format("addedToEngine: %s", engine.toString()));
         engine.addEntityListener(Family.all(PlayerComponent.class).get(), this);
     }
 
@@ -76,25 +79,12 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         ModelComponent modelComponent = getPlayerSystemState().getModelComponent();
 
         characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
-        characterComponent.getWalkDirection().set(0, 0, 0);
 
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            if (ControllerWidget.getMovementVector().y > 0) characterComponent.getWalkDirection().add(camera.direction);
-            if (ControllerWidget.getMovementVector().y < 0) characterComponent.getWalkDirection().sub(camera.direction);
-            if (ControllerWidget.getMovementVector().x < 0) tmp.set(camera.direction).crs(camera.up).scl(-1);
-            if (ControllerWidget.getMovementVector().x > 0) tmp.set(camera.direction).crs(camera.up);
-            characterComponent.getWalkDirection().add(tmp);
-            characterComponent.getWalkDirection().scl(10f * delta);
-            characterComponent.getCharacterController().setWalkDirection(characterComponent.getWalkDirection());
-        } else {
-            if (Gdx.input.isKeyPressed(Input.Keys.W)) characterComponent.getWalkDirection().add(camera.direction);
-            if (Gdx.input.isKeyPressed(Input.Keys.S)) characterComponent.getWalkDirection().sub(camera.direction);
-            if (Gdx.input.isKeyPressed(Input.Keys.A)) tmp.set(camera.direction).crs(camera.up).scl(-1);
-            if (Gdx.input.isKeyPressed(Input.Keys.D)) tmp.set(camera.direction).crs(camera.up);
-            characterComponent.getWalkDirection().add(tmp);
-            characterComponent.getWalkDirection().scl(10f * delta);
-            characterComponent.getCharacterController().setWalkDirection(characterComponent.getWalkDirection());
-        }
+        Vector3 walkDirection = getWalkDirection(tmp, camera, characterComponent);
+
+        walkDirection.add(tmp);
+        walkDirection.scl(10f * delta);
+        characterComponent.getCharacterController().setWalkDirection(walkDirection);
 
         Matrix4 ghost = getPlayerSystemState().getGhost();
         Vector3 translation = getPlayerSystemState().getTranslation();
@@ -102,7 +92,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         ghost.set(0, 0, 0, 0);
         translation.set(0, 0, 0);
         translation = new Vector3();
-        characterComponent.getGhostObject().getWorldTransform(ghost);   //TODO export this
+        characterComponent.getGhostObject().getWorldTransform(ghost);
         ghost.getTranslation(translation);
         modelComponent.getInstance().transform.set(translation.x, translation.y, translation.z, camera.direction.x, camera.direction.y, camera.direction.z, 0);
         camera.position.set(translation.x, translation.y, translation.z);
@@ -122,6 +112,33 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         }
     }
 
+    private Vector3 getWalkDirection(Vector3 tmp, Camera camera, CharacterComponent characterComponent) {
+        Vector3 walkDirection = characterComponent.getWalkDirection();
+        walkDirection.set(0, 0, 0);
+
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            getAndroidPlayerControl(tmp, camera, walkDirection);
+
+        } else {
+            getDesktopPlayerControl(tmp, camera, walkDirection);
+        }
+        return walkDirection;
+    }
+
+    private void getDesktopPlayerControl(Vector3 tmp, Camera camera, Vector3 walkDirection) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) walkDirection.add(camera.direction);
+        if (Gdx.input.isKeyPressed(Input.Keys.Z)) walkDirection.sub(camera.direction);
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) tmp.set(camera.direction).crs(camera.up).scl(-1);
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) tmp.set(camera.direction).crs(camera.up);
+    }
+
+    private void getAndroidPlayerControl(Vector3 tmp, Camera camera, Vector3 walkDirection) {
+        if (ControllerWidget.getMovementVector().y > 0) walkDirection.add(camera.direction);
+        if (ControllerWidget.getMovementVector().y < 0) walkDirection.sub(camera.direction);
+        if (ControllerWidget.getMovementVector().x < 0) tmp.set(camera.direction).crs(camera.up).scl(-1);
+        if (ControllerWidget.getMovementVector().x > 0) tmp.set(camera.direction).crs(camera.up);
+    }
+
     private void updateStatus() {
         GameUI gameUI = playerSystemState.getGameUI();
         PlayerComponent playerComponent = playerSystemState.getPlayerComponent();
@@ -134,6 +151,40 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         Ray ray = playerSystemState.getCamera().getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         Vector3 rayFrom = playerSystemState.getRayFrom();
         Vector3 rayTo = playerSystemState.getRayTo();
+
+        ClosestRayResultCallback rayTestCB = getClosestRayResultCallback(ray, rayFrom, rayTo);
+
+        btDiscreteDynamicsWorld collisionWorld = playerSystemState.getGameWorld().getPhysicsSystem().getPhysicsSystemState()
+                .getCollisionWorld();
+        collisionWorld.rayTest(rayFrom, rayTo, rayTestCB);
+
+        checkForDamage(rayTestCB);
+
+        AnimationComponent animationComponent = playerSystemState.getItem().getComponent(AnimationComponent.class);
+        playerSystemState.getAnimationService().animate(
+                animationComponent, "Armature|shoot", 1, 3);
+    }
+
+    private void checkForDamage(ClosestRayResultCallback rayTestCB) {
+        if (rayTestCB.hasHit()) {
+            btCollisionObject obj = rayTestCB.getCollisionObject();
+            Entity entity = (Entity)obj.userData;
+            if (entity.getComponent(MonsterComponent.class) != null) {
+                StatusComponent component = entity.getComponent(StatusComponent.class);
+                if(component.isAlive()) {
+                    Gdx.app.log("PlayerSystem", format("HIT monster %s", entity.toString()));
+                    component.setAlive(false);
+                    PlayerComponent.score += 100;
+                }
+            } else {
+                Gdx.app.log("PlayerSystem", format("HIT not a monster %s", entity.toString()));
+            }
+        } else {
+            Gdx.app.log("PlayerSystem", "miss");
+        }
+    }
+
+    private ClosestRayResultCallback getClosestRayResultCallback(Ray ray, Vector3 rayFrom, Vector3 rayTo) {
         ClosestRayResultCallback rayTestCB = playerSystemState.getRayTestCB();
 
         rayFrom.set(ray.origin);
@@ -142,23 +193,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         rayTestCB.setClosestHitFraction(1f);
         rayTestCB.setRayFromWorld(rayFrom);
         rayTestCB.setRayToWorld(rayTo);
-
-        playerSystemState.getGameWorld().getPhysicsSystem().getPhysicsSystemState()
-                .getCollisionWorld().rayTest(rayFrom, rayTo, rayTestCB);
-
-        if (rayTestCB.hasHit()) {
-            final btCollisionObject obj = rayTestCB.getCollisionObject();
-            if (((Entity) obj.userData).getComponent(MonsterComponent.class) != null) {
-                if(((Entity) obj.userData).getComponent(StatusComponent.class).alive) {
-                    ((Entity) obj.userData).getComponent(StatusComponent.class).setAlive(false);
-                    PlayerComponent.score += 100;
-                }
-            }
-        }
-
-        playerSystemState.getAnimationService().animate(
-                playerSystemState.getGun().getComponent(AnimationComponent.class), "Armature|shoot", 1, 3);
-
+        return rayTestCB;
     }
 
     private void checkGameOver() {

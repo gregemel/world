@@ -21,23 +21,23 @@ public class CollisionListener extends ContactListener {
             Entity entity0 = (Entity) colObj0.userData;
             Entity entity1 = (Entity) colObj1.userData;
 
-            Gdx.app.log("CollisionListener", format("entity contact between %s, %s", entity0.toString(), entity1.toString()));
+            Gdx.app.log("CollisionListener", format("two entities in contact %s, %s", entity0.toString(), entity1.toString()));
 
 
             if (entity0.getComponent(CharacterComponent.class) != null
                     && entity1.getComponent(CharacterComponent.class) != null) {
                 if (entity0.getComponent(MonsterComponent.class) != null) {
-                    if (entity0.getComponent(StatusComponent.class).alive) {
+                    if (entity0.getComponent(StatusComponent.class).isAlive()) {
                         entity1.getComponent(PlayerComponent.class).health -= 10;
                         Gdx.app.log("CollisionListener", "1 ouch!");
                     }
-                    entity0.getComponent(StatusComponent.class).alive = false;
+                    entity0.getComponent(StatusComponent.class).setAlive(false);
                 } else {
-                    if (entity1.getComponent(StatusComponent.class).alive) {
+                    if (entity1.getComponent(StatusComponent.class).isAlive()) {
                                             entity0.getComponent(PlayerComponent.class).health -= 10;
                         Gdx.app.log("CollisionListener", "0 ouch!");
                     }
-                    entity1.getComponent(StatusComponent.class).alive = false;
+                    entity1.getComponent(StatusComponent.class).setAlive(false);
                 }
             }
         }

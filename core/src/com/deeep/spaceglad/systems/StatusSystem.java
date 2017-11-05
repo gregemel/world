@@ -4,10 +4,11 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.deeep.spaceglad.databags.StatusComponent;
 import com.deeep.spaceglad.databags.StatusSystemState;
+
+import static java.lang.String.format;
 
 public class StatusSystem extends EntitySystem {
 
@@ -29,11 +30,12 @@ public class StatusSystem extends EntitySystem {
 
     @Override
     public void update(float delta) {
-        ImmutableArray<Entity> entities = statusSystemState.getEntities();
-        for (int i = 0; i < entities.size(); i++) {
-            Entity entity = entities.get(i);
-            statusSystemState.getStatusService().update(entity.getComponent(StatusComponent.class), delta);
-            if (entity.getComponent(StatusComponent.class).aliveStateTime >= 3.4f) {
+        for(Entity entity: statusSystemState.getEntities()) {
+            StatusComponent statusComponent = entity.getComponent(StatusComponent.class);
+            statusSystemState.getStatusService().update(statusComponent, delta);
+
+            if (statusComponent.getAliveStateTime() >= 3.4f) {
+                Gdx.app.log("StatusSystem", format("times up for %s", entity.toString()));
                 statusSystemState.getWorldService().remove(statusSystemState.getGameWorld(), entity);
             }
         }

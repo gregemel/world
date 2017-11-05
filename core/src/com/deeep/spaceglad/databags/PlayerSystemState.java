@@ -41,7 +41,7 @@ public class PlayerSystemState {
         this.camera = camera;
     }
 
-    public Entity getGun() {
+    public Entity getItem() {
         return gun;
     }
 

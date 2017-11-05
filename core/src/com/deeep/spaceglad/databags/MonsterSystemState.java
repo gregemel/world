@@ -81,7 +81,7 @@ public class MonsterSystemState {
         this.playerPosition = playerPosition;
     }
 
-    public Vector3 getEnemyPosition() {
+    public Vector3 getMonsterPosition() {
         return enemyPosition;
     }
 

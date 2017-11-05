@@ -4,11 +4,13 @@ import com.badlogic.ashley.core.Component;
 
 public class StatusComponent extends Component {
 
-    public boolean alive, running, attacking;
-    public float aliveStateTime;
+    private boolean alive;
+    private boolean running;
+    private boolean attacking;
+    private float aliveStateTime;
     private AnimationComponent animationComponent;
 
-    public AnimationComponent getAnimationComponent() {
+    private AnimationComponent getAnimationComponent() {
         return animationComponent;
     }
 

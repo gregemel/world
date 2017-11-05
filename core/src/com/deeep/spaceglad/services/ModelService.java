@@ -32,25 +32,22 @@ public class ModelService {
         Gdx.app.log("ModelService", format(Locale.US,"loadModel %s, %f", name, scalar));
 
         Model model = loadModel(name);
-
         for (Node node : model.nodes) {
             node.scale.scl(scalar);
         }
-
         model.calculateTransforms();
 
         return model;
     }
 
     public Model getSkyModel(String name) {
-        Gdx.app.log("ModelService", "getSkyModel");
-        UBJsonReader jsonReader = new UBJsonReader();
-        G3dModelLoader modelLoader = new G3dModelLoader(jsonReader);
+        Gdx.app.log("ModelService", format("getSkyModel %s", name));
+        G3dModelLoader modelLoader = new G3dModelLoader(new UBJsonReader());
         return modelLoader.loadModel(Gdx.files.getFileHandle("data/" + name + ".g3db", Files.FileType.Internal));
     }
 
     public ModelComponent create(Model model, float x, float y, float z) {
-        Gdx.app.log("ModelService", "create");
+        Gdx.app.log("ModelService", format(Locale.US, "create model component %s, %f, %f, %f", model.toString(), x, y, z));
         ModelComponent modelComponent = new ModelComponent();
         Matrix4 matrix4 = new Matrix4();
         modelComponent.setMatrix4(matrix4);

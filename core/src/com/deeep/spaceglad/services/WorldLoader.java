@@ -32,7 +32,7 @@ public class WorldLoader {
 
         setDebug();
         addSystems();
-        loadLevel();
+        loadFirstScene();
         createPlayer(0, 6, 0);
 
         return gameWorld;
@@ -47,22 +47,13 @@ public class WorldLoader {
     }
 
     private void addSystems() {
-
-        Gdx.app.log("WorldLoader", "adding systems");
-
         Engine engine = createEntitySystem();
-
         RenderSystem renderSystem = createRenderSystem(engine);
-
         createPhysicsSystem(engine);
-
         createPlayerSystem(engine, renderSystem);
-
         createMonsterSystem(engine);
-
         createStatusSystem(engine);
-
-        gameWorld.setEngine(engine);
+        gameWorld.setEntityEngine(engine);
     }
 
     private Engine createEntitySystem() {
@@ -71,7 +62,6 @@ public class WorldLoader {
     }
 
     private RenderSystem createRenderSystem(Engine engine) {
-        Gdx.app.log("WorldLoader", "createRenderSystem");
         RenderSystemFactory renderSystemFactory = new RenderSystemFactory();
         RenderSystem renderSystem = renderSystemFactory.create();
         gameWorld.setRenderSystem(renderSystem);
@@ -80,7 +70,6 @@ public class WorldLoader {
     }
 
     private void createPhysicsSystem(Engine engine) {
-        Gdx.app.log("WorldLoader", "createPhysicsSystem");
         PhysicsSystemFactory physicsSystemFactory = new PhysicsSystemFactory();
         PhysicsSystem physicsSystem = physicsSystemFactory.create();
         gameWorld.setPhysicsSystem(physicsSystem);
@@ -91,7 +80,6 @@ public class WorldLoader {
     }
 
     private void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
-        Gdx.app.log("WorldLoader", "createPlayerSystem");
         PlayerSystemFactory playerSystemFactory = new PlayerSystemFactory();
         PlayerSystem playerSystem = playerSystemFactory.create(
                 gameWorld, gameUI, renderSystem.getRenderSystemState().getPerspectiveCamera());
@@ -100,10 +88,9 @@ public class WorldLoader {
     }
 
     private void createStatusSystem(Engine engine) {
-        Gdx.app.log("WorldLoader", "createStatusSystem");
         StatusSystem statusSystem = new StatusSystem();
-        StatusSystemState statusSystemState = new StatusSystemState();
 
+        StatusSystemState statusSystemState = new StatusSystemState();
         statusSystemState.setGameWorld(gameWorld);
         statusSystemState.setStatusService(new StatusService());
         statusSystem.setStatusSystemState(statusSystemState);
@@ -113,41 +100,36 @@ public class WorldLoader {
     }
 
     private void createMonsterSystem(Engine engine) {
-        Gdx.app.log("WorldLoader", "createMonsterSystem");
         MonsterSystemFactory monsterSystemFactory = new MonsterSystemFactory();
         MonsterSystem monsterSystem = monsterSystemFactory.create(gameWorld);
         engine.addSystem(monsterSystem);
     }
 
-
-    private void loadLevel() {
-        Gdx.app.log("WorldLoader", "loadLevel");
+    private void loadFirstScene() {
         Scene area = SceneLoader.load("arena", 0, 0, 0);
         gameWorld.setCurrentScene(area);
-        gameWorld.getEngine().addEntity(area.getGround());
-        gameWorld.getEngine().addEntity(area.getSky());
+        gameWorld.getEntityEngine().addEntity(area.getGround());
+        gameWorld.getEntityEngine().addEntity(area.getSky());
         gameWorld.getPlayerSystem().getPlayerSystemState().setDome(area.getSky());
     }
 
     private void createPlayer(float x, float y, float z) {
-        Gdx.app.log("WorldLoader", "createPlayer");
         PlayerFactory playerFactory = new PlayerFactory();
         Entity player = playerFactory.create(gameWorld.getPhysicsSystem(), x, y, z);
         gameWorld.setPlayer(player);
-        gameWorld.getEngine().addEntity(player);
+        gameWorld.getEntityEngine().addEntity(player);
 
         PlayerItemFactory playerItemFactory = new PlayerItemFactory();
         Entity gun = playerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4);
-        gameWorld.setGun(gun);
-        gameWorld.getEngine().addEntity(gun);
+        gameWorld.setEntityPlayerItem(gun);
+        gameWorld.getEntityEngine().addEntity(gun);
         gameWorld.getPlayerSystem().getPlayerSystemState().setGun(gun);
         gameWorld.getRenderSystem().getRenderSystemState().setGun(gun);
     }
 
-
     public void remove(World gameWorld, Entity entity) {
         Gdx.app.log("WorldLoader", "remove");
-        gameWorld.getEngine().removeEntity(entity);
+        gameWorld.getEntityEngine().removeEntity(entity);
         gameWorld.getPhysicsSystem().removeBody(entity);
     }
 }

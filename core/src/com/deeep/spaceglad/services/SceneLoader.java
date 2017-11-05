@@ -1,23 +1,18 @@
 package com.deeep.spaceglad.services;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.loaders.ModelLoader;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
-import com.badlogic.gdx.graphics.g3d.model.data.ModelData;
-import com.badlogic.gdx.graphics.g3d.utils.TextureProvider;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.UBJsonReader;
-import com.deeep.spaceglad.physics.MotionState;
-import com.deeep.spaceglad.databags.PhysicsComponent;
 import com.deeep.spaceglad.databags.ModelComponent;
+import com.deeep.spaceglad.databags.PhysicsComponent;
 import com.deeep.spaceglad.databags.Scene;
+import com.deeep.spaceglad.physics.MotionState;
+
+import java.util.Locale;
 
 import static java.lang.String.format;
 
@@ -35,7 +30,7 @@ public class SceneLoader {
     }
 
     private static Entity loadSky(String name, int x, int y, int z) {
-        Gdx.app.log("loadSky", format("load %s, %d, %d, %d", name, x, y, z));
+        Gdx.app.log("loadSky", format(Locale.US,"load %s, %d, %d, %d", name, x, y, z));
         ModelService modelService = new ModelService();
         Model model = modelService.getSkyModel(name);
         ModelComponent modelComponent = modelService.create(model, x, y, z);
@@ -46,7 +41,7 @@ public class SceneLoader {
     }
 
     private static Entity loadGround(String name, int x, int y, int z) {
-        Gdx.app.log("loadGround", format("load %s, %d, %d, %d", name, x, y, z));
+        Gdx.app.log("loadGround", format(Locale.US,"load %s, %d, %d, %d", name, x, y, z));
         Entity entity = new Entity();
 
         ModelService modelService = new ModelService();

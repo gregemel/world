@@ -8,10 +8,9 @@ import com.deeep.spaceglad.systems.*;
 public class World {
     private boolean debug = false;
     private DebugDrawer debugDrawer;
-    private Engine engine;
-    private Entity character;
-    private Entity gun;
-    private Entity dome;
+    private Engine entityEngine;
+    private Entity entityCharacter;
+    private Entity entityPlayerItem;
     private PhysicsSystem physicsSystem;
     private PlayerSystem playerSystem;
     private RenderSystem renderSystem;
@@ -41,36 +40,28 @@ public class World {
         this.debugDrawer = debugDrawer;
     }
 
-    public Engine getEngine() {
-        return engine;
+    public Engine getEntityEngine() {
+        return entityEngine;
     }
 
-    public void setEngine(Engine engine) {
-        this.engine = engine;
+    public void setEntityEngine(Engine entityEngine) {
+        this.entityEngine = entityEngine;
     }
 
-    public Entity getCharacter() {
-        return character;
+    public Entity getEntityCharacter() {
+        return entityCharacter;
     }
 
     public void setPlayer(Entity character) {
-        this.character = character;
+        this.entityCharacter = character;
     }
 
-    public Entity getGun() {
-        return gun;
+    public Entity getEntityPlayerItem() {
+        return entityPlayerItem;
     }
 
-    public void setGun(Entity gun) {
-        this.gun = gun;
-    }
-
-    public Entity getDome() {
-        return dome;
-    }
-
-    public void setDome(Entity dome) {
-        this.dome = dome;
+    public void setEntityPlayerItem(Entity entityPlayerItem) {
+        this.entityPlayerItem = entityPlayerItem;
     }
 
     public PhysicsSystem getPhysicsSystem() {

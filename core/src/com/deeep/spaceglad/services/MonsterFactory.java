@@ -93,7 +93,7 @@ public class MonsterFactory {
     private static ParticleComponent getParticleComponent(World gameWorld) {
         Gdx.app.log("MonsterFactory", "getParticleComponent");
         ParticleFactory particleFactory = new ParticleFactory();
-        return particleFactory.create(gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem());
+        return particleFactory.create("dieparticle", gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem());
     }
 
     private static StatusComponent getStatusComponent(AnimationComponent animationComponent) {
