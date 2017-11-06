@@ -7,7 +7,7 @@ import com.emelwerx.world.databags.World;
 import com.emelwerx.world.systems.PhysicsSystem;
 import com.emelwerx.world.systems.MonsterSystem;
 import com.emelwerx.world.systems.PlayerSystem;
-import com.emelwerx.world.systems.StatusSystem;
+import com.emelwerx.world.systems.ThinkingSystem;
 
 import static java.lang.String.format;
 
@@ -27,12 +27,12 @@ public class WorldRenderer {
         if (Settings.Paused) {
             entityEngine.getSystem(PlayerSystem.class).setProcessing(false);
             entityEngine.getSystem(MonsterSystem.class).setProcessing(false);
-            entityEngine.getSystem(StatusSystem.class).setProcessing(false);
+            entityEngine.getSystem(ThinkingSystem.class).setProcessing(false);
             entityEngine.getSystem(PhysicsSystem.class).setProcessing(false);
         } else {
             entityEngine.getSystem(PlayerSystem.class).setProcessing(true);
             entityEngine.getSystem(MonsterSystem.class).setProcessing(true);
-            entityEngine.getSystem(StatusSystem.class).setProcessing(true);
+            entityEngine.getSystem(ThinkingSystem.class).setProcessing(true);
             entityEngine.getSystem(PhysicsSystem.class).setProcessing(true);
         }
     }

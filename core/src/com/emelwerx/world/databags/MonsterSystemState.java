@@ -8,7 +8,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.emelwerx.world.services.ModelService;
+import com.emelwerx.world.services.ModelComponentFactory;
 
 import java.util.Random;
 
@@ -18,7 +18,7 @@ public class MonsterSystemState {
     private World gameWorld;
 
     private Engine entityEngine;
-    private ModelService modelService = new ModelService();
+    private ModelComponentFactory modelComponentFactory = new ModelComponentFactory();
 
     private Vector3 playerPosition = new Vector3();
     private Vector3 enemyPosition = new Vector3();
@@ -31,7 +31,7 @@ public class MonsterSystemState {
     private float[] zSpawns = {-112, 112, -12, 12};
 
     private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
-    private ComponentMapper<StatusComponent> sm = ComponentMapper.getFor(StatusComponent.class);
+    private ComponentMapper<ThoughtComponent> sm = ComponentMapper.getFor(ThoughtComponent.class);
 
     public ImmutableArray<Entity> getMonsters() {
         return monsters;
@@ -89,7 +89,7 @@ public class MonsterSystemState {
         this.enemyPosition = enemyPosition;
     }
 
-    public Matrix4 getGhost() {
+    public Matrix4 getGhostMatrix() {
         return ghost;
     }
 
@@ -113,12 +113,12 @@ public class MonsterSystemState {
         this.random = random;
     }
 
-    public ModelService getModelService() {
-        return modelService;
+    public ModelComponentFactory getModelComponentFactory() {
+        return modelComponentFactory;
     }
 
-    public void setModelService(ModelService modelService) {
-        this.modelService = modelService;
+    public void setModelComponentFactory(ModelComponentFactory modelComponentFactory) {
+        this.modelComponentFactory = modelComponentFactory;
     }
 
     public float[] getxSpawns() {
@@ -145,11 +145,11 @@ public class MonsterSystemState {
         this.cm = cm;
     }
 
-    public ComponentMapper<StatusComponent> getSm() {
+    public ComponentMapper<ThoughtComponent> getSm() {
         return sm;
     }
 
-    public void setSm(ComponentMapper<StatusComponent> sm) {
+    public void setSm(ComponentMapper<ThoughtComponent> sm) {
         this.sm = sm;
     }
 }

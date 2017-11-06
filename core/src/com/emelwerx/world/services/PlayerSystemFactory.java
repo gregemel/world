@@ -12,14 +12,14 @@ import com.emelwerx.world.systems.PlayerSystem;
 import static java.lang.String.format;
 
 public class PlayerSystemFactory {
-    public PlayerSystem create(World gameWorld, GameUI gameUI, Camera camera) {
+    public static PlayerSystem create(World gameWorld, GameUI gameUI, Camera camera) {
         Gdx.app.log("PlayerSystemFactory", format("creating player system %s, %s, %s", gameWorld.toString(), gameUI.toString(), camera.toString()));
         PlayerSystem playerSystem = new PlayerSystem();
         playerSystem.setPlayerSystemState(getPlayerSystemState(gameWorld, gameUI, camera));
         return playerSystem;
     }
 
-    private PlayerSystemState getPlayerSystemState(World gameWorld, GameUI gameUI, Camera camera) {
+    private static PlayerSystemState getPlayerSystemState(World gameWorld, GameUI gameUI, Camera camera) {
         PlayerSystemState playerSystemState = new PlayerSystemState();
         playerSystemState.setCamera(camera);
         playerSystemState.setGameWorld(gameWorld);

@@ -7,12 +7,16 @@ import com.emelwerx.world.databags.MonsterSystemState;
 import com.emelwerx.world.systems.MonsterSystem;
 
 public class MonsterSystemFactory {
-    public MonsterSystem create(World gameWorld) {
+    public static MonsterSystem create(World gameWorld) {
         Gdx.app.log("MonsterSystemFactory", "creating monster system");
-        MonsterSystem monsterSystem = new MonsterSystem();
-        MonsterSystemState monsterSystemState = new MonsterSystemState();
+        MonsterSystemState monsterSystemState = getMonsterSystemState();
+        MonsterSystem monsterSystem = new MonsterSystem(monsterSystemState);
         monsterSystemState.setGameWorld(gameWorld);
-        monsterSystem.setMonsterSystemState(monsterSystemState);
+//        monsterSystem.setMonsterSystemState(monsterSystemState);
         return monsterSystem;
+    }
+
+    private static MonsterSystemState getMonsterSystemState() {
+        return new MonsterSystemState();
     }
 }

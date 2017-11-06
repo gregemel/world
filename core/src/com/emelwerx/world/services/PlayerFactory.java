@@ -11,78 +11,45 @@ import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.physics.bullet.collision.btBroadphaseProxy;
-import com.badlogic.gdx.physics.bullet.collision.btCapsuleShape;
-import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btPairCachingGhostObject;
+import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btKinematicCharacterController;
 import com.emelwerx.world.databags.CharacterComponent;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.systems.PhysicsSystem;
 
+import java.util.Locale;
+
 import static java.lang.String.format;
 
 public class PlayerFactory {
 
-    public Entity create(PhysicsSystem physicsSystem, float x, float y, float z) {
-        Gdx.app.log("PlayerFactory", format("creating entity %s, %f, %f, %f", physicsSystem.toString(), x, y, z));
+    public static Entity create(PhysicsSystem physicsSystem, float x, float y, float z) {
+        Gdx.app.log("PlayerFactory", format(Locale.US,"creating entity %s, %f, %f, %f", physicsSystem.toString(), x, y, z));
 
-        Entity entity = createCharacter(physicsSystem, x, y, z);
-        entity.add(new PlayerComponent());
+        Entity entity = new Entity();
+        attachComponents(entity, x, y, z);
+        setPhysicsSystem(physicsSystem, entity);
         return entity;
     }
 
-    private Entity createCharacter(PhysicsSystem physicsSystem, float x, float y, float z) {
-        Entity entity = new Entity();
-
+    private static void attachComponents(Entity entity, float x, float y, float z) {
         ModelComponent modelComponent = getModelComponent(x, y, z);
         entity.add(modelComponent);
 
-        CharacterComponent characterComponent = getCharacterComponent(entity, modelComponent);
+        CharacterComponent characterComponent = CharacterComponentFactory.create(entity, modelComponent);
         entity.add(characterComponent);
 
-        setPhysicsSystem(physicsSystem, entity);
-
-        return entity;
+        entity.add(new PlayerComponent());
     }
 
-    private void setPhysicsSystem(PhysicsSystem physicsSystem, Entity entity) {
-        physicsSystem.getPhysicsSystemState().getCollisionWorld().addCollisionObject(entity.getComponent(CharacterComponent.class).getGhostObject(),
-                (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
-                (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
-
-        physicsSystem.getPhysicsSystemState().getCollisionWorld().addAction(entity.getComponent(CharacterComponent.class).getCharacterController());
-    }
-
-    private ModelComponent getModelComponent(float x, float y, float z) {
+    private static ModelComponent getModelComponent(float x, float y, float z) {
         Model playerModel = getModel();
-        ModelService modelService = new ModelService();
-        return modelService.create(playerModel, x, y, z);
+        return ModelComponentFactory.create(playerModel, x, y, z);
     }
 
-    private CharacterComponent getCharacterComponent(Entity entity, ModelComponent modelComponent) {
-        CharacterComponent characterComponent = new CharacterComponent();
-        characterComponent.setGhostObject(
-                new btPairCachingGhostObject());
-
-        characterComponent.getGhostObject().setWorldTransform(modelComponent.getInstance().transform);
-        characterComponent.setGhostShape(
-                new btCapsuleShape(2f, 2f));
-
-        characterComponent.getGhostObject().setCollisionShape(characterComponent.getGhostShape());
-        characterComponent.getGhostObject().setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
-
-        characterComponent.setCharacterController(
-                new btKinematicCharacterController(
-                        characterComponent.getGhostObject(),
-                        characterComponent.getGhostShape(),
-                        .35f));
-
-        characterComponent.getGhostObject().userData = entity;
-        return characterComponent;
-    }
-
-    private Model getModel() {
+    private static Model getModel() {
         ModelBuilder modelBuilder = new ModelBuilder();
         Texture playerTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
         Material material = new Material(TextureAttribute.createDiffuse(playerTexture),
@@ -90,5 +57,15 @@ public class PlayerFactory {
 
         return modelBuilder.createCapsule(2f, 6f, 16, material, VertexAttributes.Usage.Position |
                 VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
+    }
+
+    private static void setPhysicsSystem(PhysicsSystem physicsSystem, Entity entity) {
+        btDiscreteDynamicsWorld collisionWorld = physicsSystem.getPhysicsSystemState().getCollisionWorld();
+        btPairCachingGhostObject ghostObject = entity.getComponent(CharacterComponent.class).getGhostObject();
+        collisionWorld.addCollisionObject(ghostObject,
+                (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
+                (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
+        btKinematicCharacterController characterController = entity.getComponent(CharacterComponent.class).getCharacterController();
+        collisionWorld.addAction(characterController);
     }
 }

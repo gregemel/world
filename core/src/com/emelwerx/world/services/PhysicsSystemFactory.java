@@ -9,10 +9,11 @@ import com.badlogic.gdx.physics.bullet.collision.btGhostPairCallback;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
 import com.emelwerx.world.databags.PhysicsSystemState;
+import com.emelwerx.world.systems.CollisionSystem;
 import com.emelwerx.world.systems.PhysicsSystem;
 
 public class PhysicsSystemFactory {
-    public PhysicsSystem create() {
+    public static PhysicsSystem create() {
         Gdx.app.log("PhysicsSystemFactory", "creating physics system");
         PhysicsSystem physicsSystem = new PhysicsSystem();
         PhysicsSystemState physicsSystemState = new PhysicsSystemState();
@@ -43,36 +44,36 @@ public class PhysicsSystemFactory {
         return physicsSystem;
     }
 
-    private btDiscreteDynamicsWorld getCollisionWorld(btDefaultCollisionConfiguration collisionConfiguration, btCollisionDispatcher dispatcher, btAxisSweep3 broadphase, btSequentialImpulseConstraintSolver solver) {
+    private static btDiscreteDynamicsWorld getCollisionWorld(btDefaultCollisionConfiguration collisionConfiguration, btCollisionDispatcher dispatcher, btAxisSweep3 broadphase, btSequentialImpulseConstraintSolver solver) {
         btDiscreteDynamicsWorld collisionWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
         collisionWorld.setGravity(new Vector3(0, -0.5f, 0));
         return collisionWorld;
     }
 
-    private btGhostPairCallback getGhostPairCallback() {
+    private static btGhostPairCallback getGhostPairCallback() {
         return new btGhostPairCallback();
     }
 
-    private btSequentialImpulseConstraintSolver getSolver() {
+    private static btSequentialImpulseConstraintSolver getSolver() {
         return new btSequentialImpulseConstraintSolver();
     }
 
-    private btAxisSweep3 getBroadphase() {
+    private static btAxisSweep3 getBroadphase() {
         return new btAxisSweep3(
                     new Vector3(-1000, -1000, -1000),
                     new Vector3(1000, 1000, 1000));
     }
 
-    private btCollisionDispatcher getCollisionDispatcher(btDefaultCollisionConfiguration collisionConfiguration) {
+    private static btCollisionDispatcher getCollisionDispatcher(btDefaultCollisionConfiguration collisionConfiguration) {
         return new btCollisionDispatcher(collisionConfiguration);
     }
 
-    private btDefaultCollisionConfiguration getCollisionConfiguration() {
+    private static btDefaultCollisionConfiguration getCollisionConfiguration() {
         return new btDefaultCollisionConfiguration();
     }
 
-    private CollisionListener getCollisionListener() {
-        CollisionListener collisionListener = new CollisionListener();
+    private static CollisionSystem getCollisionListener() {
+        CollisionSystem collisionListener = new CollisionSystem();
         collisionListener.enable();
         return collisionListener;
     }

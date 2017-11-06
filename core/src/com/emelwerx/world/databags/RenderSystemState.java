@@ -65,7 +65,7 @@ public class RenderSystemState {
         return gun;
     }
 
-    public void setGun(Entity gun) {
+    public void setPlayersVisibleItem(Entity gun) {
         this.gun = gun;
     }
 

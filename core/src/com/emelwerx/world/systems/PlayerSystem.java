@@ -25,7 +25,7 @@ import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.PlayerSystemState;
-import com.emelwerx.world.databags.StatusComponent;
+import com.emelwerx.world.databags.ThoughtComponent;
 
 import static java.lang.String.format;
 
@@ -169,7 +169,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
             btCollisionObject obj = rayTestCB.getCollisionObject();
             Entity entity = (Entity)obj.userData;
             if (entity.getComponent(MonsterComponent.class) != null) {
-                StatusComponent component = entity.getComponent(StatusComponent.class);
+                ThoughtComponent component = entity.getComponent(ThoughtComponent.class);
                 if(component.isAlive()) {
                     Gdx.app.log("PlayerSystem", format("HIT monster %s", entity.toString()));
                     component.setAlive(false);
