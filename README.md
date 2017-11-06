@@ -3,7 +3,7 @@ An immersive world explored on your Android device.
 
 Built with 3D LibGDX, Ashley, Bullet, Blender.
 
-Currently, the world is limited to fighting a single monster with a blaster.
+Currently, the world is limited to fighting a single monster with a blaster in an enclosed arena.
 
 Inspired by the book:
 Building a 3D Game with LibGDX
