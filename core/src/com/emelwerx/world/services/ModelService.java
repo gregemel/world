@@ -23,10 +23,6 @@ public class ModelService {
         return modelComponent;
     }
 
-    public void updateOpacity(ModelComponent modelComponent, float delta) {
-        BlendingAttribute blendingAttribute = modelComponent.getBlendingAttribute();
-        if (blendingAttribute != null) {
-            blendingAttribute.opacity = blendingAttribute.opacity - delta / 3;
-        }
-    }
+//    public void updateOpacity(ModelComponent modelComponent, float delta) {
+//    }
 }

@@ -89,7 +89,7 @@ public class MonsterSystemState {
         this.enemyPosition = enemyPosition;
     }
 
-    public Matrix4 getGhost() {
+    public Matrix4 getGhostMatrix() {
         return ghost;
     }
 

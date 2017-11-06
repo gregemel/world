@@ -6,9 +6,9 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
-import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -20,6 +20,7 @@ import com.emelwerx.world.databags.ParticleComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.StatusComponent;
 import com.emelwerx.world.services.MonsterFactory;
+import com.emelwerx.world.services.ParticleFactory;
 
 public class MonsterSystem extends EntitySystem implements EntityListener {
 
@@ -44,34 +45,28 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
     }
 
     private void updateAllMonsters(float delta) {
-        ModelComponent playerModel = monsterSystemState.getPlayer().getComponent(ModelComponent.class);
 
         for(Entity entity: monsterSystemState.getMonsters()) {
 
             ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
             StatusComponent statusComponent = entity.getComponent(StatusComponent.class);
 
-            boolean monsterIsDead = !statusComponent.isAlive();
-            if (monsterIsDead) {
-                updateDeadMonster(delta, entity, modelComponent);
-            } else {
+            boolean monsterIsAlive = statusComponent.isAlive();
+            if (monsterIsAlive) {
+                ModelComponent playerModel = monsterSystemState.getPlayer().getComponent(ModelComponent.class);
                 updateLiveMonster(delta, playerModel, entity, modelComponent);
+            } else {
+                updateDeadMonster(delta, entity, modelComponent);
             }
         }
     }
 
     private void updateLiveMonster(float delta, ModelComponent playerModelComponent, Entity entity, ModelComponent monsterModelComponent) {
-        Vector3 playerPosition = monsterSystemState.getPlayerPosition();
-        Vector3 monsterPosition = monsterSystemState.getMonsterPosition();
+        rotateMonsterTowardsPlayer(delta, playerModelComponent, entity, monsterModelComponent);
+    }
 
-        playerModelComponent.getInstance().transform.getTranslation(playerPosition);
-        monsterModelComponent.getInstance().transform.getTranslation(monsterPosition);
-
-        float dX = playerPosition.x - monsterPosition.x;
-        float dZ = playerPosition.z - monsterPosition.z;
-        float theta = (float) (Math.atan2(dX, dZ));
-
-        Quaternion rotationToFacePlayer = getQuaternion(delta, entity, monsterModelComponent, theta);
+    private void rotateMonsterTowardsPlayer(float delta, ModelComponent playerModelComponent, Entity entity, ModelComponent monsterModelComponent) {
+        Quaternion rotationToFacePlayer = getRotationToFaceTarget(delta, playerModelComponent, entity, monsterModelComponent);
 
         Vector3 translation = monsterSystemState.getTranslation();
 
@@ -82,27 +77,29 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
     }
 
     private void updateDeadMonster(float delta, Entity entity, ModelComponent modelComponent) {
-        monsterSystemState.getModelService().updateOpacity(modelComponent, delta);
+        updateOpacity(delta, modelComponent);
 
+        updateParticles(entity, modelComponent);
+    }
+
+    private void updateParticles(Entity entity, ModelComponent modelComponent) {
         ParticleComponent particleComponent = entity.getComponent(ParticleComponent.class);
 
         boolean needToStartParticle = !particleComponent.isUsed();
         if (needToStartParticle) {
             particleComponent.setUsed(true);
-            ParticleEffect particleEffect = getParticleEffect(modelComponent, particleComponent);
+            ParticleEffect particleEffect = ParticleFactory.createParticleEffect(modelComponent, particleComponent);
             ParticleSystem particleSystem = monsterSystemState.getGameWorld().getRenderSystem().getRenderSystemState().getParticleSystem();
             particleSystem.add(particleEffect);
         }
     }
 
-    private ParticleEffect getParticleEffect(ModelComponent modelComponent, ParticleComponent particleComponent) {
-        ParticleEffect effect = particleComponent.getOriginalEffect().copy();
-        ((RegularEmitter) effect.getControllers().first().emitter).setEmissionMode(RegularEmitter.EmissionMode.EnabledUntilCycleEnd);
-        effect.setTransform(modelComponent.getInstance().transform);
-        effect.scale(3.25f, 1, 1.5f);
-        effect.init();
-        effect.start();
-        return effect;
+    private void updateOpacity(float delta, ModelComponent modelComponent) {
+        BlendingAttribute blendingAttribute = modelComponent.getBlendingAttribute();
+        if (blendingAttribute != null) {
+            blendingAttribute.opacity = blendingAttribute.opacity - delta / 3;
+        }
+
     }
 
     private void spawnAnyNewMonsters() {
@@ -112,20 +109,35 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
         }
     }
 
-    private Quaternion getQuaternion(float delta, Entity entity, ModelComponent modelComponent, float theta) {
+    private Quaternion getRotationToFaceTarget(float delta,
+                                               ModelComponent target,
+                                               Entity entity,
+                                               ModelComponent monsterModelComponent) {
+
+        Vector3 targetPosition = monsterSystemState.getPlayerPosition();
+        Vector3 monsterPosition = monsterSystemState.getMonsterPosition();
+
+        target.getInstance().transform.getTranslation(targetPosition);
+        monsterModelComponent.getInstance().transform.getTranslation(monsterPosition);
+
+        float dX = targetPosition.x - monsterPosition.x;
+        float dZ = targetPosition.z - monsterPosition.z;
+        float theta = (float) (Math.atan2(dX, dZ));
+
         Quaternion rot = monsterSystemState.getQuaternion().setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
 
         CharacterComponent characterComponent = monsterSystemState.getCm().get(entity);
-        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform);
+        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(monsterModelComponent.getInstance().transform);
 
         Vector3 walkDirection = getWalkDirection(delta, characterComponent);
         characterComponent.getCharacterController().setWalkDirection(walkDirection);
 
-        Matrix4 ghostMatrix = monsterSystemState.getGhost();
+        Matrix4 ghostMatrix = monsterSystemState.getGhostMatrix();
         ghostMatrix.set(0, 0, 0, 0);
-        monsterSystemState.getTranslation().set(0, 0, 0);
+        Vector3 translation = monsterSystemState.getTranslation();
+        translation.set(0, 0, 0);
         characterComponent.getGhostObject().getWorldTransform(ghostMatrix);
-        ghostMatrix.getTranslation(monsterSystemState.getTranslation());
+        ghostMatrix.getTranslation(translation);
 
         return rot;
     }

@@ -10,7 +10,7 @@ import com.emelwerx.world.databags.ModelComponent;
 import static java.lang.String.format;
 
 public class PlayerItemFactory {
-    public Entity create(String name, float x, float y, float z) {
+    public static Entity create(String name, float x, float y, float z) {
         Gdx.app.log("PlayerItemFactory", format("creating entity %s, %f, %f, %f", name, x, y, z));
 
         ModelService modelService = new ModelService();

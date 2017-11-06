@@ -6,12 +6,12 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionDispatcher;
 import com.badlogic.gdx.physics.bullet.collision.btGhostPairCallback;
 import com.badlogic.gdx.physics.bullet.dynamics.btConstraintSolver;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
-import com.emelwerx.world.services.CollisionListener;
+import com.emelwerx.world.systems.CollisionSystem;
 
 public class PhysicsSystemState {
     private btCollisionConfiguration collisionConfiguration;
     private btCollisionDispatcher dispatcher;
-    private CollisionListener collisionListener;
+    private CollisionSystem collisionListener;
     private btBroadphaseInterface broadphase;
     private btConstraintSolver solver;
     private btDiscreteDynamicsWorld collisionWorld;
@@ -19,11 +19,11 @@ public class PhysicsSystemState {
     private int maxSubSteps = 5;
     private float fixedTimeStep = 1f / 60f;
 
-    public CollisionListener getCollisionListener() {
+    public CollisionSystem getCollisionListener() {
         return collisionListener;
     }
 
-    public void setCollisionListener(CollisionListener collisionListener) {
+    public void setCollisionListener(CollisionSystem collisionListener) {
         this.collisionListener = collisionListener;
     }
 

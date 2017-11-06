@@ -62,16 +62,14 @@ public class WorldLoader {
     }
 
     private RenderSystem createRenderSystem(Engine engine) {
-        RenderSystemFactory renderSystemFactory = new RenderSystemFactory();
-        RenderSystem renderSystem = renderSystemFactory.create();
+        RenderSystem renderSystem = RenderSystemFactory.create();
         gameWorld.setRenderSystem(renderSystem);
         engine.addSystem(renderSystem);
         return renderSystem;
     }
 
     private void createPhysicsSystem(Engine engine) {
-        PhysicsSystemFactory physicsSystemFactory = new PhysicsSystemFactory();
-        PhysicsSystem physicsSystem = physicsSystemFactory.create();
+        PhysicsSystem physicsSystem = PhysicsSystemFactory.create();
         gameWorld.setPhysicsSystem(physicsSystem);
         engine.addSystem(physicsSystem);
         if (gameWorld.isDebug()) {
@@ -80,8 +78,7 @@ public class WorldLoader {
     }
 
     private void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
-        PlayerSystemFactory playerSystemFactory = new PlayerSystemFactory();
-        PlayerSystem playerSystem = playerSystemFactory.create(
+        PlayerSystem playerSystem = PlayerSystemFactory.create(
                 gameWorld, gameUI, renderSystem.getRenderSystemState().getPerspectiveCamera());
         gameWorld.setPlayerSystem(playerSystem);
         engine.addSystem(playerSystem);
@@ -100,8 +97,7 @@ public class WorldLoader {
     }
 
     private void createMonsterSystem(Engine engine) {
-        MonsterSystemFactory monsterSystemFactory = new MonsterSystemFactory();
-        MonsterSystem monsterSystem = monsterSystemFactory.create(gameWorld);
+        MonsterSystem monsterSystem = MonsterSystemFactory.create(gameWorld);
         engine.addSystem(monsterSystem);
     }
 
@@ -114,13 +110,11 @@ public class WorldLoader {
     }
 
     private void createPlayer(float x, float y, float z) {
-        PlayerFactory playerFactory = new PlayerFactory();
-        Entity player = playerFactory.create(gameWorld.getPhysicsSystem(), x, y, z);
+        Entity player = PlayerFactory.create(gameWorld.getPhysicsSystem(), x, y, z);
         gameWorld.setPlayer(player);
         gameWorld.getEntityEngine().addEntity(player);
 
-        PlayerItemFactory playerItemFactory = new PlayerItemFactory();
-        Entity gun = playerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4);
+        Entity gun = PlayerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4);
         gameWorld.setEntityPlayerItem(gun);
         gameWorld.getEntityEngine().addEntity(gun);
         gameWorld.getPlayerSystem().getPlayerSystemState().setItemEntity(gun);

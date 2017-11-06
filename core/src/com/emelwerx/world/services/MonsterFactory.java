@@ -44,7 +44,7 @@ public class MonsterFactory {
         enemyModelComponent = getMonsterModelComponent(x, y, z, modelService);
         entity.add(enemyModelComponent);
 
-        CharacterComponent characterComponent = getCharacterComponent(entity);
+        CharacterComponent characterComponent = CharacterComponentFactory.create(entity, enemyModelComponent);
         entity.add(characterComponent);
 
         PhysicsSystem physicsSystem = gameWorld.getPhysicsSystem();
@@ -94,8 +94,7 @@ public class MonsterFactory {
 
     private static ParticleComponent getParticleComponent(World gameWorld) {
         Gdx.app.log("MonsterFactory", "getParticleComponent");
-        ParticleFactory particleFactory = new ParticleFactory();
-        return particleFactory.create("dieparticle", gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem());
+        return ParticleFactory.create("dieparticle", gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem());
     }
 
     private static StatusComponent getStatusComponent(AnimationComponent animationComponent) {
@@ -115,31 +114,6 @@ public class MonsterFactory {
                 MonsterAnimations.getDurationRun1(),
                 -1, 1);
         return animationComponent;
-    }
-
-    private static CharacterComponent getCharacterComponent(Entity entity) {
-        Gdx.app.log("MonsterFactory", "getCharacterComponent");
-        CharacterComponent characterComponent = new CharacterComponent();
-        characterComponent.setGhostObject(
-                new btPairCachingGhostObject());
-
-        btPairCachingGhostObject pairCachingGhostObject = characterComponent.getGhostObject();
-        pairCachingGhostObject.setWorldTransform(enemyModelComponent.getInstance().transform);
-        characterComponent.setGhostShape(
-                new btCapsuleShape(2f, 2f));
-
-        btConvexShape ghostShape = characterComponent.getGhostShape();
-        pairCachingGhostObject.setCollisionShape(ghostShape);
-        pairCachingGhostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
-
-        characterComponent.setCharacterController(
-                new btKinematicCharacterController(
-                        pairCachingGhostObject,
-                        ghostShape,
-                        .35f));
-
-        pairCachingGhostObject.userData = entity;
-        return characterComponent;
     }
 
     private static void setPhysics(PhysicsSystem physicsSystem, Entity entity) {

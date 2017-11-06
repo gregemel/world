@@ -21,6 +21,8 @@ import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.RenderSystemState;
 
+import java.util.Locale;
+
 import static java.lang.String.*;
 
 
@@ -115,7 +117,7 @@ public class RenderSystem extends EntitySystem {
     }
 
     public void resize(int width, int height) {
-        Gdx.app.log("RenderSystem", String.format("resizing (%d, %d)", width, height));
+        Gdx.app.log("RenderSystem", String.format(Locale.US,"resizing (%d, %d)", width, height));
         renderSystemState.getPerspectiveCamera().viewportHeight = height;
         renderSystemState.getPerspectiveCamera().viewportWidth = width;
         renderSystemState.getGunCamera().viewportHeight = height;

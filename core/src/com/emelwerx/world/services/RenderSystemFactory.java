@@ -16,7 +16,7 @@ import com.emelwerx.world.systems.RenderSystem;
 
 public class RenderSystemFactory {
 
-    public RenderSystem create() {
+    public static RenderSystem create() {
         Gdx.app.log("RenderSystemFactory", "creating");
         RenderSystem renderSystem = new RenderSystem();
         RenderSystemState renderSystemState = new RenderSystemState();
@@ -47,19 +47,19 @@ public class RenderSystemFactory {
         return renderSystem;
     }
 
-    private BillboardParticleBatch getBillboardParticleBatch(PerspectiveCamera perspectiveCamera) {
+    private static BillboardParticleBatch getBillboardParticleBatch(PerspectiveCamera perspectiveCamera) {
         BillboardParticleBatch billboardParticleBatch = new BillboardParticleBatch();
         billboardParticleBatch.setCamera(perspectiveCamera);
         return billboardParticleBatch;
     }
 
-    private PerspectiveCamera getItemPerspectiveCamera(RenderSystemState renderSystemState) {
+    private static PerspectiveCamera getItemPerspectiveCamera(RenderSystemState renderSystemState) {
         PerspectiveCamera gunCamera = new PerspectiveCamera(renderSystemState.getFOV(), WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT);
         gunCamera.far = 100f;
         return gunCamera;
     }
 
-    private PerspectiveCamera getPerspectiveCamera(RenderSystemState renderSystemState) {
+    private static PerspectiveCamera getPerspectiveCamera(RenderSystemState renderSystemState) {
         PerspectiveCamera perspectiveCamera = new PerspectiveCamera(
                 renderSystemState.getFOV(),
                 WorldCore.VIRTUAL_WIDTH,
@@ -69,7 +69,7 @@ public class RenderSystemFactory {
         return perspectiveCamera;
     }
 
-    private Environment getAttributes(RenderSystemState renderSystemState) {
+    private static Environment getAttributes(RenderSystemState renderSystemState) {
         Environment environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.5f, 0.5f, 0.5f, 1f));
         DirectionalShadowLight shadowLight = new DirectionalShadowLight(
