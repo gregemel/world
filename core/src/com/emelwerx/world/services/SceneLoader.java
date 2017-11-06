@@ -31,10 +31,9 @@ public class SceneLoader {
 
     private static Entity loadSky(String name, int x, int y, int z) {
         Gdx.app.log("loadSky", format(Locale.US,"load %s, %d, %d, %d", name, x, y, z));
-        ModelService modelService = new ModelService();
         ModelLoader modelLoader = new ModelLoader();
         Model model = modelLoader.getSkyModel(name);
-        ModelComponent modelComponent = modelService.create(model, x, y, z);
+        ModelComponent modelComponent = ModelComponentFactory.create(model, x, y, z);
 
         Entity entity = new Entity();
         entity.add(modelComponent);
@@ -45,10 +44,9 @@ public class SceneLoader {
         Gdx.app.log("loadGround", format(Locale.US,"load %s, %d, %d, %d", name, x, y, z));
         Entity entity = new Entity();
 
-        ModelService modelService = new ModelService();
         ModelLoader modelLoader = new ModelLoader();
         Model model = modelLoader.loadModel(name);
-        ModelComponent modelComponent = modelService.create(model, x, y, z);
+        ModelComponent modelComponent = ModelComponentFactory.create(model, x, y, z);
         entity.add(modelComponent);
 
         PhysicsComponent physicsComponent = new PhysicsComponent();

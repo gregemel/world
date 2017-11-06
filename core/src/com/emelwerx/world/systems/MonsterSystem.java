@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
@@ -18,25 +19,29 @@ import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.MonsterSystemState;
 import com.emelwerx.world.databags.ParticleComponent;
 import com.emelwerx.world.databags.PlayerComponent;
-import com.emelwerx.world.databags.StatusComponent;
+import com.emelwerx.world.databags.ThoughtComponent;
 import com.emelwerx.world.services.MonsterFactory;
 import com.emelwerx.world.services.ParticleFactory;
 
+
+//monster system manages the worlds monsters as a whole... -ge[2017-11-06]
 public class MonsterSystem extends EntitySystem implements EntityListener {
 
     private MonsterSystemState monsterSystemState;
 
-    public void setMonsterSystemState(MonsterSystemState monsterSystemState) {
+    public MonsterSystem(MonsterSystemState monsterSystemState) {
         this.monsterSystemState = monsterSystemState;
     }
 
     @Override
-    public void addedToEngine(Engine e) {
+    public void addedToEngine(Engine engine) {
         Gdx.app.log("MonsterSystem", "adding to engine.");
-        monsterSystemState.setMonsters(e.getEntitiesFor(
-                Family.all(MonsterComponent.class, CharacterComponent.class, StatusComponent.class).get()));
-        e.addEntityListener(Family.one(PlayerComponent.class).get(), this);
-        monsterSystemState.setEntityEngine(e);
+        monsterSystemState.setEntityEngine(engine);
+        Family monsterFamily = Family.all(MonsterComponent.class, CharacterComponent.class, ThoughtComponent.class).get();
+        ImmutableArray<Entity> monsters = engine.getEntitiesFor(monsterFamily);
+        monsterSystemState.setMonsters(monsters);
+        Family player = Family.one(PlayerComponent.class).get();
+        engine.addEntityListener(player, this);
     }
 
     public void update(float delta) {
@@ -49,9 +54,9 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
         for(Entity entity: monsterSystemState.getMonsters()) {
 
             ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
-            StatusComponent statusComponent = entity.getComponent(StatusComponent.class);
+            ThoughtComponent thoughtComponent = entity.getComponent(ThoughtComponent.class);
 
-            boolean monsterIsAlive = statusComponent.isAlive();
+            boolean monsterIsAlive = thoughtComponent.isAlive();
             if (monsterIsAlive) {
                 ModelComponent playerModel = monsterSystemState.getPlayer().getComponent(ModelComponent.class);
                 updateLiveMonster(delta, playerModel, entity, modelComponent);

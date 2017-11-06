@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.emelwerx.world.databags.CharacterComponent;
 import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.PlayerComponent;
-import com.emelwerx.world.databags.StatusComponent;
+import com.emelwerx.world.databags.ThoughtComponent;
 
 import static java.lang.String.format;
 
@@ -26,17 +26,17 @@ public class CollisionSystem extends ContactListener {
             if (entity0.getComponent(CharacterComponent.class) != null
                     && entity1.getComponent(CharacterComponent.class) != null) {
                 if (entity0.getComponent(MonsterComponent.class) != null) {
-                    if (entity0.getComponent(StatusComponent.class).isAlive()) {
+                    if (entity0.getComponent(ThoughtComponent.class).isAlive()) {
                         entity1.getComponent(PlayerComponent.class).health -= 10;
                         Gdx.app.log("CollisionSystem", "1 ouch!");
                     }
-                    entity0.getComponent(StatusComponent.class).setAlive(false);
+                    entity0.getComponent(ThoughtComponent.class).setAlive(false);
                 } else {
-                    if (entity1.getComponent(StatusComponent.class).isAlive()) {
+                    if (entity1.getComponent(ThoughtComponent.class).isAlive()) {
                                             entity0.getComponent(PlayerComponent.class).health -= 10;
                         Gdx.app.log("CollisionSystem", "0 ouch!");
                     }
-                    entity1.getComponent(StatusComponent.class).setAlive(false);
+                    entity1.getComponent(ThoughtComponent.class).setAlive(false);
                 }
             }
         } else {

@@ -55,7 +55,7 @@ public class PlayerSystemState {
         return itemEntity;
     }
 
-    public void setItemEntity(Entity itemEntity) {
+    public void setVisibleItem(Entity itemEntity) {
         this.itemEntity = itemEntity;
     }
 

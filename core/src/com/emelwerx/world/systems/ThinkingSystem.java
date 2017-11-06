@@ -5,12 +5,17 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
-import com.emelwerx.world.databags.StatusComponent;
+import com.emelwerx.world.databags.ThoughtComponent;
 import com.emelwerx.world.databags.StatusSystemState;
 
 import static java.lang.String.format;
 
-public class StatusSystem extends EntitySystem {
+
+//the role of this class appears to be managing death of monster -ge [2017-11-06]
+//TODO: rename ThinkingSystem
+// works with StatusComponents, manages state/behavior of individual monsters
+//
+public class ThinkingSystem extends EntitySystem {
 
     private StatusSystemState statusSystemState;
 
@@ -24,18 +29,18 @@ public class StatusSystem extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
-        Gdx.app.log("StatusSystem", "addedToEngine");
-        statusSystemState.setEntities(engine.getEntitiesFor(Family.all(StatusComponent.class).get()));
+        Gdx.app.log("ThinkingSystem", "addedToEngine");
+        statusSystemState.setEntities(engine.getEntitiesFor(Family.all(ThoughtComponent.class).get()));
     }
 
     @Override
     public void update(float delta) {
         for(Entity entity: statusSystemState.getEntities()) {
-            StatusComponent statusComponent = entity.getComponent(StatusComponent.class);
-            statusSystemState.getStatusService().update(statusComponent, delta);
+            ThoughtComponent thoughtComponent = entity.getComponent(ThoughtComponent.class);
+            statusSystemState.getThinkingService().update(thoughtComponent, delta);
 
-            if (statusComponent.getAliveStateTime() >= 3.4f) {
-                Gdx.app.log("StatusSystem", format("times up for %s", entity.toString()));
+            if (thoughtComponent.getAliveStateTime() >= 3.4f) {
+                Gdx.app.log("ThinkingSystem", format("times up for %s", entity.toString()));
                 statusSystemState.getWorldService().remove(statusSystemState.getGameWorld(), entity);
             }
         }

@@ -15,11 +15,11 @@ import com.emelwerx.world.systems.PhysicsSystem;
 import com.emelwerx.world.systems.MonsterSystem;
 import com.emelwerx.world.systems.PlayerSystem;
 import com.emelwerx.world.systems.RenderSystem;
-import com.emelwerx.world.systems.StatusSystem;
+import com.emelwerx.world.systems.ThinkingSystem;
 
 public class WorldLoader {
 
-    private World gameWorld;
+    private World world;
     private GameUI gameUI;
 
     public World create(String name, GameUI ui) {
@@ -27,7 +27,7 @@ public class WorldLoader {
         Gdx.app.log("WorldLoader", String.format("creating world: %s", name));
         Bullet.init();
 
-        gameWorld = new World();
+        world = new World();
         gameUI = ui;
 
         setDebug();
@@ -35,14 +35,14 @@ public class WorldLoader {
         loadFirstScene();
         createPlayer(0, 6, 0);
 
-        return gameWorld;
+        return world;
     }
 
     private void setDebug() {
-        if (gameWorld.isDebug()) {
+        if (world.isDebug()) {
             DebugDrawer debugDrawer = new DebugDrawer();
             debugDrawer.setDebugMode(btIDebugDraw.DebugDrawModes.DBG_MAX_DEBUG_DRAW_MODE);
-            gameWorld.setDebugDrawer(debugDrawer);
+            world.setDebugDrawer(debugDrawer);
         }
     }
 
@@ -53,7 +53,7 @@ public class WorldLoader {
         createPlayerSystem(engine, renderSystem);
         createMonsterSystem(engine);
         createStatusSystem(engine);
-        gameWorld.setEntityEngine(engine);
+        world.setEntityEngine(engine);
     }
 
     private Engine createEntitySystem() {
@@ -63,62 +63,66 @@ public class WorldLoader {
 
     private RenderSystem createRenderSystem(Engine engine) {
         RenderSystem renderSystem = RenderSystemFactory.create();
-        gameWorld.setRenderSystem(renderSystem);
+        world.setRenderSystem(renderSystem);
         engine.addSystem(renderSystem);
         return renderSystem;
     }
 
     private void createPhysicsSystem(Engine engine) {
         PhysicsSystem physicsSystem = PhysicsSystemFactory.create();
-        gameWorld.setPhysicsSystem(physicsSystem);
+        world.setPhysicsSystem(physicsSystem);
         engine.addSystem(physicsSystem);
-        if (gameWorld.isDebug()) {
-            physicsSystem.getPhysicsSystemState().getCollisionWorld().setDebugDrawer(gameWorld.getDebugDrawer());
+        if (world.isDebug()) {
+            physicsSystem.getPhysicsSystemState().getCollisionWorld().setDebugDrawer(world.getDebugDrawer());
         }
     }
 
     private void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
         PlayerSystem playerSystem = PlayerSystemFactory.create(
-                gameWorld, gameUI, renderSystem.getRenderSystemState().getPerspectiveCamera());
-        gameWorld.setPlayerSystem(playerSystem);
+                world, gameUI, renderSystem.getRenderSystemState().getPerspectiveCamera());
+        world.setPlayerSystem(playerSystem);
         engine.addSystem(playerSystem);
     }
 
     private void createStatusSystem(Engine engine) {
-        StatusSystem statusSystem = new StatusSystem();
+        ThinkingSystem thinkingSystem = new ThinkingSystem();
 
         StatusSystemState statusSystemState = new StatusSystemState();
-        statusSystemState.setGameWorld(gameWorld);
-        statusSystemState.setStatusService(new StatusService());
-        statusSystem.setStatusSystemState(statusSystemState);
+        statusSystemState.setGameWorld(world);
+        statusSystemState.setThinkingService(new ThinkingService());
+        thinkingSystem.setStatusSystemState(statusSystemState);
         statusSystemState.setWorldService(this);
 
-        engine.addSystem(statusSystem);
+        engine.addSystem(thinkingSystem);
     }
 
     private void createMonsterSystem(Engine engine) {
-        MonsterSystem monsterSystem = MonsterSystemFactory.create(gameWorld);
+        MonsterSystem monsterSystem = MonsterSystemFactory.create(world);
         engine.addSystem(monsterSystem);
     }
 
     private void loadFirstScene() {
-        Scene area = SceneLoader.load("arena", 0, 0, 0);
-        gameWorld.setCurrentScene(area);
-        gameWorld.getEntityEngine().addEntity(area.getGround());
-        gameWorld.getEntityEngine().addEntity(area.getSky());
-        gameWorld.getPlayerSystem().getPlayerSystemState().setSkyEntity(area.getSky());
+        Scene arena = SceneLoader.load("arena", 0, 0, 0);
+        world.setCurrentScene(arena);
+        world.getEntityEngine().addEntity(arena.getGround());
+        world.getEntityEngine().addEntity(arena.getSky());
+        world.getPlayerSystem().getPlayerSystemState().setSkyEntity(arena.getSky());
     }
 
     private void createPlayer(float x, float y, float z) {
-        Entity player = PlayerFactory.create(gameWorld.getPhysicsSystem(), x, y, z);
-        gameWorld.setPlayer(player);
-        gameWorld.getEntityEngine().addEntity(player);
+        Entity player = PlayerFactory.create(world.getPhysicsSystem(), x, y, z);
+        world.setPlayer(player);
+        world.getEntityEngine().addEntity(player);
 
-        Entity gun = PlayerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4);
-        gameWorld.setEntityPlayerItem(gun);
-        gameWorld.getEntityEngine().addEntity(gun);
-        gameWorld.getPlayerSystem().getPlayerSystemState().setItemEntity(gun);
-        gameWorld.getRenderSystem().getRenderSystemState().setGun(gun);
+        Entity itemEntity = PlayerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4);
+        addItemToWorld(itemEntity);
+    }
+
+    private void addItemToWorld(Entity itemEntity) {
+        world.setEntityPlayerItem(itemEntity);
+        world.getEntityEngine().addEntity(itemEntity);
+        world.getPlayerSystem().getPlayerSystemState().setVisibleItem(itemEntity);
+        world.getRenderSystem().getRenderSystemState().setPlayersVisibleItem(itemEntity);
     }
 
     public void remove(World gameWorld, Entity entity) {

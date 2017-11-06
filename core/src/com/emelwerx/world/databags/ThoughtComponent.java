@@ -2,7 +2,8 @@ package com.emelwerx.world.databags;
 
 import com.badlogic.ashley.core.Component;
 
-public class StatusComponent extends Component {
+
+public class ThoughtComponent extends Component {
 
     private boolean alive;
     private boolean running;
