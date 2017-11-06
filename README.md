@@ -1,5 +1,5 @@
 # World
-An immersive world that can be explored with your Android
+An immersive world explored on your Android device.
 
 Built with 3D LibGDX, Ashley, Bullet, Blender.
 
