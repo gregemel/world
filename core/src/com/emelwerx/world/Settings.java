@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 public class Settings {
     public static boolean Paused;
     private static boolean soundEnabled = true;
-    public final static String file = ".spaceglad";
+    public final static String file = ".world";
     private static final String leaderURL = "http://dreamlo.com/lb/PLfBGtHgG02wU0lSzVNrPAG0uQf3J3-UGzK1i7mXmmxA";
     private static final String request5 = "/pipe/5";
 
@@ -63,7 +63,7 @@ public class Settings {
 
     public static void sendScore(int score) {
         Net.HttpRequest request = new Net.HttpRequest("GET");
-        request.setUrl("http://dreamlo.com/lb/PLfBGtHgG02wU0lSzVNrPAG0uQf3J3-UGzK1i7mXmmxA/add/" + "SpaceGladiator" + "/" + score);
+        request.setUrl("http://dreamlo.com/lb/PLfBGtHgG02wU0lSzVNrPAG0uQf3J3-UGzK1i7mXmmxA/add/" + "world" + "/" + score);
         Gdx.net.sendHttpRequest(request, new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
