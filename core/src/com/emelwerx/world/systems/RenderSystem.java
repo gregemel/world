@@ -20,12 +20,12 @@ public class RenderSystem extends EntitySystem {
 
     private RenderSystemState renderSystemState;
 
-    public RenderSystemState getRenderSystemState() {
-        return renderSystemState;
+    public RenderSystem(RenderSystemState renderSystemState) {
+        this.renderSystemState = renderSystemState;
     }
 
-    public void setRenderSystemState(RenderSystemState renderSystemState) {
-        this.renderSystemState = renderSystemState;
+    public RenderSystemState getRenderSystemState() {
+        return renderSystemState;
     }
 
     public void addedToEngine(Engine e) {

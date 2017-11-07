@@ -18,7 +18,6 @@ public class RenderSystemFactory {
 
     public static RenderSystem create() {
         Gdx.app.log("RenderSystemFactory", "creating");
-        RenderSystem renderSystem = new RenderSystem();
         RenderSystemState renderSystemState = new RenderSystemState();
 
         PerspectiveCamera perspectiveCamera = getPerspectiveCamera(renderSystemState);
@@ -42,9 +41,7 @@ public class RenderSystemFactory {
         particleSystem.add(billboardParticleBatch);
         renderSystemState.setParticleSystem(particleSystem);
 
-        renderSystem.setRenderSystemState(renderSystemState);
-
-        return renderSystem;
+        return new RenderSystem(renderSystemState);
     }
 
     private static BillboardParticleBatch getBillboardParticleBatch(PerspectiveCamera perspectiveCamera) {

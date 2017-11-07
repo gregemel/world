@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.bullet.collision.btBroadphaseProxy;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.emelwerx.world.databags.AnimationComponent;
@@ -50,7 +52,7 @@ public class MonsterFactory {
         AnimationComponent animationComponent = getAnimationComponent(modelComponent);
         entity.add(animationComponent);
 
-        ThoughtComponent thoughtComponent = getStatusComponent(animationComponent);
+        ThoughtComponent thoughtComponent = getThoughtComponent(animationComponent);
         entity.add(thoughtComponent);
 
         ParticleComponent particleComponent = getParticleComponent(gameWorld);
@@ -59,15 +61,16 @@ public class MonsterFactory {
 
     private static ModelComponent getModelComponent(String name, float x, float y, float z) {
         Model model = getCachedMonsterModel(name);
-        ModelComponent enemyModelComponent = ModelComponentFactory.create(model, x, y, z);
+        ModelComponent monsterModelComponent = ModelComponentFactory.create(model, x, y, z);
 
-        Material material = enemyModelComponent.getInstance().materials.get(0);
+        Material material = monsterModelComponent.getInstance().materials.get(0);
         BlendingAttribute blendingAttribute;
         material.set(blendingAttribute = new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA));
-        enemyModelComponent.setBlendingAttribute(blendingAttribute);
+        monsterModelComponent.setBlendingAttribute(blendingAttribute);
 
-        enemyModelComponent.getInstance().transform.set(enemyModelComponent.getMatrix4().setTranslation(x, y, z));
-        return enemyModelComponent;
+        Matrix4 matrix4 = monsterModelComponent.getMatrix4();
+        monsterModelComponent.getInstance().transform.set(matrix4.setTranslation(x, y, z));
+        return monsterModelComponent;
     }
 
     private static Model getCachedMonsterModel(String name) {
@@ -83,10 +86,11 @@ public class MonsterFactory {
     }
 
     private static ParticleComponent getParticleComponent(World gameWorld) {
-        return ParticleFactory.create("dieparticle", gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem());
+        ParticleSystem particleSystem = gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem();
+        return ParticleFactory.create("dieparticle", particleSystem);
     }
 
-    private static ThoughtComponent getStatusComponent(AnimationComponent animationComponent) {
+    private static ThoughtComponent getThoughtComponent(AnimationComponent animationComponent) {
         ThinkingService thinkingService = new ThinkingService();
         return thinkingService.create(animationComponent);
     }

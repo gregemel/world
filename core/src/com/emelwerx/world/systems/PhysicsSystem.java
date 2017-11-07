@@ -15,12 +15,12 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     private PhysicsSystemState physicsSystemState;
 
-    public PhysicsSystemState getPhysicsSystemState() {
-        return physicsSystemState;
+    public PhysicsSystem(PhysicsSystemState physicsSystemState) {
+        this.physicsSystemState = physicsSystemState;
     }
 
-    public void setPhysicsSystemState(PhysicsSystemState physicsSystemState) {
-        this.physicsSystemState = physicsSystemState;
+    public PhysicsSystemState getPhysicsSystemState() {
+        return physicsSystemState;
     }
 
     @Override

@@ -21,7 +21,7 @@ public class MonsterSystemState {
     private ModelComponentFactory modelComponentFactory = new ModelComponentFactory();
 
     private Vector3 playerPosition = new Vector3();
-    private Vector3 enemyPosition = new Vector3();
+    private Vector3 monsterPosition = new Vector3();
     private Matrix4 ghost = new Matrix4();
     private Vector3 translation = new Vector3();
     private Quaternion quaternion = new Quaternion();
@@ -82,11 +82,11 @@ public class MonsterSystemState {
     }
 
     public Vector3 getMonsterPosition() {
-        return enemyPosition;
+        return monsterPosition;
     }
 
-    public void setEnemyPosition(Vector3 enemyPosition) {
-        this.enemyPosition = enemyPosition;
+    public void setMonsterPosition(Vector3 monsterPosition) {
+        this.monsterPosition = monsterPosition;
     }
 
     public Matrix4 getGhostMatrix() {

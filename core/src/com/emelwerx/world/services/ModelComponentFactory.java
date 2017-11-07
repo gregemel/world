@@ -18,7 +18,8 @@ public class ModelComponentFactory {
         Matrix4 matrix4 = new Matrix4();
         modelComponent.setMatrix4(matrix4);
         modelComponent.setModel(model);
-        modelComponent.setInstance(new ModelInstance(model, matrix4.setToTranslation(x, y, z)));
+        ModelInstance modelInstance = new ModelInstance(model, matrix4.setToTranslation(x, y, z));
+        modelComponent.setInstance(modelInstance);
         return modelComponent;
     }
 }

@@ -33,12 +33,12 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
     private PlayerSystemState playerSystemState;
 
-    public PlayerSystemState getPlayerSystemState() {
-        return playerSystemState;
+    public PlayerSystem (PlayerSystemState playerSystemState) {
+        this.playerSystemState = playerSystemState;
     }
 
-    public void setPlayerSystemState(PlayerSystemState playerSystemState) {
-        this.playerSystemState = playerSystemState;
+    public PlayerSystemState getPlayerSystemState() {
+        return playerSystemState;
     }
 
     @Override

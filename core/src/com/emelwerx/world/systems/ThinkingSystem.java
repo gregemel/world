@@ -12,16 +12,9 @@ import static java.lang.String.format;
 
 
 //the role of this class appears to be managing death of monster -ge [2017-11-06]
-//TODO: rename ThinkingSystem
-// works with StatusComponents, manages state/behavior of individual monsters
-//
 public class ThinkingSystem extends EntitySystem {
 
     private StatusSystemState statusSystemState;
-
-    public StatusSystemState getStatusSystemState() {
-        return statusSystemState;
-    }
 
     public void setStatusSystemState(StatusSystemState statusSystemState) {
         this.statusSystemState = statusSystemState;
