@@ -25,11 +25,13 @@ public class ScoreWidget extends Actor {
     @Override
     public void act(float delta) {
         container.act(delta);
-        if (PlayerComponent.score > score) {
-            container.addAction(new SequenceAction(Actions.scaleBy(0.5f, 0.25f, 0.3f), Actions.scaleBy(-0.5f, -0.25f, 0.3f)));
+        if (PlayerComponent.getScore() > score) {
+            container.addAction(new SequenceAction(
+                            Actions.scaleBy(0.5f, 0.25f, 0.3f),
+                            Actions.scaleBy(-0.5f, -0.25f, 0.3f)));
         }
-        score = PlayerComponent.score;
-        label.setText("Score : " + PlayerComponent.score);
+        score = PlayerComponent.getScore();
+        label.setText("Score : " + PlayerComponent.getScore());
     }
 
     @Override

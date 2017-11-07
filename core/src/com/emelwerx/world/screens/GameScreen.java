@@ -21,7 +21,7 @@ public class GameScreen implements Screen {
         world = worldLoader.create("arena", gameUI);
 
         Settings.Paused = false;
-        Gdx.input.setInputProcessor(gameUI.stage);
+        Gdx.input.setInputProcessor(gameUI.getStage());
         Gdx.input.setCursorCatched(true);
     }
 

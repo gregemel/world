@@ -12,20 +12,14 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.Ray;
-import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
-import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
-import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.emelwerx.world.Settings;
 import com.emelwerx.world.UI.ControllerWidget;
 import com.emelwerx.world.UI.GameUI;
-import com.emelwerx.world.databags.AnimationComponent;
 import com.emelwerx.world.databags.CharacterComponent;
-import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.PlayerSystemState;
-import com.emelwerx.world.databags.ThoughtComponent;
+import com.emelwerx.world.services.GunShooter;
 
 import static java.lang.String.format;
 
@@ -94,7 +88,10 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         translation = new Vector3();
         characterComponent.getGhostObject().getWorldTransform(ghost);
         ghost.getTranslation(translation);
-        modelComponent.getInstance().transform.set(translation.x, translation.y, translation.z, camera.direction.x, camera.direction.y, camera.direction.z, 0);
+        modelComponent.getInstance().transform.set(
+                translation.x, translation.y, translation.z,
+                camera.direction.x, camera.direction.y, camera.direction.z,
+                0);
         camera.position.set(translation.x, translation.y, translation.z);
         camera.update(true);
 
@@ -107,7 +104,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
         }
 
         if (Gdx.input.justTouched()) {
-            fire();
+            GunShooter.fire(playerSystemState);
         }
     }
 
@@ -141,70 +138,19 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     private void updateStatus() {
         GameUI gameUI = playerSystemState.getGameUI();
         PlayerComponent playerComponent = playerSystemState.getPlayerComponent();
-        gameUI.healthWidget.setValue(playerComponent.health);
-    }
-
-
-    private void fire() {
-        Gdx.app.log("PlayerSystem", "fire");
-        Ray ray = playerSystemState.getCamera().getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        Vector3 rayFrom = playerSystemState.getRayFrom();
-        Vector3 rayTo = playerSystemState.getRayTo();
-
-        ClosestRayResultCallback rayTestCB = getClosestRayResultCallback(ray, rayFrom, rayTo);
-
-        btDiscreteDynamicsWorld collisionWorld = playerSystemState.getGameWorld().getPhysicsSystem().getPhysicsSystemState()
-                .getCollisionWorld();
-        collisionWorld.rayTest(rayFrom, rayTo, rayTestCB);
-
-        checkForDamage(rayTestCB);
-
-        AnimationComponent animationComponent = playerSystemState.getItem().getComponent(AnimationComponent.class);
-        playerSystemState.getAnimationService().animate(
-                animationComponent, "Armature|shoot", 1, 3);
-    }
-
-    private void checkForDamage(ClosestRayResultCallback rayTestCB) {
-        if (rayTestCB.hasHit()) {
-            btCollisionObject obj = rayTestCB.getCollisionObject();
-            Entity entity = (Entity)obj.userData;
-            if (entity.getComponent(MonsterComponent.class) != null) {
-                ThoughtComponent component = entity.getComponent(ThoughtComponent.class);
-                if(component.isAlive()) {
-                    Gdx.app.log("PlayerSystem", format("HIT monster %s", entity.toString()));
-                    component.setAlive(false);
-                    PlayerComponent.score += 100;
-                }
-            } else {
-                Gdx.app.log("PlayerSystem", format("HIT not a monster %s", entity.toString()));
-            }
-        } else {
-            Gdx.app.log("PlayerSystem", "miss");
-        }
-    }
-
-    private ClosestRayResultCallback getClosestRayResultCallback(Ray ray, Vector3 rayFrom, Vector3 rayTo) {
-        ClosestRayResultCallback rayTestCB = playerSystemState.getRayTestCB();
-
-        rayFrom.set(ray.origin);
-        rayTo.set(ray.direction).scl(50f).add(rayFrom);
-        rayTestCB.setCollisionObject(null);
-        rayTestCB.setClosestHitFraction(1f);
-        rayTestCB.setRayFromWorld(rayFrom);
-        rayTestCB.setRayToWorld(rayTo);
-        return rayTestCB;
+        gameUI.getHealthWidget().setValue(playerComponent.getHealth());
     }
 
     private void checkGameOver() {
-        if (playerSystemState.getPlayerComponent().health <= 0 && !Settings.Paused) {
+        if (playerSystemState.getPlayerComponent().getHealth() <= 0 && !Settings.Paused) {
             Settings.Paused = true;
-            playerSystemState.getGameUI().gameOverWidget.gameOver();
+            playerSystemState.getGameUI().getGameOverWidget().gameOver();
         }
     }
 
     @Override
     public void entityAdded(Entity entity) {
-        Gdx.app.log("PlayerSystem", "entityAdded");
+        Gdx.app.log("PlayerSystem", format("entityAdded: %s", entity.toString()));
         playerSystemState.setPlayerEntity(entity);
         playerSystemState.setPlayerComponent(entity.getComponent(PlayerComponent.class));
         playerSystemState.setCharacterComponent(entity.getComponent(CharacterComponent.class));
@@ -213,6 +159,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
     @Override
     public void entityRemoved(Entity entity) {
+        Gdx.app.log("PlayerSystem", format("entity removed: %s", entity.toString()));
     }
 
     @Override

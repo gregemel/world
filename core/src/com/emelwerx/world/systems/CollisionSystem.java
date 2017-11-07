@@ -14,8 +14,6 @@ import static java.lang.String.format;
 public class CollisionSystem extends ContactListener {
     @Override
     public void onContactStarted(btCollisionObject colObj0, btCollisionObject colObj1) {
-        Gdx.app.log("CollisionSystem", format("contact between %s, %s", colObj0.toString(), colObj1.toString()));
-
         if (colObj0.userData instanceof Entity && colObj1.userData instanceof Entity) {
 
             Entity entity0 = (Entity) colObj0.userData;
@@ -25,26 +23,37 @@ public class CollisionSystem extends ContactListener {
 
             if (entity0.getComponent(CharacterComponent.class) != null
                     && entity1.getComponent(CharacterComponent.class) != null) {
+
+                if(entity0.getComponent(PlayerComponent.class) != null) {
+                    Gdx.app.log("CollisionSystem", format("0 is the player: %s", entity0.toString()));
+                }
+
+                if(entity0.getComponent(ThoughtComponent.class) != null) {
+                    Gdx.app.log("CollisionSystem", format("0 is a monster: %s", entity0.toString()));
+                }
+
+                if(entity1.getComponent(PlayerComponent.class) != null) {
+                    Gdx.app.log("CollisionSystem", format("1 is the player: %s", entity1.toString()));
+                }
+
+                if(entity1.getComponent(ThoughtComponent.class) != null) {
+                    Gdx.app.log("CollisionSystem", format("1 is a monster: %s", entity1.toString()));
+                }
+
                 if (entity0.getComponent(MonsterComponent.class) != null) {
                     if (entity0.getComponent(ThoughtComponent.class).isAlive()) {
-                        entity1.getComponent(PlayerComponent.class).health -= 10;
+                        entity1.getComponent(PlayerComponent.class).subtractHealth(10);
                         Gdx.app.log("CollisionSystem", "1 ouch!");
                     }
                     entity0.getComponent(ThoughtComponent.class).setAlive(false);
                 } else {
                     if (entity1.getComponent(ThoughtComponent.class).isAlive()) {
-                                            entity0.getComponent(PlayerComponent.class).health -= 10;
+                                            entity0.getComponent(PlayerComponent.class).subtractHealth(10);
                         Gdx.app.log("CollisionSystem", "0 ouch!");
                     }
                     entity1.getComponent(ThoughtComponent.class).setAlive(false);
                 }
             }
-        } else {
-            //TODO - ge[2017-11-05]
-            //what else could collide?
-            //what does monster hitting ground look like?
-            //what does player hitting ground look like?
-            //these events should trigger sounds
         }
     }
 }

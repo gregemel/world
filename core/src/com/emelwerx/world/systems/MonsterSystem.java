@@ -23,6 +23,8 @@ import com.emelwerx.world.databags.ThoughtComponent;
 import com.emelwerx.world.services.MonsterFactory;
 import com.emelwerx.world.services.ParticleFactory;
 
+import static java.lang.String.format;
+
 
 //monster system manages the worlds monsters as a whole... -ge[2017-11-06]
 public class MonsterSystem extends EntitySystem implements EntityListener {
@@ -166,16 +168,20 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
                 monsterSystemState.getGameWorld(),
                 x,y,z);
 
+        Gdx.app.log("MonsterSystem", format("monster spawned: %s", monster.toString()));
+
         monsterSystemState.getEntityEngine().addEntity(monster);
     }
 
     @Override
     public void entityAdded(Entity entity) {
+        Gdx.app.log("MonsterSystem", format("entity added: %s", entity.toString()));
         monsterSystemState.setPlayer(entity);
     }
 
     @Override
     public void entityRemoved(Entity entity) {
+        Gdx.app.log("MonsterSystem", format("entity removed: %s", entity.toString()));
     }
 
     private int getRandomSpawnIndex() {

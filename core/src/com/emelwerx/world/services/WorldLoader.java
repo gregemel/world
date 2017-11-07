@@ -16,6 +16,8 @@ import com.emelwerx.world.systems.PlayerSystem;
 import com.emelwerx.world.systems.RenderSystem;
 import com.emelwerx.world.systems.ThinkingSystem;
 
+import static java.lang.String.format;
+
 public class WorldLoader {
 
     private World world;
@@ -23,7 +25,7 @@ public class WorldLoader {
 
     public World create(String name, GameUI ui) {
 
-        Gdx.app.log("WorldLoader", String.format("creating world: %s", name));
+        Gdx.app.log("WorldLoader", format("creating world: %s", name));
         Bullet.init();
 
         world = new World();
@@ -103,8 +105,9 @@ public class WorldLoader {
     private void loadFirstScene() {
         Scene arena = SceneLoader.load("arena", 0, 0, 0);
         world.setCurrentScene(arena);
-        world.getEntityEngine().addEntity(arena.getGround());
-        world.getEntityEngine().addEntity(arena.getSky());
+        Engine entityEngine = world.getEntityEngine();
+        entityEngine.addEntity(arena.getGround());
+        entityEngine.addEntity(arena.getSky());
         world.getPlayerSystem().getPlayerSystemState().setSkyEntity(arena.getSky());
     }
 
@@ -125,7 +128,7 @@ public class WorldLoader {
     }
 
     public void remove(World gameWorld, Entity entity) {
-        Gdx.app.log("WorldLoader", "remove");
+        Gdx.app.log("WorldLoader", format("remove: %s from %s", entity.toString(), gameWorld.toString()));
         gameWorld.getEntityEngine().removeEntity(entity);
         gameWorld.getPhysicsSystem().removeBody(entity);
     }

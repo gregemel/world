@@ -15,14 +15,14 @@ import java.util.Locale;
 import static java.lang.String.format;
 
 public class ModelLoader {
-    public Model loadModel(String name) {
+    public static Model loadModel(String name) {
         Gdx.app.log("ModelComponentFactory", format("loadModel %s", name));
         com.badlogic.gdx.assets.loaders.ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
         ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
         return new Model(modelData, new TextureProvider.FileTextureProvider());
     }
 
-    public Model loadModel(String name, float scalar) {
+    public static Model loadModel(String name, float scalar) {
         Gdx.app.log("ModelComponentFactory", format(Locale.US,"loadModel %s, %f", name, scalar));
 
         Model model = loadModel(name);
@@ -34,7 +34,7 @@ public class ModelLoader {
         return model;
     }
 
-    public Model getSkyModel(String name) {
+    public static Model getSkyModel(String name) {
         Gdx.app.log("ModelComponentFactory", format("getSkyModel %s", name));
         G3dModelLoader modelLoader = new G3dModelLoader(new UBJsonReader());
         return modelLoader.loadModel(Gdx.files.getFileHandle("data/" + name + ".g3db", Files.FileType.Internal));

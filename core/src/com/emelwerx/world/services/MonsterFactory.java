@@ -75,8 +75,7 @@ public class MonsterFactory {
 
     private static Model getCachedMonsterModel(String name) {
         if (cachedMonsterModel == null) {
-            ModelLoader modelLoader = new ModelLoader();
-            cachedMonsterModel = modelLoader.loadModel(name, modelScalar);
+            cachedMonsterModel = ModelLoader.loadModel(name, modelScalar);
         }
         return cachedMonsterModel;
     }

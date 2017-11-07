@@ -11,6 +11,8 @@ import com.emelwerx.world.databags.CharacterComponent;
 import com.emelwerx.world.databags.PhysicsComponent;
 import com.emelwerx.world.databags.PhysicsSystemState;
 
+import static java.lang.String.format;
+
 public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     private PhysicsSystemState physicsSystemState;
@@ -25,7 +27,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void addedToEngine(Engine engine) {
-        Gdx.app.log("PhysicsSystem", "addedToEngine.");
+        Gdx.app.log("PhysicsSystem", format("addedToEngine: %s", engine.toString()));
         engine.addEntityListener(Family.all(PhysicsComponent.class).get(), this);
     }
 
@@ -58,7 +60,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityAdded(Entity entity) {
-        Gdx.app.log("PhysicsSystem", "entity added.");
+        Gdx.app.log("PhysicsSystem", format("entity added: %s", entity.toString()));
         PhysicsComponent physicsComponent = entity.getComponent(PhysicsComponent.class);
 
         if (physicsComponent.getBody() != null) {
@@ -67,7 +69,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
     }
 
     public void removeBody(Entity entity) {
-        Gdx.app.log("PhysicsSystem", "body removed.");
+        Gdx.app.log("PhysicsSystem", format("entity removed: %s", entity.toString()));
         PhysicsComponent comp = entity.getComponent(PhysicsComponent.class);
 
         if (comp != null) {
@@ -84,7 +86,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void entityRemoved(Entity entity) {
-        Gdx.app.log("PhysicsSystem", "entity removed.");
+        Gdx.app.log("PhysicsSystem", format("entity removed: %s", entity.toString()));
     }
 
 }

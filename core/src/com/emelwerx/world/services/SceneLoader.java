@@ -31,8 +31,7 @@ public class SceneLoader {
 
     private static Entity loadSky(String name, int x, int y, int z) {
         Gdx.app.log("loadSky", format(Locale.US,"load %s, %d, %d, %d", name, x, y, z));
-        ModelLoader modelLoader = new ModelLoader();
-        Model model = modelLoader.getSkyModel(name);
+        Model model = ModelLoader.getSkyModel(name);
         ModelComponent modelComponent = ModelComponentFactory.create(model, x, y, z);
 
         Entity entity = new Entity();
@@ -44,30 +43,30 @@ public class SceneLoader {
         Gdx.app.log("loadGround", format(Locale.US,"load %s, %d, %d, %d", name, x, y, z));
         Entity entity = new Entity();
 
-        ModelLoader modelLoader = new ModelLoader();
-        Model model = modelLoader.loadModel(name);
+        Model model = ModelLoader.loadModel(name);
         ModelComponent modelComponent = ModelComponentFactory.create(model, x, y, z);
         entity.add(modelComponent);
 
-        PhysicsComponent physicsComponent = new PhysicsComponent();
-        btCollisionShape shape = Bullet.obtainStaticNodeShape(model.nodes);
-
-        physicsComponent.setBodyInfo(
-                new btRigidBody.btRigidBodyConstructionInfo(
-                        0, null, shape, Vector3.Zero));
-
-        physicsComponent.setBody(
-                new btRigidBody(physicsComponent.getBodyInfo()));
-
-        physicsComponent.getBody().userData = entity;
-        physicsComponent.setMotionState(
-                new MotionState(modelComponent.getInstance().transform));
-
-        ((btRigidBody) physicsComponent.getBody()).setMotionState(physicsComponent.getMotionState());
-
+        PhysicsComponent physicsComponent = getPhysicsComponent(entity, model, modelComponent);
         entity.add(physicsComponent);
 
         return entity;
+    }
+
+    private static PhysicsComponent getPhysicsComponent(Entity entity, Model model, ModelComponent modelComponent) {
+        PhysicsComponent physicsComponent = new PhysicsComponent();
+
+        btCollisionShape shape = Bullet.obtainStaticNodeShape(model.nodes);
+
+        btRigidBody.btRigidBodyConstructionInfo bodyInfo =
+                new btRigidBody.btRigidBodyConstructionInfo(0, null, shape, Vector3.Zero);
+        physicsComponent.setBodyInfo(bodyInfo);
+        physicsComponent.setBody(new btRigidBody(physicsComponent.getBodyInfo()));
+        physicsComponent.getBody().userData = entity;
+        physicsComponent.setMotionState(new MotionState(modelComponent.getInstance().transform));
+
+        ((btRigidBody) physicsComponent.getBody()).setMotionState(physicsComponent.getMotionState());
+        return physicsComponent;
     }
 
 }
