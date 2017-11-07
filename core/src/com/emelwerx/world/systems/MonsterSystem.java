@@ -81,39 +81,6 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
                 rotationToFacePlayer.w);
     }
 
-    private void updateDeadMonster(float delta, Entity entity, ModelComponent modelComponent) {
-        updateOpacity(delta, modelComponent);
-
-        updateParticles(entity, modelComponent);
-    }
-
-    private void updateParticles(Entity entity, ModelComponent modelComponent) {
-        ParticleComponent particleComponent = entity.getComponent(ParticleComponent.class);
-
-        boolean needToStartParticle = !particleComponent.isUsed();
-        if (needToStartParticle) {
-            particleComponent.setUsed(true);
-            ParticleEffect particleEffect = ParticleFactory.createParticleEffect(modelComponent, particleComponent);
-            ParticleSystem particleSystem = monsterSystemState.getGameWorld().getRenderSystem().getRenderSystemState().getParticleSystem();
-            particleSystem.add(particleEffect);
-        }
-    }
-
-    private void updateOpacity(float delta, ModelComponent modelComponent) {
-        BlendingAttribute blendingAttribute = modelComponent.getBlendingAttribute();
-        if (blendingAttribute != null) {
-            blendingAttribute.opacity = blendingAttribute.opacity - delta / 3;
-        }
-
-    }
-
-    private void spawnAnyNewMonsters() {
-        if (monsterSystemState.getMonsters().size() < 1) {
-            Gdx.app.log("MonsterSystem", "spawning monster...");
-            spawnMonster(getRandomSpawnIndex());
-        }
-    }
-
     private Quaternion getRotationToFaceTarget(float delta,
                                                ModelComponent target,
                                                Entity entity,
@@ -154,6 +121,41 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
         walkDirection.scl(10f * delta);   //TODO make this change on difficulty
         return walkDirection;
     }
+
+    private void updateDeadMonster(float delta, Entity entity, ModelComponent modelComponent) {
+        updateOpacity(delta, modelComponent);
+
+        updateParticles(entity, modelComponent);
+    }
+
+    private void updateParticles(Entity entity, ModelComponent modelComponent) {
+        ParticleComponent particleComponent = entity.getComponent(ParticleComponent.class);
+
+        boolean needToStartParticle = !particleComponent.isUsed();
+        if (needToStartParticle) {
+            particleComponent.setUsed(true);
+            ParticleEffect particleEffect = ParticleFactory.createParticleEffect(modelComponent, particleComponent);
+            ParticleSystem particleSystem = monsterSystemState.getGameWorld().getRenderSystem().getRenderSystemState().getParticleSystem();
+            particleSystem.add(particleEffect);
+        }
+    }
+
+    private void updateOpacity(float delta, ModelComponent modelComponent) {
+        BlendingAttribute blendingAttribute = modelComponent.getBlendingAttribute();
+        if (blendingAttribute != null) {
+            blendingAttribute.opacity = blendingAttribute.opacity - delta / 3;
+        }
+
+    }
+
+    private void spawnAnyNewMonsters() {
+        if (monsterSystemState.getMonsters().size() < 1) {
+            Gdx.app.log("MonsterSystem", "spawning monster...");
+            spawnMonster(getRandomSpawnIndex());
+        }
+    }
+
+
 
     private void spawnMonster(int randomSpawnIndex) {
         float x = monsterSystemState.getxSpawns()[randomSpawnIndex];

@@ -2,29 +2,23 @@ package com.emelwerx.world.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.emelwerx.world.WorldCore;
-import com.emelwerx.world.databags.World;
 import com.emelwerx.world.Settings;
 import com.emelwerx.world.UI.GameUI;
+import com.emelwerx.world.WorldCore;
+import com.emelwerx.world.databags.World;
+import com.emelwerx.world.services.PauseChecker;
 import com.emelwerx.world.services.WorldDisposer;
 import com.emelwerx.world.services.WorldLoader;
-import com.emelwerx.world.services.WorldRenderer;
+import com.emelwerx.world.services.WorldDrawer;
 
 public class GameScreen implements Screen {
-    private WorldCore game;
     private GameUI gameUI;
     private World world;
 
-    private WorldLoader worldLoader;
-    private WorldRenderer worldRenderer;
-    private WorldDisposer worldDisposer;
-
     public GameScreen(WorldCore game) {
-        this.game = game;
         gameUI = new GameUI(game);
-        worldLoader = new WorldLoader();
+        WorldLoader worldLoader = new WorldLoader();
         world = worldLoader.create("arena", gameUI);
-        worldRenderer = new WorldRenderer();
 
         Settings.Paused = false;
         Gdx.input.setInputProcessor(gameUI.stage);
@@ -38,27 +32,21 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         gameUI.update(delta);
-        worldRenderer.render(world, delta);
+        WorldDrawer.draw(world, delta);
+        PauseChecker.checkPause(world);
         gameUI.render();
     }
 
     @Override
     public void resize(int width, int height) {
         gameUI.resize(width, height);
-        worldRenderer.resize(world, width, height);
+        world.getRenderSystem().resize(width, height);
     }
 
     @Override
     public void dispose() {
-        getWorldDisposer().dispose(world);
+        WorldDisposer.dispose(world);
         gameUI.dispose();
-    }
-
-    private WorldDisposer getWorldDisposer() {
-        if(worldDisposer == null) {
-            worldDisposer = new WorldDisposer();
-        }
-        return worldDisposer;
     }
 
     @Override
@@ -72,4 +60,5 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
     }
+
 }
