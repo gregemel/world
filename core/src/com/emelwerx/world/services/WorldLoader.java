@@ -9,12 +9,10 @@ import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.emelwerx.world.databags.World;
 import com.emelwerx.world.UI.GameUI;
 import com.emelwerx.world.databags.Scene;
-import com.emelwerx.world.databags.StatusSystemState;
 import com.emelwerx.world.systems.PhysicsSystem;
 import com.emelwerx.world.systems.MonsterSystem;
 import com.emelwerx.world.systems.PlayerSystem;
 import com.emelwerx.world.systems.RenderSystem;
-import com.emelwerx.world.systems.ThinkingSystem;
 
 import static java.lang.String.format;
 
@@ -53,7 +51,6 @@ public class WorldLoader {
         createPhysicsSystem(engine);
         createPlayerSystem(engine, renderSystem);
         createMonsterSystem(engine);
-        createStatusSystem(engine);
         world.setEntityEngine(engine);
     }
 
@@ -85,17 +82,6 @@ public class WorldLoader {
         engine.addSystem(playerSystem);
     }
 
-    private void createStatusSystem(Engine engine) {
-        ThinkingSystem thinkingSystem = new ThinkingSystem();
-
-        StatusSystemState statusSystemState = new StatusSystemState();
-        statusSystemState.setGameWorld(world);
-        thinkingSystem.setStatusSystemState(statusSystemState);
-        statusSystemState.setWorldService(this);
-
-        engine.addSystem(thinkingSystem);
-    }
-
     private void createMonsterSystem(Engine engine) {
         MonsterSystem monsterSystem = MonsterSystemFactory.create(world);
         engine.addSystem(monsterSystem);
@@ -124,11 +110,5 @@ public class WorldLoader {
         world.getEntityEngine().addEntity(itemEntity);
         world.getPlayerSystem().getPlayerSystemState().setVisibleItem(itemEntity);
         world.getRenderSystem().getRenderSystemState().setPlayersVisibleItem(itemEntity);
-    }
-
-    public void removeEntityFromWorld(World gameWorld, Entity entity) {
-        Gdx.app.log("WorldLoader", format("removeEntityFromWorld: %s from %s", entity.toString(), gameWorld.toString()));
-        gameWorld.getEntityEngine().removeEntity(entity);
-        gameWorld.getPhysicsSystem().removeBody(entity);
     }
 }

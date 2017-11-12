@@ -6,7 +6,6 @@ import com.emelwerx.world.databags.World;
 import com.emelwerx.world.systems.MonsterSystem;
 import com.emelwerx.world.systems.PhysicsSystem;
 import com.emelwerx.world.systems.PlayerSystem;
-import com.emelwerx.world.systems.ThinkingSystem;
 
 public class PauseChecker {
     public static void checkPause(World gameWorld) {
@@ -14,7 +13,6 @@ public class PauseChecker {
         Engine entityEngine = gameWorld.getEntityEngine();
         entityEngine.getSystem(PlayerSystem.class).setProcessing(run);
         entityEngine.getSystem(MonsterSystem.class).setProcessing(run);
-        entityEngine.getSystem(ThinkingSystem.class).setProcessing(run);
         entityEngine.getSystem(PhysicsSystem.class).setProcessing(run);
     }
 }
