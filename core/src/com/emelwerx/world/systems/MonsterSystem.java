@@ -40,6 +40,8 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
     public void update(float delta) {
         MonsterSpawner.update(monsterSystemState);
         MonsterUpdater.updateAll(delta, monsterSystemState);
+
+
     }
 
     @Override

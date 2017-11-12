@@ -14,7 +14,6 @@ import static java.lang.String.format;
 
 public class ThinkingSystem extends EntitySystem {
 
-    private final float deathDuration = 3.4f;
     private StatusSystemState statusSystemState;
 
     public void setStatusSystemState(StatusSystemState statusSystemState) {
@@ -33,15 +32,6 @@ public class ThinkingSystem extends EntitySystem {
         for(Entity entity: statusSystemState.getEntities()) {
             ThoughtComponent thoughtComponent = entity.getComponent(ThoughtComponent.class);
 
-            if (!thoughtComponent.isAlive()) {
-                float timeSinceDeath = thoughtComponent.getTimeSinceDeath() + delta;
-                if (timeSinceDeath >= deathDuration) {
-                    Gdx.app.log("ThinkingSystem", format("times up for %s", entity.toString()));
-                    statusSystemState.getWorldService().removeEntityFromWorld(statusSystemState.getGameWorld(), entity);
-                } else {
-                    thoughtComponent.setTimeSinceDeath(timeSinceDeath);
-                }
-            }
 
         }
     }
