@@ -31,9 +31,12 @@ public class GunShooter {
 
         checkForDamage(rayTestCB);
 
+        animate(playerSystemState);
+    }
+
+    private static void animate(PlayerSystemState playerSystemState) {
         AnimationComponent animationComponent = playerSystemState.getItem().getComponent(AnimationComponent.class);
-        AnimationService.animate(
-                animationComponent, "Armature|shoot", 1, 3);
+        animationComponent.getAnimationController().animate("Armature|shoot", 1, 3, null, 0);
     }
 
     private static ClosestRayResultCallback getClosestRayResultCallback(

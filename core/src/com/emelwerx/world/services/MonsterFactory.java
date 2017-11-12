@@ -92,13 +92,16 @@ public class MonsterFactory {
     }
 
     private static AnimationComponent getAnimationComponent(ModelComponent modelComponent) {
-        AnimationComponent animationComponent = AnimationService.create(modelComponent.getInstance());
-        AnimationService.animate(
-                animationComponent,
+        AnimationComponent animationComponent = AnimationComponentFactory.create(modelComponent.getInstance());
+
+        animationComponent.getAnimationController().animate(
                 MonsterAnimations.getId(),
                 MonsterAnimations.getOffsetRun1(),
                 MonsterAnimations.getDurationRun1(),
-                -1, 1);
+                -1,
+                1,
+                null, 0);
+
         return animationComponent;
     }
 

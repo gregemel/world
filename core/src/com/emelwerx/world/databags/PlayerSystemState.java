@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
 import com.emelwerx.world.UI.GameUI;
-import com.emelwerx.world.services.AnimationService;
+import com.emelwerx.world.services.AnimationComponentFactory;
 
 public class PlayerSystemState {
     private Vector3 tmp = new Vector3();
@@ -24,7 +24,7 @@ public class PlayerSystemState {
     private ClosestRayResultCallback rayTestCB;
     private Vector3 translation = new Vector3();
     private Matrix4 ghost = new Matrix4();
-    private AnimationService animationService = new AnimationService();
+    private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
     private float jumpForce = 25f;
 
     public float getJumpForce() {
@@ -155,11 +155,11 @@ public class PlayerSystemState {
         this.ghost = ghost;
     }
 
-    public AnimationService getAnimationService() {
-        return animationService;
+    public AnimationComponentFactory getAnimationComponentFactory() {
+        return animationComponentFactory;
     }
 
-    public void setAnimationService(AnimationService animationService) {
-        this.animationService = animationService;
+    public void setAnimationComponentFactory(AnimationComponentFactory animationComponentFactory) {
+        this.animationComponentFactory = animationComponentFactory;
     }
 }

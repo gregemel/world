@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.math.Vector3;
-import com.emelwerx.world.services.AnimationService;
+import com.emelwerx.world.services.AnimationComponentFactory;
 
 public class RenderSystemState {
 
@@ -20,7 +20,7 @@ public class RenderSystemState {
     private DirectionalShadowLight shadowLight;
     private Entity gun;
     private Vector3 position;
-    private AnimationService animationService = new AnimationService();
+    private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
     private PerspectiveCamera perspectiveCamera;
     private PerspectiveCamera gunCamera;
     private ParticleSystem particleSystem;
@@ -77,12 +77,12 @@ public class RenderSystemState {
         this.position = position;
     }
 
-    public AnimationService getAnimationService() {
-        return animationService;
+    public AnimationComponentFactory getAnimationComponentFactory() {
+        return animationComponentFactory;
     }
 
-    public void setAnimationService(AnimationService animationService) {
-        this.animationService = animationService;
+    public void setAnimationComponentFactory(AnimationComponentFactory animationComponentFactory) {
+        this.animationComponentFactory = animationComponentFactory;
     }
 
     public PerspectiveCamera getPerspectiveCamera() {

@@ -36,15 +36,19 @@ public class ShadowDrawer {
                 }
             }
 
-            AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
-            boolean hasAnimation = animationComponent != null & !Settings.Paused;
-            if (hasAnimation) {
-                renderSystemState.getAnimationService().update(animationComponent, delta);
-            }
+            animate(delta, entity);
         }
 
         modelBatch.end();
         shadowLight.end();
+    }
+
+    private static void animate(float delta, Entity entity) {
+        AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
+        boolean hasAnimation = animationComponent != null & !Settings.Paused;
+        if (hasAnimation) {
+            animationComponent.getAnimationController().update(delta);
+        }
     }
 
     private static boolean isVisible(RenderSystemState renderSystemState, final ModelInstance instance) {

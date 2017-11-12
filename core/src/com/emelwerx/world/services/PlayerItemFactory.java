@@ -21,8 +21,8 @@ public class PlayerItemFactory {
         Entity itemEntity = new Entity();
         itemEntity.add(modelComponent);
         itemEntity.add(new ItemComponent());
-        AnimationService animationService = new AnimationService();
-        AnimationComponent animationComponent = animationService.create(modelComponent.getInstance());
+        AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
+        AnimationComponent animationComponent = animationComponentFactory.create(modelComponent.getInstance());
         itemEntity.add(animationComponent);
 
         return itemEntity;
