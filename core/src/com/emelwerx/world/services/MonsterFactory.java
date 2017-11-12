@@ -100,8 +100,7 @@ public class MonsterFactory {
     }
 
     private static ThoughtComponent getThoughtComponent(AnimationComponent animationComponent) {
-        ThinkingService thinkingService = new ThinkingService();
-        return thinkingService.create(animationComponent);
+        return ThoughtComponentFactory.create(animationComponent);
     }
 
     private static AnimationComponent getAnimationComponent(ModelComponent modelComponent) {

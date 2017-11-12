@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
-import com.emelwerx.world.databags.CharacterComponent;
-import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.ThoughtComponent;
 
@@ -19,10 +17,10 @@ public class CollisionSystem extends ContactListener {
             Entity entity0 = (Entity) colObj0.userData;
             Entity entity1 = (Entity) colObj1.userData;
 
-            Gdx.app.log("CollisionSystem", format("two entities in contact %s, %s", entity0.toString(), entity1.toString()));
+            Gdx.app.log("CollisionSystem", format("two entities in contact %s, %s",
+                    entity0.toString(), entity1.toString()));
 
             PlayerComponent playerComponent = getPlayerComponent(entity0, entity1);
-
             ThoughtComponent monster = getThoughtComponent(entity0, entity1);
 
             if(monster != null && monster.isAlive() && playerComponent != null) {

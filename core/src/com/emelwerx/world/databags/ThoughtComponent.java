@@ -8,10 +8,10 @@ public class ThoughtComponent extends Component {
     private boolean alive;
     private boolean running;
     private boolean attacking;
-    private float aliveStateTime;
+    private float timeSinceDeath;
     private AnimationComponent animationComponent;
 
-    private AnimationComponent getAnimationComponent() {
+    public AnimationComponent getAnimationComponent() {
         return animationComponent;
     }
 
@@ -43,12 +43,12 @@ public class ThoughtComponent extends Component {
         this.attacking = attacking;
     }
 
-    public float getAliveStateTime() {
-        return aliveStateTime;
+    public float getTimeSinceDeath() {
+        return timeSinceDeath;
     }
 
-    public void setAliveStateTime(float aliveStateTime) {
-        this.aliveStateTime = aliveStateTime;
+    public void setTimeSinceDeath(float timeSinceDeath) {
+        this.timeSinceDeath = timeSinceDeath;
     }
 
 }

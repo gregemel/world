@@ -90,7 +90,6 @@ public class WorldLoader {
 
         StatusSystemState statusSystemState = new StatusSystemState();
         statusSystemState.setGameWorld(world);
-        statusSystemState.setThinkingService(new ThinkingService());
         thinkingSystem.setStatusSystemState(statusSystemState);
         statusSystemState.setWorldService(this);
 
@@ -127,8 +126,8 @@ public class WorldLoader {
         world.getRenderSystem().getRenderSystemState().setPlayersVisibleItem(itemEntity);
     }
 
-    public void remove(World gameWorld, Entity entity) {
-        Gdx.app.log("WorldLoader", format("remove: %s from %s", entity.toString(), gameWorld.toString()));
+    public void removeEntityFromWorld(World gameWorld, Entity entity) {
+        Gdx.app.log("WorldLoader", format("removeEntityFromWorld: %s from %s", entity.toString(), gameWorld.toString()));
         gameWorld.getEntityEngine().removeEntity(entity);
         gameWorld.getPhysicsSystem().removeBody(entity);
     }

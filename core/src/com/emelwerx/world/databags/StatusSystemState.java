@@ -2,14 +2,14 @@ package com.emelwerx.world.databags;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.emelwerx.world.services.ThinkingService;
+import com.emelwerx.world.services.ThoughtComponentFactory;
 import com.emelwerx.world.services.WorldLoader;
 
 public class StatusSystemState {
     private ImmutableArray<Entity> entities;
     private World gameWorld;
     private WorldLoader worldService;
-    private ThinkingService thinkingService;
+    private ThoughtComponentFactory thoughtComponentFactory;
 
     public ImmutableArray<Entity> getEntities() {
         return entities;
@@ -33,13 +33,5 @@ public class StatusSystemState {
 
     public void setWorldService(WorldLoader worldService) {
         this.worldService = worldService;
-    }
-
-    public ThinkingService getThinkingService() {
-        return thinkingService;
-    }
-
-    public void setThinkingService(ThinkingService thinkingService) {
-        this.thinkingService = thinkingService;
     }
 }

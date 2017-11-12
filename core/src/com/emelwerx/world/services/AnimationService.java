@@ -10,7 +10,7 @@ import static java.lang.String.format;
 
 public class AnimationService {
 
-    public AnimationComponent create(ModelInstance modelInstance) {
+    public static AnimationComponent create(ModelInstance modelInstance) {
         Gdx.app.log("AnimationService", format("creating animation component %s", modelInstance.toString()));
         AnimationController animationController = new AnimationController(modelInstance);
         animationController.allowSameAnimation = true;
@@ -19,15 +19,15 @@ public class AnimationService {
         return animationComponent;
     }
 
-    public void animate(AnimationComponent animationComponent, final String id, final int loops, final int speed) {
+    public static void animate(AnimationComponent animationComponent, final String id, final int loops, final int speed) {
         animationComponent.getAnimationController().animate(id, loops, speed, null, 0);
     }
 
-    public void animate(AnimationComponent animationComponent, String id, float offset, float duration, int loopCount, int speed) {
+    public static void animate(AnimationComponent animationComponent, String id, float offset, float duration, int loopCount, int speed) {
         animationComponent.getAnimationController().animate(id, offset, duration, loopCount, speed, null, 0);
     }
 
-    public void update(AnimationComponent animationComponent, float delta) {
+    public static void update(AnimationComponent animationComponent, float delta) {
         animationComponent.getAnimationController().update(delta);
     }
 

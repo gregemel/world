@@ -6,14 +6,15 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.emelwerx.world.databags.ThoughtComponent;
 import com.emelwerx.world.databags.StatusSystemState;
+import com.emelwerx.world.databags.ThoughtComponent;
 
 import static java.lang.String.format;
 
 
 public class ThinkingSystem extends EntitySystem {
 
+    private final float deathDuration = 3.4f;
     private StatusSystemState statusSystemState;
 
     public void setStatusSystemState(StatusSystemState statusSystemState) {
@@ -31,12 +32,17 @@ public class ThinkingSystem extends EntitySystem {
     public void update(float delta) {
         for(Entity entity: statusSystemState.getEntities()) {
             ThoughtComponent thoughtComponent = entity.getComponent(ThoughtComponent.class);
-            statusSystemState.getThinkingService().update(thoughtComponent, delta);
 
-            if (thoughtComponent.getAliveStateTime() >= 3.4f) {
-                Gdx.app.log("ThinkingSystem", format("times up for %s", entity.toString()));
-                statusSystemState.getWorldService().remove(statusSystemState.getGameWorld(), entity);
+            if (!thoughtComponent.isAlive()) {
+                float timeSinceDeath = thoughtComponent.getTimeSinceDeath() + delta;
+                if (timeSinceDeath >= deathDuration) {
+                    Gdx.app.log("ThinkingSystem", format("times up for %s", entity.toString()));
+                    statusSystemState.getWorldService().removeEntityFromWorld(statusSystemState.getGameWorld(), entity);
+                } else {
+                    thoughtComponent.setTimeSinceDeath(timeSinceDeath);
+                }
             }
+
         }
     }
 }
