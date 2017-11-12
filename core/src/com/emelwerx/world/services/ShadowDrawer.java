@@ -27,12 +27,12 @@ public class ShadowDrawer {
         ImmutableArray<Entity> entities = renderSystemState.getEntities();
 
         for(Entity entity : entities) {
-            boolean playerOrMonster = entity.getComponent(PlayerComponent.class) != null
+            boolean isPlayerOrMonster = entity.getComponent(PlayerComponent.class) != null
                     || entity.getComponent(MonsterComponent.class) != null;
-            if (playerOrMonster) {
-                ModelComponent mod = entity.getComponent(ModelComponent.class);
-                if (isVisible(renderSystemState, mod.getInstance())) {
-                    modelBatch.render(mod.getInstance());
+            if (isPlayerOrMonster) {
+                ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
+                if (isVisible(renderSystemState, modelComponent.getInstance())) {
+                    modelBatch.render(modelComponent.getInstance());
                 }
             }
 

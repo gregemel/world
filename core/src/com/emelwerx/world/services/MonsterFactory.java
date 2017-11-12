@@ -21,15 +21,25 @@ import com.emelwerx.world.databags.ThoughtComponent;
 import com.emelwerx.world.systems.PhysicsSystem;
 
 import java.util.Locale;
+import java.util.Random;
 
 public class MonsterFactory {
+
+    private static Random random = new Random();
 
     private static Model cachedMonsterModel;
     private static final float modelScalar = 0.0025f;
 
-    public static Entity create(String name, World gameWorld, float x, float y, float z) {
+    private static float[] xSpawns = {12, -12, 80, -80};
+    private static float[] zSpawns = {-80, 80, -12, 12};
+
+    public static Entity create(String name, World gameWorld) {
         Gdx.app.log("MonsterFactory", String.format(Locale.US,
-                "creating monster %s, %s, %.2f, %.2f, %.2f", name, gameWorld.toString(), x, y, z));
+                "creating monster %s, %s", name, gameWorld.toString()));
+
+        float x = xSpawns[random.nextInt(xSpawns.length)];
+        float y = 33;
+        float z = zSpawns[random.nextInt(zSpawns.length)];
 
         Entity entity = new Entity();
         attachComponents(name, gameWorld, x, y, z, entity);
