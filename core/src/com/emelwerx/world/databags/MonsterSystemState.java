@@ -30,7 +30,7 @@ public class MonsterSystemState {
     private Random random = new Random();
 
     private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
-    private ComponentMapper<ThoughtComponent> sm = ComponentMapper.getFor(ThoughtComponent.class);
+    private ComponentMapper<MonsterComponent> sm = ComponentMapper.getFor(MonsterComponent.class);
 
     public ImmutableArray<Entity> getMonsters() {
         return monsters;
@@ -113,11 +113,11 @@ public class MonsterSystemState {
         this.cm = cm;
     }
 
-    public ComponentMapper<ThoughtComponent> getSm() {
+    public ComponentMapper<MonsterComponent> getSm() {
         return sm;
     }
 
-    public void setSm(ComponentMapper<ThoughtComponent> sm) {
+    public void setSm(ComponentMapper<MonsterComponent> sm) {
         this.sm = sm;
     }
 }

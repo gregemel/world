@@ -12,7 +12,6 @@ import com.emelwerx.world.databags.AnimationComponent;
 import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.PlayerSystemState;
-import com.emelwerx.world.databags.ThoughtComponent;
 
 import static java.lang.String.format;
 
@@ -33,7 +32,7 @@ public class GunShooter {
         checkForDamage(rayTestCB);
 
         AnimationComponent animationComponent = playerSystemState.getItem().getComponent(AnimationComponent.class);
-        playerSystemState.getAnimationService().animate(
+        AnimationService.animate(
                 animationComponent, "Armature|shoot", 1, 3);
     }
 
@@ -54,11 +53,11 @@ public class GunShooter {
         if (rayTestCB.hasHit()) {
             btCollisionObject obj = rayTestCB.getCollisionObject();
             Entity entity = (Entity)obj.userData;
-            if (entity.getComponent(MonsterComponent.class) != null) {
-                ThoughtComponent component = entity.getComponent(ThoughtComponent.class);
-                if(component.isAlive()) {
+            MonsterComponent monsterComponent = entity.getComponent(MonsterComponent.class);
+            if (monsterComponent != null) {
+                if(monsterComponent.isAlive()) {
                     Gdx.app.log("PlayerSystem", format("HIT monster %s", entity.toString()));
-                    component.setAlive(false);
+                    monsterComponent.setAlive(false);
                     PlayerComponent.setScore(PlayerComponent.getScore() + 100);
                 }
             } else {

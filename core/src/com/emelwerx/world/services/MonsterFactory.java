@@ -17,7 +17,6 @@ import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.MonsterAnimations;
 import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.ParticleComponent;
-import com.emelwerx.world.databags.ThoughtComponent;
 import com.emelwerx.world.systems.PhysicsSystem;
 
 import java.util.Locale;
@@ -56,14 +55,11 @@ public class MonsterFactory {
         PhysicsSystem physicsSystem = gameWorld.getPhysicsSystem();
         setPhysics(physicsSystem, entity);
 
-        MonsterComponent monsterComponent = getMonsterComponent();
-        entity.add(monsterComponent);
-
         AnimationComponent animationComponent = getAnimationComponent(modelComponent);
         entity.add(animationComponent);
 
-        ThoughtComponent thoughtComponent = getThoughtComponent(animationComponent);
-        entity.add(thoughtComponent);
+        MonsterComponent monsterComponent = MonsterComponentFactory.create(animationComponent);
+        entity.add(monsterComponent);
 
         ParticleComponent particleComponent = getParticleComponent(gameWorld);
         entity.add(particleComponent);
@@ -90,23 +86,14 @@ public class MonsterFactory {
         return cachedMonsterModel;
     }
 
-    private static MonsterComponent getMonsterComponent() {
-        return new MonsterComponent(MonsterComponent.STATE.HUNTING);
-    }
-
     private static ParticleComponent getParticleComponent(World gameWorld) {
         ParticleSystem particleSystem = gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem();
         return ParticleFactory.create("dieparticle", particleSystem);
     }
 
-    private static ThoughtComponent getThoughtComponent(AnimationComponent animationComponent) {
-        return ThoughtComponentFactory.create(animationComponent);
-    }
-
     private static AnimationComponent getAnimationComponent(ModelComponent modelComponent) {
-        AnimationService animationService = new AnimationService();
-        AnimationComponent animationComponent = animationService.create(modelComponent.getInstance());
-        animationService.animate(
+        AnimationComponent animationComponent = AnimationService.create(modelComponent.getInstance());
+        AnimationService.animate(
                 animationComponent,
                 MonsterAnimations.getId(),
                 MonsterAnimations.getOffsetRun1(),
