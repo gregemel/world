@@ -5,21 +5,15 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
 import com.emelwerx.world.Settings;
-import com.emelwerx.world.UI.ControllerWidget;
 import com.emelwerx.world.UI.GameUI;
 import com.emelwerx.world.databags.CharacterComponent;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.PlayerSystemState;
-import com.emelwerx.world.services.GunShooter;
+import com.emelwerx.world.services.PlayerMovementService;
 
 import static java.lang.String.format;
 
@@ -44,95 +38,9 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     @Override
     public void update(float delta) {
         if (getPlayerSystemState().getPlayerEntity() == null) return;
-        updateMovement(delta);
+        PlayerMovementService.update(delta, playerSystemState);
         updateStatus();
         checkGameOver();
-    }
-
-    private void updateMovement(float delta) {
-        float deltaX;
-        float deltaY;
-
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            deltaX = -ControllerWidget.getWatchVector().x * 1.5f;
-            deltaY = ControllerWidget.getWatchVector().y * 1.5f;
-        } else {
-            deltaX = -Gdx.input.getDeltaX() * 0.5f;
-            deltaY = -Gdx.input.getDeltaY() * 0.5f;
-        }
-
-        Vector3 tmp = getPlayerSystemState().getTmp();
-        tmp.set(0, 0, 0);
-        Camera camera = getPlayerSystemState().getCamera();
-        camera.rotate(camera.up, deltaX);
-        tmp.set(camera.direction).crs(camera.up).nor();
-        camera.direction.rotate(tmp, deltaY);
-        tmp.set(0, 0, 0);
-
-        CharacterComponent characterComponent = getPlayerSystemState().getCharacterComponent();
-        ModelComponent modelComponent = getPlayerSystemState().getModelComponent();
-
-        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
-
-        Vector3 walkDirection = getWalkDirection(tmp, camera, characterComponent);
-
-        walkDirection.add(tmp);
-        walkDirection.scl(10f * delta);
-        characterComponent.getCharacterController().setWalkDirection(walkDirection);
-
-        Matrix4 ghost = getPlayerSystemState().getGhost();
-        Vector3 translation = getPlayerSystemState().getTranslation();
-
-        ghost.set(0, 0, 0, 0);
-        translation.set(0, 0, 0);
-        translation = new Vector3();
-        characterComponent.getGhostObject().getWorldTransform(ghost);
-        ghost.getTranslation(translation);
-        modelComponent.getInstance().transform.set(
-                translation.x, translation.y, translation.z,
-                camera.direction.x, camera.direction.y, camera.direction.z,
-                0);
-        camera.position.set(translation.x, translation.y, translation.z);
-        camera.update(true);
-
-        playerSystemState.getSkyEntity().getComponent(ModelComponent.class).getInstance()
-                .transform.setToTranslation(translation.x, translation.y, translation.z);
-
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            characterComponent.getCharacterController().setJumpSpeed(playerSystemState.getJumpForce());
-            characterComponent.getCharacterController().jump();
-        }
-
-        if (Gdx.input.justTouched()) {
-            GunShooter.fire(playerSystemState);
-        }
-    }
-
-    private Vector3 getWalkDirection(Vector3 tmp, Camera camera, CharacterComponent characterComponent) {
-        Vector3 walkDirection = characterComponent.getWalkDirection();
-        walkDirection.set(0, 0, 0);
-
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            getAndroidPlayerControl(tmp, camera, walkDirection);
-
-        } else {
-            getDesktopPlayerControl(tmp, camera, walkDirection);
-        }
-        return walkDirection;
-    }
-
-    private void getDesktopPlayerControl(Vector3 tmp, Camera camera, Vector3 walkDirection) {
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) walkDirection.add(camera.direction);
-        if (Gdx.input.isKeyPressed(Input.Keys.Z)) walkDirection.sub(camera.direction);
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) tmp.set(camera.direction).crs(camera.up).scl(-1);
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) tmp.set(camera.direction).crs(camera.up);
-    }
-
-    private void getAndroidPlayerControl(Vector3 tmp, Camera camera, Vector3 walkDirection) {
-        if (ControllerWidget.getMovementVector().y > 0) walkDirection.add(camera.direction);
-        if (ControllerWidget.getMovementVector().y < 0) walkDirection.sub(camera.direction);
-        if (ControllerWidget.getMovementVector().x < 0) tmp.set(camera.direction).crs(camera.up).scl(-1);
-        if (ControllerWidget.getMovementVector().x > 0) tmp.set(camera.direction).crs(camera.up);
     }
 
     private void updateStatus() {

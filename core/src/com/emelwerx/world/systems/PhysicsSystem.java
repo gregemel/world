@@ -37,25 +37,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
     }
 
     public void dispose() {
-        physicsSystemState.getCollisionWorld().dispose();
-
-        if (physicsSystemState.getSolver() != null) {
-            physicsSystemState.getSolver().dispose();
-        }
-
-        if (physicsSystemState.getBroadphase() != null) {
-            physicsSystemState.getBroadphase().dispose();
-        }
-
-        if (physicsSystemState.getDispatcher() != null) {
-            physicsSystemState.getDispatcher().dispose();
-        }
-
-        if (physicsSystemState.getCollisionConfiguration() != null) {
-            physicsSystemState.getCollisionConfiguration().dispose();
-        }
-
-        physicsSystemState.getGhostPairCallback().dispose();
+        cleanup();
     }
 
     @Override
@@ -87,6 +69,28 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
     @Override
     public void entityRemoved(Entity entity) {
         Gdx.app.log("PhysicsSystem", format("entity removed: %s", entity.toString()));
+    }
+
+    private void cleanup() {
+        physicsSystemState.getCollisionWorld().dispose();
+
+        if (physicsSystemState.getSolver() != null) {
+            physicsSystemState.getSolver().dispose();
+        }
+
+        if (physicsSystemState.getBroadphase() != null) {
+            physicsSystemState.getBroadphase().dispose();
+        }
+
+        if (physicsSystemState.getDispatcher() != null) {
+            physicsSystemState.getDispatcher().dispose();
+        }
+
+        if (physicsSystemState.getCollisionConfiguration() != null) {
+            physicsSystemState.getCollisionConfiguration().dispose();
+        }
+
+        physicsSystemState.getGhostPairCallback().dispose();
     }
 
 }
