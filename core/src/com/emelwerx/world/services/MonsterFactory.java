@@ -36,6 +36,7 @@ public class MonsterFactory {
         Gdx.app.log("MonsterFactory", String.format(Locale.US,
                 "creating monster %s, %s", name, gameWorld.toString()));
 
+        //todo: spawn location should be determined by the scene -ge[2017-11-12]
         float x = xSpawns[random.nextInt(xSpawns.length)];
         float y = 33;
         float z = zSpawns[random.nextInt(zSpawns.length)];
@@ -80,6 +81,7 @@ public class MonsterFactory {
     }
 
     private static Model getCachedMonsterModel(String name) {
+        //todo: model cache should be a hash map collection of name/model pairs -ge[2017-11-12]
         if (cachedMonsterModel == null) {
             cachedMonsterModel = ModelLoader.loadModel(name, modelScalar);
         }

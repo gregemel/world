@@ -11,8 +11,7 @@ public class MonsterComponentFactory {
         Gdx.app.log("MonsterComponentFactory", format("create %s", animationComponent.toString()));
         MonsterComponent monsterComponent = new MonsterComponent(MonsterComponent.MONSTER_STATE.IDLE);
         monsterComponent.setAnimationComponent(animationComponent);
-        monsterComponent.setAlive(true);
-        monsterComponent.setRunning(true);
+        monsterComponent.setTimeSinceDeath(0f);
         return monsterComponent;
     }
 }

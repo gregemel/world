@@ -21,15 +21,14 @@ public class CollisionSystem extends ContactListener {
                     entity0.toString(), entity1.toString()));
 
             PlayerComponent playerComponent = getPlayerComponent(entity0, entity1);
-            MonsterComponent monster = getMonsterComponent(entity0, entity1);
+            MonsterComponent monsterComponent = getMonsterComponent(entity0, entity1);
 
-            if(monster != null
-                    && monster.getMonsterState() != MonsterComponent.MONSTER_STATE.DYING
+            if(monsterComponent != null
+                    && monsterComponent.getMonsterState() != MonsterComponent.MONSTER_STATE.DYING
                     && playerComponent != null) {
                 Gdx.app.log("CollisionSystem", "OUCH!");
                 playerComponent.subtractHealth(10);
-                //monster.setAlive(false);
-                monster.setMonsterState(MonsterComponent.MONSTER_STATE.DYING);
+                monsterComponent.setMonsterState(MonsterComponent.MONSTER_STATE.DYING);
             }
         }
     }

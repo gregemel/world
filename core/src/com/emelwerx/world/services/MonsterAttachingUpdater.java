@@ -8,9 +8,9 @@ import com.emelwerx.world.databags.CharacterComponent;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.MonsterSystemState;
 
-public class LiveMonsterService {
+public class MonsterAttachingUpdater {
 
-    public static void updateLiveMonster(
+    public static void update(
             float delta,
             ModelComponent playerModelComponent,
             Entity monsterEntity,

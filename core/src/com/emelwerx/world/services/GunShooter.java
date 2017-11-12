@@ -18,7 +18,7 @@ import static java.lang.String.format;
 public class GunShooter {
 
     public static void fire(PlayerSystemState playerSystemState) {
-        Gdx.app.log("PlayerSystem", "fire");
+        Gdx.app.log("GunShooter", "fire!!!");
         Ray ray = playerSystemState.getCamera().getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         Vector3 rayFrom = playerSystemState.getRayFrom();
         Vector3 rayTo = playerSystemState.getRayTo();
@@ -62,6 +62,8 @@ public class GunShooter {
                     Gdx.app.log("PlayerSystem", format("HIT monster %s", entity.toString()));
                     monsterComponent.setMonsterState(MonsterComponent.MONSTER_STATE.DYING);
                     PlayerComponent.setScore(PlayerComponent.getScore() + 100);
+                } else {
+                    Gdx.app.log("PlayerSystem", format("you hit a dying monster %s", entity.toString()));
                 }
             } else {
                 Gdx.app.log("PlayerSystem", format("hit not a monster %s", entity.toString()));

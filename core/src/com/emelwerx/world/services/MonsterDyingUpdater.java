@@ -13,7 +13,7 @@ import com.emelwerx.world.databags.ParticleComponent;
 
 import static java.lang.String.format;
 
-public class DeadMonsterService {
+public class MonsterDyingUpdater {
     private static final float deathDuration = 3.4f;
 
     public static void update(float delta, Entity monsterEntity, MonsterSystemState monsterSystemState) {
@@ -39,13 +39,13 @@ public class DeadMonsterService {
         }
     }
 
-    private static void updateParticles(Entity entity, ModelComponent modelComponent, MonsterSystemState monsterSystemState) {
+    private static void updateParticles(Entity entity, ModelComponent monsterModelComponent, MonsterSystemState monsterSystemState) {
         ParticleComponent particleComponent = entity.getComponent(ParticleComponent.class);
 
         boolean isParticleStartNeeded = !particleComponent.isUsed();
         if (isParticleStartNeeded) {
             particleComponent.setUsed(true);
-            ParticleEffect particleEffect = ParticleFactory.createParticleEffect(modelComponent, particleComponent);
+            ParticleEffect particleEffect = ParticleFactory.createParticleEffect(monsterModelComponent, particleComponent);
             ParticleSystem particleSystem = monsterSystemState.getGameWorld().getRenderSystem().getRenderSystemState().getParticleSystem();
             particleSystem.add(particleEffect);
         }

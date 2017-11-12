@@ -8,9 +8,6 @@ import java.util.Locale;
 public class MonsterComponent extends Component {
 
     private MONSTER_STATE monsterState = MONSTER_STATE.IDLE;
-    private boolean alive;
-    private boolean running;
-    private boolean attacking;
     private float timeSinceDeath;
     private AnimationComponent animationComponent;
     public MonsterComponent(MONSTER_STATE monsterState){
@@ -26,29 +23,6 @@ public class MonsterComponent extends Component {
         this.monsterState = monsterState;
     }
 
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
-    }
-
-    public boolean isAttacking() {
-        return attacking;
-    }
-
-    public void setAttacking(boolean attacking) {
-        this.attacking = attacking;
-    }
 
     public float getTimeSinceDeath() {
         return timeSinceDeath;

@@ -20,10 +20,10 @@ public class MonsterUpdater {
                     break;
                 case HUNTING:
                     ModelComponent playerModel = monsterSystemState.getPlayer().getComponent(ModelComponent.class);
-                    LiveMonsterService.updateLiveMonster(delta, playerModel, monsterEntity, monsterSystemState);
+                    MonsterAttachingUpdater.update(delta, playerModel, monsterEntity, monsterSystemState);
                     break;
                 case DYING:
-                    DeadMonsterService.update(delta, monsterEntity, monsterSystemState);
+                    MonsterDyingUpdater.update(delta, monsterEntity, monsterSystemState);
                     break;
                 default:
                     break;
