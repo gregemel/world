@@ -15,5 +15,4 @@ public class ParticleDrawer {
         renderSystemState.getBatch().render(particleSystem);
         renderSystemState.getBatch().end();
     }
-
 }

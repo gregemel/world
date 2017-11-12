@@ -24,7 +24,7 @@ public class MonsterDyingUpdater {
         MonsterComponent monsterComponent = monsterEntity.getComponent(MonsterComponent.class);
         float timeSinceDeath = monsterComponent.getTimeSinceDeath() + delta;
         if (timeSinceDeath >= deathDuration) {
-            Gdx.app.log("ThinkingSystem", format("times up for %s", monsterEntity.toString()));
+            Gdx.app.log("MonsterDyingUpdater", format("times up for %s", monsterEntity.toString()));
             monsterSystemState.getGameWorld().getEntityEngine().removeEntity(monsterEntity);
             monsterSystemState.getGameWorld().getPhysicsSystem().removeBody(monsterEntity);
         } else {

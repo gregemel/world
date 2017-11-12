@@ -27,20 +27,23 @@ public class ShadowDrawer {
         ImmutableArray<Entity> entities = renderSystemState.getEntities();
 
         for(Entity entity : entities) {
-            boolean isPlayerOrMonster = entity.getComponent(PlayerComponent.class) != null
-                    || entity.getComponent(MonsterComponent.class) != null;
-            if (isPlayerOrMonster) {
-                ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
-                if (isVisible(renderSystemState, modelComponent.getInstance())) {
-                    modelBatch.render(modelComponent.getInstance());
-                }
-            }
-
+            render(renderSystemState, modelBatch, entity);
             animate(delta, entity);
         }
 
         modelBatch.end();
         shadowLight.end();
+    }
+
+    private static void render(RenderSystemState renderSystemState, ModelBatch modelBatch, Entity entity) {
+        boolean isPlayerOrMonster = entity.getComponent(PlayerComponent.class) != null
+                || entity.getComponent(MonsterComponent.class) != null;
+        if (isPlayerOrMonster) {
+            ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
+            if (isVisible(renderSystemState, modelComponent.getInstance())) {
+                modelBatch.render(modelComponent.getInstance());
+            }
+        }
     }
 
     private static void animate(float delta, Entity entity) {

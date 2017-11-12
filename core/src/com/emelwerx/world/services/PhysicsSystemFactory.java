@@ -26,7 +26,7 @@ public class PhysicsSystemFactory {
         physicsSystemState.setDispatcher(dispatcher);
 
         btAxisSweep3 broadPhase = getBroadphase();
-        physicsSystemState.setBroadphase(broadPhase);
+        physicsSystemState.setBroadphaseInterface(broadPhase);
 
         btSequentialImpulseConstraintSolver solver = getSolver();
         physicsSystemState.setSolver(solver);

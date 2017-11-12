@@ -9,10 +9,12 @@ import com.emelwerx.world.Assets;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.ParticleComponent;
 
+import static java.lang.String.format;
+
 public class ParticleFactory {
 
     public static ParticleComponent create(String name, ParticleSystem particleSystem) {
-        Gdx.app.log("ParticleFactory", "creating particle component");
+        Gdx.app.log("ParticleFactory", format("creating particle component: %s", name));
 
         ParticleComponent particleComponent = new ParticleComponent();
         ParticleEffectLoader.ParticleEffectLoadParameter loadParam = new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());

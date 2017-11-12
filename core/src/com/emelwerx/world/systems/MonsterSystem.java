@@ -29,9 +29,11 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
     public void addedToEngine(Engine engine) {
         Gdx.app.log("MonsterSystem", "adding to engine.");
         monsterSystemState.setEntityEngine(engine);
+
         Family monsterFamily = Family.all(MonsterComponent.class, CharacterComponent.class).get();
         ImmutableArray<Entity> monsters = engine.getEntitiesFor(monsterFamily);
         monsterSystemState.setMonsters(monsters);
+
         Family player = Family.one(PlayerComponent.class).get();
         engine.addEntityListener(player, this);
     }

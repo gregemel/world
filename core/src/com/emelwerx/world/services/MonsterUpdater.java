@@ -11,7 +11,6 @@ public class MonsterUpdater {
     public static void updateAll(float delta, MonsterSystemState monsterSystemState) {
         for(Entity monsterEntity: monsterSystemState.getMonsters()) {
             MonsterComponent monsterComponent = monsterEntity.getComponent(MonsterComponent.class);
-
             MonsterComponent.MONSTER_STATE state = monsterComponent.getMonsterState();
 
             switch (state) {

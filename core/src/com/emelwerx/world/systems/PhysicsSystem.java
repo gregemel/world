@@ -78,8 +78,8 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
             physicsSystemState.getSolver().dispose();
         }
 
-        if (physicsSystemState.getBroadphase() != null) {
-            physicsSystemState.getBroadphase().dispose();
+        if (physicsSystemState.getBroadphaseInterface() != null) {
+            physicsSystemState.getBroadphaseInterface().dispose();
         }
 
         if (physicsSystemState.getDispatcher() != null) {
