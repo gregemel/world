@@ -26,8 +26,4 @@ public class PlayerComponent extends Component {
     public void setHealth(float health) {
         this.health = health;
     }
-
-//    public void subtractHealth(float health) {
-//        this.health -= health;
-//    }
 }

@@ -17,7 +17,7 @@ public class WorldCore extends ApplicationAdapter {
     public void create() {
         Gdx.app.log("WorldCore", "create");
         new Assets();
-        new Settings().load();
+        Settings.load();
         Gdx.input.setCatchBackKey(true);
         setScreen(new MainMenuScreen(this));
     }
