@@ -44,8 +44,8 @@ public class RenderSystem extends EntitySystem {
         Gdx.app.log("RenderSystem", String.format(Locale.US,"resizing (%d, %d)", width, height));
         renderSystemState.getPerspectiveCamera().viewportHeight = height;
         renderSystemState.getPerspectiveCamera().viewportWidth = width;
-        renderSystemState.getGunCamera().viewportHeight = height;
-        renderSystemState.getGunCamera().viewportWidth = width;
+        renderSystemState.getPlayerItemCamera().viewportHeight = height;
+        renderSystemState.getPlayerItemCamera().viewportWidth = width;
     }
 
     public void dispose() {

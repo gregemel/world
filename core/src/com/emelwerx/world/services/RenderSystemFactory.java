@@ -30,7 +30,7 @@ public class RenderSystemFactory {
         renderSystemState.setBatch(batch);
 
         PerspectiveCamera itemCamera = getItemPerspectiveCamera(renderSystemState);
-        renderSystemState.setGunCamera(itemCamera);
+        renderSystemState.setPlayerItemCamera(itemCamera);
 
         renderSystemState.setPosition(new Vector3());
 

@@ -58,9 +58,9 @@ public class GunShooter {
             Entity entity = (Entity)obj.userData;
             MonsterComponent monsterComponent = entity.getComponent(MonsterComponent.class);
             if (monsterComponent != null) {
-                if(monsterComponent.isAlive()) {
+                if(monsterComponent.getMonsterState() != MonsterComponent.MONSTER_STATE.DYING) {
                     Gdx.app.log("PlayerSystem", format("HIT monster %s", entity.toString()));
-                    monsterComponent.setAlive(false);
+                    monsterComponent.setMonsterState(MonsterComponent.MONSTER_STATE.DYING);
                     PlayerComponent.setScore(PlayerComponent.getScore() + 100);
                 }
             } else {

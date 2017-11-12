@@ -13,6 +13,7 @@ import com.emelwerx.world.services.AnimationComponentFactory;
 
 public class RenderSystemState {
 
+    //fov should be a configuration setting
     private static final float FOV = 67F;
     private ImmutableArray<Entity> entities;
     private ModelBatch batch;
@@ -22,7 +23,7 @@ public class RenderSystemState {
     private Vector3 position;
     private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
     private PerspectiveCamera perspectiveCamera;
-    private PerspectiveCamera gunCamera;
+    private PerspectiveCamera playerItemCamera;
     private ParticleSystem particleSystem;
 
     public float getFOV() {
@@ -93,12 +94,12 @@ public class RenderSystemState {
         this.perspectiveCamera = perspectiveCamera;
     }
 
-    public PerspectiveCamera getGunCamera() {
-        return gunCamera;
+    public PerspectiveCamera getPlayerItemCamera() {
+        return playerItemCamera;
     }
 
-    public void setGunCamera(PerspectiveCamera gunCamera) {
-        this.gunCamera = gunCamera;
+    public void setPlayerItemCamera(PerspectiveCamera playerItemCamera) {
+        this.playerItemCamera = playerItemCamera;
     }
 
     public ParticleSystem getParticleSystem() {

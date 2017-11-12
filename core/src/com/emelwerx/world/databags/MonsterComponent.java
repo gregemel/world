@@ -1,25 +1,29 @@
 package com.emelwerx.world.databags;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.Gdx;
+
+import java.util.Locale;
 
 public class MonsterComponent extends Component {
 
-    private  STATE state = STATE.IDLE;
+    private MONSTER_STATE monsterState = MONSTER_STATE.IDLE;
     private boolean alive;
     private boolean running;
     private boolean attacking;
     private float timeSinceDeath;
     private AnimationComponent animationComponent;
-    public MonsterComponent(STATE state){
-        this.state = state;
+    public MonsterComponent(MONSTER_STATE monsterState){
+        this.monsterState = monsterState;
     }
 
-    public STATE getState() {
-        return state;
+    public MONSTER_STATE getMonsterState() {
+        return monsterState;
     }
 
-    public void setState(STATE state) {
-        this.state = state;
+    public void setMonsterState(MONSTER_STATE monsterState) {
+        Gdx.app.log("MonsterComponent", String.format(Locale.US,"setMonsterState (%s, %s)", this.toString(), monsterState.toString()));
+        this.monsterState = monsterState;
     }
 
     public boolean isAlive() {
@@ -62,9 +66,9 @@ public class MonsterComponent extends Component {
         this.animationComponent = animationComponent;
     }
 
-    public enum STATE {
+    public enum MONSTER_STATE {
         IDLE,
-        FLEEING,
+        DYING,
         HUNTING
     }
 }
