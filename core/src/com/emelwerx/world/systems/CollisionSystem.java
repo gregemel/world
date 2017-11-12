@@ -21,39 +21,31 @@ public class CollisionSystem extends ContactListener {
 
             Gdx.app.log("CollisionSystem", format("two entities in contact %s, %s", entity0.toString(), entity1.toString()));
 
-            if (entity0.getComponent(CharacterComponent.class) != null
-                    && entity1.getComponent(CharacterComponent.class) != null) {
+            PlayerComponent playerComponent = getPlayerComponent(entity0, entity1);
 
-                if(entity0.getComponent(PlayerComponent.class) != null) {
-                    Gdx.app.log("CollisionSystem", format("0 is the player: %s", entity0.toString()));
-                }
+            ThoughtComponent monster = getThoughtComponent(entity0, entity1);
 
-                if(entity0.getComponent(ThoughtComponent.class) != null) {
-                    Gdx.app.log("CollisionSystem", format("0 is a monster: %s", entity0.toString()));
-                }
-
-                if(entity1.getComponent(PlayerComponent.class) != null) {
-                    Gdx.app.log("CollisionSystem", format("1 is the player: %s", entity1.toString()));
-                }
-
-                if(entity1.getComponent(ThoughtComponent.class) != null) {
-                    Gdx.app.log("CollisionSystem", format("1 is a monster: %s", entity1.toString()));
-                }
-
-                if (entity0.getComponent(MonsterComponent.class) != null) {
-                    if (entity0.getComponent(ThoughtComponent.class).isAlive()) {
-                        entity1.getComponent(PlayerComponent.class).subtractHealth(10);
-                        Gdx.app.log("CollisionSystem", "1 ouch!");
-                    }
-                    entity0.getComponent(ThoughtComponent.class).setAlive(false);
-                } else {
-                    if (entity1.getComponent(ThoughtComponent.class).isAlive()) {
-                                            entity0.getComponent(PlayerComponent.class).subtractHealth(10);
-                        Gdx.app.log("CollisionSystem", "0 ouch!");
-                    }
-                    entity1.getComponent(ThoughtComponent.class).setAlive(false);
-                }
+            if(monster != null && monster.isAlive() && playerComponent != null) {
+                Gdx.app.log("CollisionSystem", "OUCH!");
+                playerComponent.subtractHealth(10);
+                monster.setAlive(false);
             }
         }
+    }
+
+    private ThoughtComponent getThoughtComponent(Entity entity0, Entity entity1) {
+        ThoughtComponent monster = entity0.getComponent(ThoughtComponent.class);
+        if(monster == null) {
+            monster = entity1.getComponent(ThoughtComponent.class);
+        }
+        return monster;
+    }
+
+    private PlayerComponent getPlayerComponent(Entity entity0, Entity entity1) {
+        PlayerComponent playerComponent = entity0.getComponent(PlayerComponent.class);
+        if(playerComponent == null) {
+            playerComponent = entity1.getComponent(PlayerComponent.class);
+        }
+        return playerComponent;
     }
 }

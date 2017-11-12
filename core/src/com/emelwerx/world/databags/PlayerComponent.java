@@ -4,6 +4,12 @@ import com.badlogic.ashley.core.Component;
 
 public class PlayerComponent extends Component {
     private static int score;
+    private float health;
+
+    public PlayerComponent() {
+        health = 100;
+        score = 0;
+    }
 
     public static int getScore() {
         return score;
@@ -23,12 +29,5 @@ public class PlayerComponent extends Component {
 
     public void subtractHealth(float health) {
         this.health -= health;
-    }
-
-    private float health;
-
-    public PlayerComponent() {
-        health = 100;
-        score = 0;
     }
 }

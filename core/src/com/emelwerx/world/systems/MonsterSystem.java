@@ -8,19 +8,16 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.emelwerx.world.databags.CharacterComponent;
-import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.MonsterSystemState;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.ThoughtComponent;
-import com.emelwerx.world.services.DeadMonsterService;
-import com.emelwerx.world.services.LiveMonsterService;
-import com.emelwerx.world.services.MonsterFactory;
+import com.emelwerx.world.services.MonsterSpawner;
+import com.emelwerx.world.services.MonsterUpdater;
 
 import static java.lang.String.format;
 
 
-//monster system manages the worlds monsters as a whole... -ge[2017-11-06]
 public class MonsterSystem extends EntitySystem implements EntityListener {
 
     private MonsterSystemState monsterSystemState;
@@ -41,42 +38,8 @@ public class MonsterSystem extends EntitySystem implements EntityListener {
     }
 
     public void update(float delta) {
-        spawnAnyNewMonsters();
-        updateAllMonsters(delta);
-    }
-
-    private void updateAllMonsters(float delta) {
-
-        for(Entity monsterEntity: monsterSystemState.getMonsters()) {
-
-            ThoughtComponent thoughtComponent = monsterEntity.getComponent(ThoughtComponent.class);
-
-            boolean monsterIsAlive = thoughtComponent.isAlive();
-            if (monsterIsAlive) {
-                ModelComponent playerModel = monsterSystemState.getPlayer().getComponent(ModelComponent.class);
-                LiveMonsterService.updateLiveMonster(delta, playerModel, monsterEntity, monsterSystemState);
-            } else {
-                DeadMonsterService.update(delta, monsterEntity, monsterSystemState);
-            }
-        }
-    }
-
-    private void spawnAnyNewMonsters() {
-        int numberOfMonsters = monsterSystemState.getMonsters().size();
-        if (numberOfMonsters < 1) {
-            Gdx.app.log("MonsterSystem", "spawning monster...");
-            spawnMonster();
-        }
-    }
-
-    private void spawnMonster() {
-        Entity monster = MonsterFactory.create(
-                "monster",
-                monsterSystemState.getGameWorld());
-
-        Gdx.app.log("MonsterSystem", format("monster spawned: %s", monster.toString()));
-
-        monsterSystemState.getEntityEngine().addEntity(monster);
+        MonsterSpawner.update(monsterSystemState);
+        MonsterUpdater.updateAll(delta, monsterSystemState);
     }
 
     @Override
