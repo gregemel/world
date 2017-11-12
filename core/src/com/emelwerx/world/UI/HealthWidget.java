@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.utils.Align;
-import com.emelwerx.world.Assets;
-import com.emelwerx.world.Settings;
+import com.emelwerx.world.services.Assets;
+import com.emelwerx.world.services.Settings;
 
 public class HealthWidget extends Actor {
     private ProgressBar healthBar;
@@ -26,7 +26,7 @@ public class HealthWidget extends Actor {
 
     @Override
     public void act(float delta) {
-        if (Settings.Paused) return;
+        if (Settings.isPaused()) return;
         healthBar.act(delta);
         label.act(delta);
     }

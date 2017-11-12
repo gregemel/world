@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.emelwerx.world.databags.CharacterComponent;
 import com.emelwerx.world.databags.PhysicsComponent;
@@ -52,17 +53,23 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     public void removeBody(Entity entity) {
         Gdx.app.log("PhysicsSystem", format("entity removed: %s", entity.toString()));
-        PhysicsComponent comp = entity.getComponent(PhysicsComponent.class);
+        btDiscreteDynamicsWorld collisionWorld = physicsSystemState.getCollisionWorld();
+        removePhysicsComponent(entity, collisionWorld);
+        removeCharacterComponent(entity, collisionWorld);
+    }
 
-        if (comp != null) {
-            physicsSystemState.getCollisionWorld().removeCollisionObject(comp.getBody());
-        }
-
+    private void removeCharacterComponent(Entity entity, btDiscreteDynamicsWorld collisionWorld) {
         CharacterComponent character = entity.getComponent(CharacterComponent.class);
-
         if (character != null) {
-            physicsSystemState.getCollisionWorld().removeAction(character.getCharacterController());
-            physicsSystemState.getCollisionWorld().removeCollisionObject(character.getGhostObject());
+            collisionWorld.removeAction(character.getCharacterController());
+            collisionWorld.removeCollisionObject(character.getGhostObject());
+        }
+    }
+
+    private void removePhysicsComponent(Entity entity, btDiscreteDynamicsWorld collisionWorld) {
+        PhysicsComponent physicsComponent = entity.getComponent(PhysicsComponent.class);
+        if (physicsComponent != null) {
+            collisionWorld.removeCollisionObject(physicsComponent.getBody());
         }
     }
 

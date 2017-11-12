@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.emelwerx.world.Assets;
+import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.WorldCore;
 import com.emelwerx.world.screens.GameScreen;
 import com.emelwerx.world.screens.LeaderboardsScreen;

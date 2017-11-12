@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.emelwerx.world.Assets;
+import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.WorldCore;
 
 public class MainMenuScreen implements Screen {

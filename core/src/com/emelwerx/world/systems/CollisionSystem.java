@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.PlayerComponent;
+import com.emelwerx.world.services.MonsterPlayerCollisionService;
 
 import static java.lang.String.format;
 
@@ -23,15 +24,20 @@ public class CollisionSystem extends ContactListener {
             PlayerComponent playerComponent = getPlayerComponent(entity0, entity1);
             MonsterComponent monsterComponent = getMonsterComponent(entity0, entity1);
 
-            if(monsterComponent != null
-                    && monsterComponent.getMonsterState() != MonsterComponent.MONSTER_STATE.DYING
-                    && playerComponent != null) {
-                Gdx.app.log("CollisionSystem", "OUCH!");
-                playerComponent.subtractHealth(10);
-                monsterComponent.setMonsterState(MonsterComponent.MONSTER_STATE.DYING);
-            }
+            checkCollision(playerComponent, monsterComponent);
         }
     }
+
+    private void checkCollision(PlayerComponent playerComponent, MonsterComponent monsterComponent) {
+        boolean isTransitionToPlayerMonsterCollision = monsterComponent != null
+                && monsterComponent.getMonsterState() != MonsterComponent.MONSTER_STATE.DYING
+                && playerComponent != null;
+        if(isTransitionToPlayerMonsterCollision) {
+            Gdx.app.log("CollisionSystem", "OUCH!");
+            MonsterPlayerCollisionService.collide(playerComponent, monsterComponent);
+        }
+    }
+
 
     private MonsterComponent getMonsterComponent(Entity entity0, Entity entity1) {
         MonsterComponent monster = entity0.getComponent(MonsterComponent.class);

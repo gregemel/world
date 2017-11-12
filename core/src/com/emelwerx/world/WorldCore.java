@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.emelwerx.world.screens.MainMenuScreen;
+import com.emelwerx.world.services.Assets;
+import com.emelwerx.world.services.Settings;
 
 public class WorldCore extends ApplicationAdapter {
     public static final float VIRTUAL_WIDTH = 960;

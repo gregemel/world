@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.emelwerx.world.Settings;
+import com.emelwerx.world.services.Settings;
 
 
 public class CrosshairWidget extends Actor {
@@ -20,12 +20,12 @@ public class CrosshairWidget extends Actor {
 
     @Override
     public void act(float delta) {
-        if (Settings.Paused) return;
+        if (Settings.isPaused()) return;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (Settings.Paused) return;
+        if (Settings.isPaused()) return;
         crosshairDot.draw(batch, parentAlpha);
         crosshairInnerRing.draw(batch, parentAlpha);
     }

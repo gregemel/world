@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
-import com.emelwerx.world.Assets;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.ParticleComponent;
 

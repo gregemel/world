@@ -19,10 +19,9 @@ public class MonsterComponent extends Component {
     }
 
     public void setMonsterState(MONSTER_STATE monsterState) {
-        Gdx.app.log("MonsterComponent", String.format(Locale.US,"setMonsterState (%s, %s)", this.toString(), monsterState.toString()));
+        Gdx.app.log("MonsterComponent", String.format(Locale.US,"setMonsterState: %s, %s", this.toString(), monsterState.toString()));
         this.monsterState = monsterState;
     }
-
 
     public float getTimeSinceDeath() {
         return timeSinceDeath;

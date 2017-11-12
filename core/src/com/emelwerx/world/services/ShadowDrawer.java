@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.math.Vector3;
-import com.emelwerx.world.Settings;
 import com.emelwerx.world.databags.AnimationComponent;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.MonsterComponent;
@@ -48,7 +47,7 @@ public class ShadowDrawer {
 
     private static void animate(float delta, Entity entity) {
         AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
-        boolean hasAnimation = animationComponent != null & !Settings.Paused;
+        boolean hasAnimation = animationComponent != null & !Settings.isPaused();
         if (hasAnimation) {
             animationComponent.getAnimationController().update(delta);
         }

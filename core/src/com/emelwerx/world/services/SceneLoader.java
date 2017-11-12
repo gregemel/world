@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.PhysicsComponent;
 import com.emelwerx.world.databags.Scene;
-import com.emelwerx.world.physics.MotionState;
+import com.emelwerx.world.databags.MotionState;
 
 import java.util.Locale;
 

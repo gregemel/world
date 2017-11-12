@@ -2,7 +2,7 @@ package com.emelwerx.world.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.emelwerx.world.Settings;
+import com.emelwerx.world.services.Settings;
 import com.emelwerx.world.UI.GameUI;
 import com.emelwerx.world.WorldCore;
 import com.emelwerx.world.databags.World;
@@ -20,7 +20,7 @@ public class GameScreen implements Screen {
         WorldLoader worldLoader = new WorldLoader();
         world = worldLoader.create("arena", gameUI);
 
-        Settings.Paused = false;
+        Settings.setPaused(false);
         Gdx.input.setInputProcessor(gameUI.getStage());
         Gdx.input.setCursorCatched(true);
     }
