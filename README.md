@@ -29,6 +29,7 @@ The libDGX based application targets Android, but the core module can run on a L
 * tutorials for developers
 * more...
 
+
 ##### Inspired by the book:
 Building a 3D Game with LibGDX
 by Sebastián Di Giuseppe; Elmar van Rijnswou; Andreas Krühlmann
