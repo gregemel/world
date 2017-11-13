@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.emelwerx.world.screens.MainMenuScreen;
+import com.emelwerx.world.ui.screens.MainMenuScreen;
 import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.services.Settings;
 
@@ -19,7 +19,8 @@ public class WorldCore extends ApplicationAdapter {
         new Assets();
         Settings.load();
         Gdx.input.setCatchBackKey(true);
-        setScreen(new MainMenuScreen(this));
+        MainMenuScreen firstScreen = new MainMenuScreen(this);
+        setScreen(firstScreen);
     }
 
     @Override

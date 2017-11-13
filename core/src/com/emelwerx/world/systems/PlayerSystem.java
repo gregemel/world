@@ -8,7 +8,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.emelwerx.world.services.Settings;
-import com.emelwerx.world.UI.GameUI;
 import com.emelwerx.world.databags.CharacterComponent;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.PlayerComponent;
@@ -44,15 +43,15 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     }
 
     private void updateStatus() {
-        GameUI gameUI = playerSystemState.getGameUI();
+        WorldUiSystem worldUiSystem = playerSystemState.getWorldUiSystem();
         PlayerComponent playerComponent = playerSystemState.getPlayerComponent();
-        gameUI.getHealthWidget().setValue(playerComponent.getHealth());
+        worldUiSystem.getWorldUiSystemState().getHealthWidget().setValue(playerComponent.getHealth());
     }
 
     private void checkGameOver() {
         if (playerSystemState.getPlayerComponent().getHealth() <= 0 && !Settings.isPaused()) {
             Settings.setPaused(true);
-            playerSystemState.getGameUI().getGameOverWidget().gameOver();
+            playerSystemState.getWorldUiSystem().getWorldUiSystemState().getGameOverWidget().gameOver();
         }
     }
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
-import com.emelwerx.world.UI.GameUI;
+import com.emelwerx.world.systems.WorldUiSystem;
 import com.emelwerx.world.services.AnimationComponentFactory;
 
 public class PlayerSystemState {
@@ -17,7 +17,7 @@ public class PlayerSystemState {
     private PlayerComponent playerComponent;
     private CharacterComponent characterComponent;
     private ModelComponent modelComponent;
-    private GameUI gameUI;
+    private WorldUiSystem worldUiSystem;
     private World gameWorld;
     private Vector3 rayFrom = new Vector3();
     private Vector3 rayTo = new Vector3();
@@ -99,12 +99,12 @@ public class PlayerSystemState {
         this.modelComponent = modelComponent;
     }
 
-    public GameUI getGameUI() {
-        return gameUI;
+    public WorldUiSystem getWorldUiSystem() {
+        return worldUiSystem;
     }
 
-    public void setGameUI(GameUI gameUI) {
-        this.gameUI = gameUI;
+    public void setWorldUiSystem(WorldUiSystem worldUiSystem) {
+        this.worldUiSystem = worldUiSystem;
     }
 
     public World getGameWorld() {

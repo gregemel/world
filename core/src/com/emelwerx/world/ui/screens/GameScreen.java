@@ -1,9 +1,10 @@
-package com.emelwerx.world.screens;
+package com.emelwerx.world.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.emelwerx.world.services.Settings;
-import com.emelwerx.world.UI.GameUI;
+import com.emelwerx.world.services.WorldUiSystemFactory;
+import com.emelwerx.world.systems.WorldUiSystem;
 import com.emelwerx.world.WorldCore;
 import com.emelwerx.world.databags.World;
 import com.emelwerx.world.services.PauseChecker;
@@ -12,16 +13,15 @@ import com.emelwerx.world.services.WorldLoader;
 import com.emelwerx.world.services.WorldDrawer;
 
 public class GameScreen implements Screen {
-    private GameUI gameUI;
+    private WorldUiSystem worldUiSystem;
     private World world;
 
     public GameScreen(WorldCore game) {
-        gameUI = new GameUI(game);
-        WorldLoader worldLoader = new WorldLoader();
-        world = worldLoader.create("arena", gameUI);
+        worldUiSystem = WorldUiSystemFactory.create(game);
+        world = WorldLoader.create("arena", worldUiSystem);
 
         Settings.setPaused(false);
-        Gdx.input.setInputProcessor(gameUI.getStage());
+        Gdx.input.setInputProcessor(worldUiSystem.getWorldUiSystemState().getStage());
         Gdx.input.setCursorCatched(true);
     }
 
@@ -31,22 +31,22 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        gameUI.update(delta);
+        worldUiSystem.update(delta);
         WorldDrawer.draw(world, delta);
         PauseChecker.checkPause(world);
-        gameUI.render();
+        worldUiSystem.render();
     }
 
     @Override
     public void resize(int width, int height) {
-        gameUI.resize(width, height);
+        worldUiSystem.resize(width, height);
         world.getRenderSystem().resize(width, height);
     }
 
     @Override
     public void dispose() {
         WorldDisposer.dispose(world);
-        gameUI.dispose();
+        worldUiSystem.dispose();
     }
 
     @Override

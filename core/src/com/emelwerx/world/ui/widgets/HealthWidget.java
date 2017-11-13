@@ -1,4 +1,4 @@
-package com.emelwerx.world.UI;
+package com.emelwerx.world.ui.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;

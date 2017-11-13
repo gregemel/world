@@ -1,4 +1,4 @@
-package com.emelwerx.world.screens;
+package com.emelwerx.world.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

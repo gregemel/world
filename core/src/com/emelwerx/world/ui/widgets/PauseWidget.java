@@ -1,4 +1,4 @@
-package com.emelwerx.world.UI;
+package com.emelwerx.world.ui.widgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.WorldCore;
 import com.emelwerx.world.services.Settings;
-import com.emelwerx.world.screens.GameScreen;
+import com.emelwerx.world.ui.screens.GameScreen;
 
 public class PauseWidget extends Actor {
     private WorldCore game;
