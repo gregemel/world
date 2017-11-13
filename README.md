@@ -7,28 +7,28 @@ Built with 3D LibGDX, Ashley, Bullet, Blender.
 Currently, the world is limited to fighting monsters in a stone wall arena, first person shooter style.
 The libDGX based application targets Android, but the core module can run on a Linux desktop for quick testing.    
 
-###android controls:
+### android controls:
  * move with left disk
  * aim and fire with right disk
 
-###desktop controls:
+### desktop controls:
  * move with W, Z, A, S
  * jump with space
  * point with mouse
  * fire with mouse button
 
-##Purpose
+## Purpose
 * An exploration in building immersive 3D games for Android tablets and phones.
 * Learning about extending open source 3D game engines for Java on Android.
 * Finding ways to amuse my kids.
 
-##Next
+## Next
 * file driven worlds, scenes, etc.
 * more interesting scenes and creatures.
 * goap driven monster ai
 * more...
 
-#####Inspired by the book:
+##### Inspired by the book:
 Building a 3D Game with LibGDX
 by Sebastián Di Giuseppe; Elmar van Rijnswou; Andreas Krühlmann
 
