@@ -13,7 +13,7 @@ import static java.lang.String.format;
 public class ModelComponentFactory {
 
     public static ModelComponent create(Model model, float x, float y, float z) {
-        Gdx.app.log("ModelComponentFactory", format(Locale.US, "create model component %s, %f, %f, %f", model.toString(), x, y, z));
+        Gdx.app.log("ModelComponentFactory", format(Locale.US, "init model component %s, %f, %f, %f", model.toString(), x, y, z));
         ModelComponent modelComponent = new ModelComponent();
         Matrix4 matrix4 = new Matrix4();
         modelComponent.setMatrix4(matrix4);

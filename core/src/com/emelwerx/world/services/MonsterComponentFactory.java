@@ -8,7 +8,7 @@ import static java.lang.String.format;
 
 public class MonsterComponentFactory {
     public static MonsterComponent create(AnimationComponent animationComponent) {
-        Gdx.app.log("MonsterComponentFactory", format("create %s", animationComponent.toString()));
+        Gdx.app.log("MonsterComponentFactory", format("init %s", animationComponent.toString()));
         MonsterComponent monsterComponent = new MonsterComponent(MonsterComponent.MONSTER_STATE.IDLE);
         monsterComponent.setAnimationComponent(animationComponent);
         monsterComponent.setTimeSinceDeath(0f);

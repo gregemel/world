@@ -12,11 +12,11 @@ import com.emelwerx.world.services.WorldDisposer;
 import com.emelwerx.world.services.WorldLoader;
 import com.emelwerx.world.services.WorldDrawer;
 
-public class GameScreen implements Screen {
+public class WorldScreen implements Screen {
     private WorldUiSystem worldUiSystem;
     private World world;
 
-    public GameScreen(WorldCore game) {
+    public WorldScreen(WorldCore game) {
         worldUiSystem = WorldUiSystemFactory.create(game);
         world = WorldLoader.create("arena", worldUiSystem);
 

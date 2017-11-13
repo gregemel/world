@@ -11,7 +11,7 @@ public class Assets {
     public static Skin skin;
     public static AssetManager assetManager;
 
-    public Assets() {
+    private Assets() {
         skin = new Skin();
         FileHandle fileHandle = Gdx.files.internal("data/uiskin.json");
         FileHandle atlasFile = fileHandle.sibling("uiskin.atlas");
@@ -21,6 +21,12 @@ public class Assets {
         skin.load(fileHandle);
 
         assetManager = new AssetManager();
+    }
+
+    public static Assets init() {
+        Assets assets = new Assets();
+
+        return assets;
     }
 
     public static void dispose() {
