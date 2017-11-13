@@ -1,4 +1,4 @@
-package com.emelwerx.world;
+package com.emelwerx.world.services;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;

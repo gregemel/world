@@ -4,7 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.emelwerx.world.screens.MainMenuScreen;
+import com.emelwerx.world.ui.screens.MainMenuScreen;
+import com.emelwerx.world.services.Assets;
+import com.emelwerx.world.services.Settings;
 
 public class WorldCore extends ApplicationAdapter {
     public static final float VIRTUAL_WIDTH = 960;
@@ -15,9 +17,10 @@ public class WorldCore extends ApplicationAdapter {
     public void create() {
         Gdx.app.log("WorldCore", "create");
         new Assets();
-        new Settings().load();
+        Settings.load();
         Gdx.input.setCatchBackKey(true);
-        setScreen(new MainMenuScreen(this));
+        MainMenuScreen firstScreen = new MainMenuScreen(this);
+        setScreen(firstScreen);
     }
 
     @Override

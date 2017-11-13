@@ -15,7 +15,6 @@ import com.emelwerx.world.systems.PhysicsSystem;
 public class PhysicsSystemFactory {
     public static PhysicsSystem create() {
         Gdx.app.log("PhysicsSystemFactory", "creating physics system");
-        PhysicsSystem physicsSystem = new PhysicsSystem();
         PhysicsSystemState physicsSystemState = new PhysicsSystemState();
 
         physicsSystemState.setCollisionListener(getCollisionListener());
@@ -27,7 +26,7 @@ public class PhysicsSystemFactory {
         physicsSystemState.setDispatcher(dispatcher);
 
         btAxisSweep3 broadPhase = getBroadphase();
-        physicsSystemState.setBroadphase(broadPhase);
+        physicsSystemState.setBroadphaseInterface(broadPhase);
 
         btSequentialImpulseConstraintSolver solver = getSolver();
         physicsSystemState.setSolver(solver);
@@ -40,8 +39,7 @@ public class PhysicsSystemFactory {
         physicsSystemState.setCollisionWorld(
                 getCollisionWorld(collisionConfiguration, dispatcher, broadPhase, solver));
 
-        physicsSystem.setPhysicsSystemState(physicsSystemState);
-        return physicsSystem;
+        return new PhysicsSystem(physicsSystemState);
     }
 
     private static btDiscreteDynamicsWorld getCollisionWorld(btDefaultCollisionConfiguration collisionConfiguration, btCollisionDispatcher dispatcher, btAxisSweep3 broadphase, btSequentialImpulseConstraintSolver solver) {

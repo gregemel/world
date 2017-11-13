@@ -9,10 +9,11 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.math.Vector3;
-import com.emelwerx.world.services.AnimationService;
+import com.emelwerx.world.services.AnimationComponentFactory;
 
 public class RenderSystemState {
 
+    //fov should be a configuration setting
     private static final float FOV = 67F;
     private ImmutableArray<Entity> entities;
     private ModelBatch batch;
@@ -20,9 +21,9 @@ public class RenderSystemState {
     private DirectionalShadowLight shadowLight;
     private Entity gun;
     private Vector3 position;
-    private AnimationService animationService = new AnimationService();
+    private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
     private PerspectiveCamera perspectiveCamera;
-    private PerspectiveCamera gunCamera;
+    private PerspectiveCamera playerItemCamera;
     private ParticleSystem particleSystem;
 
     public float getFOV() {
@@ -77,12 +78,12 @@ public class RenderSystemState {
         this.position = position;
     }
 
-    public AnimationService getAnimationService() {
-        return animationService;
+    public AnimationComponentFactory getAnimationComponentFactory() {
+        return animationComponentFactory;
     }
 
-    public void setAnimationService(AnimationService animationService) {
-        this.animationService = animationService;
+    public void setAnimationComponentFactory(AnimationComponentFactory animationComponentFactory) {
+        this.animationComponentFactory = animationComponentFactory;
     }
 
     public PerspectiveCamera getPerspectiveCamera() {
@@ -93,12 +94,12 @@ public class RenderSystemState {
         this.perspectiveCamera = perspectiveCamera;
     }
 
-    public PerspectiveCamera getGunCamera() {
-        return gunCamera;
+    public PerspectiveCamera getPlayerItemCamera() {
+        return playerItemCamera;
     }
 
-    public void setGunCamera(PerspectiveCamera gunCamera) {
-        this.gunCamera = gunCamera;
+    public void setPlayerItemCamera(PerspectiveCamera playerItemCamera) {
+        this.playerItemCamera = playerItemCamera;
     }
 
     public ParticleSystem getParticleSystem() {

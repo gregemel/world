@@ -8,7 +8,7 @@ import com.emelwerx.world.databags.World;
 import static java.lang.String.format;
 
 public class WorldDisposer {
-    public void dispose(World gameWorld) {
+    public static void dispose(World gameWorld) {
         Gdx.app.log("WorldDisposer", format("dispose %s", gameWorld.toString()));
         CharacterComponent characterComponent = gameWorld.getEntityCharacter().getComponent(CharacterComponent.class);
         btDiscreteDynamicsWorld collisionWorld = gameWorld.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld();

@@ -5,14 +5,15 @@ import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
-import com.emelwerx.world.Assets;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.ParticleComponent;
+
+import static java.lang.String.format;
 
 public class ParticleFactory {
 
     public static ParticleComponent create(String name, ParticleSystem particleSystem) {
-        Gdx.app.log("ParticleFactory", "creating particle component");
+        Gdx.app.log("ParticleFactory", format("creating particle component: %s", name));
 
         ParticleComponent particleComponent = new ParticleComponent();
         ParticleEffectLoader.ParticleEffectLoadParameter loadParam = new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
@@ -28,15 +29,13 @@ public class ParticleFactory {
         return particleComponent;
     }
 
-    public static ParticleEffect createParticleEffect(ModelComponent modelComponent, ParticleComponent particleComponent) {
+    public static ParticleEffect createParticleEffect(ModelComponent monsterModelComponent, ParticleComponent particleComponent) {
         ParticleEffect effect = particleComponent.getOriginalEffect().copy();
         ((RegularEmitter) effect.getControllers().first().emitter).setEmissionMode(RegularEmitter.EmissionMode.EnabledUntilCycleEnd);
-        effect.setTransform(modelComponent.getInstance().transform);
+        effect.setTransform(monsterModelComponent.getInstance().transform);
         effect.scale(3.25f, 1, 1.5f);
         effect.init();
         effect.start();
         return effect;
     }
-
-
 }

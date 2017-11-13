@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.bullet.collision.btBroadphaseProxy;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.emelwerx.world.databags.AnimationComponent;
@@ -15,19 +17,29 @@ import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.MonsterAnimations;
 import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.ParticleComponent;
-import com.emelwerx.world.databags.ThoughtComponent;
 import com.emelwerx.world.systems.PhysicsSystem;
 
 import java.util.Locale;
+import java.util.Random;
 
 public class MonsterFactory {
+
+    private static Random random = new Random();
 
     private static Model cachedMonsterModel;
     private static final float modelScalar = 0.0025f;
 
-    public static Entity create(String name, World gameWorld, float x, float y, float z) {
+    private static float[] xSpawns = {12, -12, 80, -80};
+    private static float[] zSpawns = {-80, 80, -12, 12};
+
+    public static Entity create(String name, World gameWorld) {
         Gdx.app.log("MonsterFactory", String.format(Locale.US,
-                "creating monster %s, %s, %.2f, %.2f, %.2f", name, gameWorld.toString(), x, y, z));
+                "creating monster %s, %s", name, gameWorld.toString()));
+
+        //todo: spawn location should be determined by the scene -ge[2017-11-12]
+        float x = xSpawns[random.nextInt(xSpawns.length)];
+        float y = 33;
+        float z = zSpawns[random.nextInt(zSpawns.length)];
 
         Entity entity = new Entity();
         attachComponents(name, gameWorld, x, y, z, entity);
@@ -44,14 +56,11 @@ public class MonsterFactory {
         PhysicsSystem physicsSystem = gameWorld.getPhysicsSystem();
         setPhysics(physicsSystem, entity);
 
-        MonsterComponent monsterComponent = getMonsterComponent();
-        entity.add(monsterComponent);
-
         AnimationComponent animationComponent = getAnimationComponent(modelComponent);
         entity.add(animationComponent);
 
-        ThoughtComponent thoughtComponent = getStatusComponent(animationComponent);
-        entity.add(thoughtComponent);
+        MonsterComponent monsterComponent = MonsterComponentFactory.create(animationComponent);
+        entity.add(monsterComponent);
 
         ParticleComponent particleComponent = getParticleComponent(gameWorld);
         entity.add(particleComponent);
@@ -59,47 +68,42 @@ public class MonsterFactory {
 
     private static ModelComponent getModelComponent(String name, float x, float y, float z) {
         Model model = getCachedMonsterModel(name);
-        ModelComponent enemyModelComponent = ModelComponentFactory.create(model, x, y, z);
+        ModelComponent monsterModelComponent = ModelComponentFactory.create(model, x, y, z);
 
-        Material material = enemyModelComponent.getInstance().materials.get(0);
+        Material material = monsterModelComponent.getInstance().materials.get(0);
         BlendingAttribute blendingAttribute;
         material.set(blendingAttribute = new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA));
-        enemyModelComponent.setBlendingAttribute(blendingAttribute);
+        monsterModelComponent.setBlendingAttribute(blendingAttribute);
 
-        enemyModelComponent.getInstance().transform.set(enemyModelComponent.getMatrix4().setTranslation(x, y, z));
-        return enemyModelComponent;
+        Matrix4 matrix4 = monsterModelComponent.getMatrix4();
+        monsterModelComponent.getInstance().transform.set(matrix4.setTranslation(x, y, z));
+        return monsterModelComponent;
     }
 
     private static Model getCachedMonsterModel(String name) {
+        //todo: model cache should be a hash map collection of name/model pairs -ge[2017-11-12]
         if (cachedMonsterModel == null) {
-            ModelLoader modelLoader = new ModelLoader();
-            cachedMonsterModel = modelLoader.loadModel(name, modelScalar);
+            cachedMonsterModel = ModelLoader.loadModel(name, modelScalar);
         }
         return cachedMonsterModel;
     }
 
-    private static MonsterComponent getMonsterComponent() {
-        return new MonsterComponent(MonsterComponent.STATE.HUNTING);
-    }
-
     private static ParticleComponent getParticleComponent(World gameWorld) {
-        return ParticleFactory.create("dieparticle", gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem());
-    }
-
-    private static ThoughtComponent getStatusComponent(AnimationComponent animationComponent) {
-        ThinkingService thinkingService = new ThinkingService();
-        return thinkingService.create(animationComponent);
+        ParticleSystem particleSystem = gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem();
+        return ParticleFactory.create("dieparticle", particleSystem);
     }
 
     private static AnimationComponent getAnimationComponent(ModelComponent modelComponent) {
-        AnimationService animationService = new AnimationService();
-        AnimationComponent animationComponent = animationService.create(modelComponent.getInstance());
-        animationService.animate(
-                animationComponent,
+        AnimationComponent animationComponent = AnimationComponentFactory.create(modelComponent.getInstance());
+
+        animationComponent.getAnimationController().animate(
                 MonsterAnimations.getId(),
                 MonsterAnimations.getOffsetRun1(),
                 MonsterAnimations.getDurationRun1(),
-                -1, 1);
+                -1,
+                1,
+                null, 0);
+
         return animationComponent;
     }
 

@@ -8,7 +8,6 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.emelwerx.world.services.ModelComponentFactory;
 
 import java.util.Random;
 
@@ -18,20 +17,20 @@ public class MonsterSystemState {
     private World gameWorld;
 
     private Engine entityEngine;
-    private ModelComponentFactory modelComponentFactory = new ModelComponentFactory();
 
+    //this should come from the character component
     private Vector3 playerPosition = new Vector3();
-    private Vector3 enemyPosition = new Vector3();
+
+    //this should come from the character component
+    private Vector3 currentMonsterPosition = new Vector3();
+
     private Matrix4 ghost = new Matrix4();
     private Vector3 translation = new Vector3();
     private Quaternion quaternion = new Quaternion();
     private Random random = new Random();
 
-    private float[] xSpawns = {12, -12, 112, -112};
-    private float[] zSpawns = {-112, 112, -12, 12};
-
     private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
-    private ComponentMapper<ThoughtComponent> sm = ComponentMapper.getFor(ThoughtComponent.class);
+    private ComponentMapper<MonsterComponent> sm = ComponentMapper.getFor(MonsterComponent.class);
 
     public ImmutableArray<Entity> getMonsters() {
         return monsters;
@@ -81,12 +80,12 @@ public class MonsterSystemState {
         this.playerPosition = playerPosition;
     }
 
-    public Vector3 getMonsterPosition() {
-        return enemyPosition;
+    public Vector3 getCurrentMonsterPosition() {
+        return currentMonsterPosition;
     }
 
-    public void setEnemyPosition(Vector3 enemyPosition) {
-        this.enemyPosition = enemyPosition;
+    public void setCurrentMonsterPosition(Vector3 currentMonsterPosition) {
+        this.currentMonsterPosition = currentMonsterPosition;
     }
 
     public Matrix4 getGhostMatrix() {
@@ -105,37 +104,6 @@ public class MonsterSystemState {
         this.translation = translation;
     }
 
-    public Random getRandom() {
-        return random;
-    }
-
-    public void setRandom(Random random) {
-        this.random = random;
-    }
-
-    public ModelComponentFactory getModelComponentFactory() {
-        return modelComponentFactory;
-    }
-
-    public void setModelComponentFactory(ModelComponentFactory modelComponentFactory) {
-        this.modelComponentFactory = modelComponentFactory;
-    }
-
-    public float[] getxSpawns() {
-        return xSpawns;
-    }
-
-    public void setxSpawns(float[] xSpawns) {
-        this.xSpawns = xSpawns;
-    }
-
-    public float[] getzSpawns() {
-        return zSpawns;
-    }
-
-    public void setzSpawns(float[] zSpawns) {
-        this.zSpawns = zSpawns;
-    }
 
     public ComponentMapper<CharacterComponent> getCm() {
         return cm;
@@ -145,11 +113,11 @@ public class MonsterSystemState {
         this.cm = cm;
     }
 
-    public ComponentMapper<ThoughtComponent> getSm() {
+    public ComponentMapper<MonsterComponent> getSm() {
         return sm;
     }
 
-    public void setSm(ComponentMapper<ThoughtComponent> sm) {
+    public void setSm(ComponentMapper<MonsterComponent> sm) {
         this.sm = sm;
     }
 }

@@ -1,4 +1,4 @@
-package com.emelwerx.world.UI;
+package com.emelwerx.world.ui.widgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.emelwerx.world.Assets;
+import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.WorldCore;
-import com.emelwerx.world.Settings;
-import com.emelwerx.world.screens.GameScreen;
+import com.emelwerx.world.services.Settings;
+import com.emelwerx.world.ui.screens.GameScreen;
 
 public class PauseWidget extends Actor {
     private WorldCore game;
@@ -76,11 +76,11 @@ public class PauseWidget extends Actor {
         if (window.getStage() == null) {
             stage.addActor(window);
             Gdx.input.setCursorCatched(false);
-            Settings.Paused = true;
+            Settings.setPaused(true);
         } else {
             window.remove();
             Gdx.input.setCursorCatched(true);
-            Settings.Paused = false;
+            Settings.setPaused(false);
         }
     }
 

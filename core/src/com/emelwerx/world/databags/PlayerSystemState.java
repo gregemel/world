@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
-import com.emelwerx.world.UI.GameUI;
-import com.emelwerx.world.services.AnimationService;
+import com.emelwerx.world.systems.WorldUiSystem;
+import com.emelwerx.world.services.AnimationComponentFactory;
 
 public class PlayerSystemState {
     private Vector3 tmp = new Vector3();
@@ -17,14 +17,14 @@ public class PlayerSystemState {
     private PlayerComponent playerComponent;
     private CharacterComponent characterComponent;
     private ModelComponent modelComponent;
-    private GameUI gameUI;
+    private WorldUiSystem worldUiSystem;
     private World gameWorld;
     private Vector3 rayFrom = new Vector3();
     private Vector3 rayTo = new Vector3();
     private ClosestRayResultCallback rayTestCB;
     private Vector3 translation = new Vector3();
     private Matrix4 ghost = new Matrix4();
-    private AnimationService animationService = new AnimationService();
+    private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
     private float jumpForce = 25f;
 
     public float getJumpForce() {
@@ -99,12 +99,12 @@ public class PlayerSystemState {
         this.modelComponent = modelComponent;
     }
 
-    public GameUI getGameUI() {
-        return gameUI;
+    public WorldUiSystem getWorldUiSystem() {
+        return worldUiSystem;
     }
 
-    public void setGameUI(GameUI gameUI) {
-        this.gameUI = gameUI;
+    public void setWorldUiSystem(WorldUiSystem worldUiSystem) {
+        this.worldUiSystem = worldUiSystem;
     }
 
     public World getGameWorld() {
@@ -155,11 +155,11 @@ public class PlayerSystemState {
         this.ghost = ghost;
     }
 
-    public AnimationService getAnimationService() {
-        return animationService;
+    public AnimationComponentFactory getAnimationComponentFactory() {
+        return animationComponentFactory;
     }
 
-    public void setAnimationService(AnimationService animationService) {
-        this.animationService = animationService;
+    public void setAnimationComponentFactory(AnimationComponentFactory animationComponentFactory) {
+        this.animationComponentFactory = animationComponentFactory;
     }
 }

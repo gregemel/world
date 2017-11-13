@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
-import com.emelwerx.world.UI.GameUI;
+import com.emelwerx.world.systems.WorldUiSystem;
 import com.emelwerx.world.databags.PlayerSystemState;
 import com.emelwerx.world.databags.World;
 import com.emelwerx.world.systems.PlayerSystem;
@@ -12,19 +12,16 @@ import com.emelwerx.world.systems.PlayerSystem;
 import static java.lang.String.format;
 
 public class PlayerSystemFactory {
-    public static PlayerSystem create(World gameWorld, GameUI gameUI, Camera camera) {
-        Gdx.app.log("PlayerSystemFactory", format("creating player system %s, %s, %s", gameWorld.toString(), gameUI.toString(), camera.toString()));
-        PlayerSystem playerSystem = new PlayerSystem();
-        playerSystem.setPlayerSystemState(getPlayerSystemState(gameWorld, gameUI, camera));
-        return playerSystem;
-    }
+    public static PlayerSystem create(World gameWorld, WorldUiSystem worldUiSystem, Camera camera) {
+        Gdx.app.log("PlayerSystemFactory", format("creating player system %s, %s, %s", gameWorld.toString(), worldUiSystem.toString(), camera.toString()));
 
-    private static PlayerSystemState getPlayerSystemState(World gameWorld, GameUI gameUI, Camera camera) {
         PlayerSystemState playerSystemState = new PlayerSystemState();
         playerSystemState.setCamera(camera);
         playerSystemState.setGameWorld(gameWorld);
-        playerSystemState.setGameUI(gameUI);
+        playerSystemState.setWorldUiSystem(worldUiSystem);
         playerSystemState.setRayTestCB(new ClosestRayResultCallback(Vector3.Zero, Vector3.Z));
-        return playerSystemState;
+
+        return new PlayerSystem(playerSystemState);
     }
+
 }

@@ -1,4 +1,4 @@
-package com.emelwerx.world.UI;
+package com.emelwerx.world.ui.widgets;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.emelwerx.world.Assets;
+import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.databags.PlayerComponent;
 
 public class ScoreWidget extends Actor {
@@ -25,11 +25,13 @@ public class ScoreWidget extends Actor {
     @Override
     public void act(float delta) {
         container.act(delta);
-        if (PlayerComponent.score > score) {
-            container.addAction(new SequenceAction(Actions.scaleBy(0.5f, 0.25f, 0.3f), Actions.scaleBy(-0.5f, -0.25f, 0.3f)));
+        if (PlayerComponent.getScore() > score) {
+            container.addAction(new SequenceAction(
+                            Actions.scaleBy(0.5f, 0.25f, 0.3f),
+                            Actions.scaleBy(-0.5f, -0.25f, 0.3f)));
         }
-        score = PlayerComponent.score;
-        label.setText("Score : " + PlayerComponent.score);
+        score = PlayerComponent.getScore();
+        label.setText("Score : " + PlayerComponent.getScore());
     }
 
     @Override

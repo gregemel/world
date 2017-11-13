@@ -1,6 +1,5 @@
 package com.emelwerx.world.services;
 
-
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
@@ -8,27 +7,27 @@ import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.emelwerx.world.databags.World;
-import com.emelwerx.world.UI.GameUI;
+import com.emelwerx.world.systems.WorldUiSystem;
 import com.emelwerx.world.databags.Scene;
-import com.emelwerx.world.databags.StatusSystemState;
 import com.emelwerx.world.systems.PhysicsSystem;
 import com.emelwerx.world.systems.MonsterSystem;
 import com.emelwerx.world.systems.PlayerSystem;
 import com.emelwerx.world.systems.RenderSystem;
-import com.emelwerx.world.systems.ThinkingSystem;
+
+import static java.lang.String.format;
 
 public class WorldLoader {
 
-    private World world;
-    private GameUI gameUI;
+    private static World world;
+    private static WorldUiSystem worldUiSystem;
 
-    public World create(String name, GameUI ui) {
+    public static World create(String name, WorldUiSystem ui) {
 
-        Gdx.app.log("WorldLoader", String.format("creating world: %s", name));
+        Gdx.app.log("WorldLoader", format("creating world: %s", name));
         Bullet.init();
 
         world = new World();
-        gameUI = ui;
+        worldUiSystem = ui;
 
         setDebug();
         addSystems();
@@ -38,7 +37,7 @@ public class WorldLoader {
         return world;
     }
 
-    private void setDebug() {
+    private static void setDebug() {
         if (world.isDebug()) {
             DebugDrawer debugDrawer = new DebugDrawer();
             debugDrawer.setDebugMode(btIDebugDraw.DebugDrawModes.DBG_MAX_DEBUG_DRAW_MODE);
@@ -46,29 +45,28 @@ public class WorldLoader {
         }
     }
 
-    private void addSystems() {
+    private static void addSystems() {
         Engine engine = createEntitySystem();
         RenderSystem renderSystem = createRenderSystem(engine);
         createPhysicsSystem(engine);
         createPlayerSystem(engine, renderSystem);
         createMonsterSystem(engine);
-        createStatusSystem(engine);
         world.setEntityEngine(engine);
     }
 
-    private Engine createEntitySystem() {
+    private static Engine createEntitySystem() {
         Gdx.app.log("WorldLoader", "createEntitySystem");
         return new Engine();
     }
 
-    private RenderSystem createRenderSystem(Engine engine) {
+    private static RenderSystem createRenderSystem(Engine engine) {
         RenderSystem renderSystem = RenderSystemFactory.create();
         world.setRenderSystem(renderSystem);
         engine.addSystem(renderSystem);
         return renderSystem;
     }
 
-    private void createPhysicsSystem(Engine engine) {
+    private static void createPhysicsSystem(Engine engine) {
         PhysicsSystem physicsSystem = PhysicsSystemFactory.create();
         world.setPhysicsSystem(physicsSystem);
         engine.addSystem(physicsSystem);
@@ -77,39 +75,28 @@ public class WorldLoader {
         }
     }
 
-    private void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
+    private static void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
         PlayerSystem playerSystem = PlayerSystemFactory.create(
-                world, gameUI, renderSystem.getRenderSystemState().getPerspectiveCamera());
+                world, worldUiSystem, renderSystem.getRenderSystemState().getPerspectiveCamera());
         world.setPlayerSystem(playerSystem);
         engine.addSystem(playerSystem);
     }
 
-    private void createStatusSystem(Engine engine) {
-        ThinkingSystem thinkingSystem = new ThinkingSystem();
-
-        StatusSystemState statusSystemState = new StatusSystemState();
-        statusSystemState.setGameWorld(world);
-        statusSystemState.setThinkingService(new ThinkingService());
-        thinkingSystem.setStatusSystemState(statusSystemState);
-        statusSystemState.setWorldService(this);
-
-        engine.addSystem(thinkingSystem);
-    }
-
-    private void createMonsterSystem(Engine engine) {
+    private static void createMonsterSystem(Engine engine) {
         MonsterSystem monsterSystem = MonsterSystemFactory.create(world);
         engine.addSystem(monsterSystem);
     }
 
-    private void loadFirstScene() {
+    private static void loadFirstScene() {
         Scene arena = SceneLoader.load("arena", 0, 0, 0);
         world.setCurrentScene(arena);
-        world.getEntityEngine().addEntity(arena.getGround());
-        world.getEntityEngine().addEntity(arena.getSky());
+        Engine entityEngine = world.getEntityEngine();
+        entityEngine.addEntity(arena.getGround());
+        entityEngine.addEntity(arena.getSky());
         world.getPlayerSystem().getPlayerSystemState().setSkyEntity(arena.getSky());
     }
 
-    private void createPlayer(float x, float y, float z) {
+    private static void createPlayer(float x, float y, float z) {
         Entity player = PlayerFactory.create(world.getPhysicsSystem(), x, y, z);
         world.setPlayer(player);
         world.getEntityEngine().addEntity(player);
@@ -118,16 +105,10 @@ public class WorldLoader {
         addItemToWorld(itemEntity);
     }
 
-    private void addItemToWorld(Entity itemEntity) {
+    private static void addItemToWorld(Entity itemEntity) {
         world.setEntityPlayerItem(itemEntity);
         world.getEntityEngine().addEntity(itemEntity);
         world.getPlayerSystem().getPlayerSystemState().setVisibleItem(itemEntity);
         world.getRenderSystem().getRenderSystemState().setPlayersVisibleItem(itemEntity);
-    }
-
-    public void remove(World gameWorld, Entity entity) {
-        Gdx.app.log("WorldLoader", "remove");
-        gameWorld.getEntityEngine().removeEntity(entity);
-        gameWorld.getPhysicsSystem().removeBody(entity);
     }
 }

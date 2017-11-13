@@ -1,4 +1,4 @@
-package com.emelwerx.world.screens;
+package com.emelwerx.world.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,14 +11,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.emelwerx.world.Assets;
+import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.WorldCore;
 
 public class MainMenuScreen implements Screen {
     private WorldCore game;
     private Stage stage;
-    private Image backgroundImage, titleImage;
-    private TextButton playButton, leaderboardsButton, quitButton;
+    private Image backgroundImage;
+    private Image titleImage;
+    private TextButton playButton;
+    private TextButton leaderboardsButton;
+    private TextButton quitButton;
 
     public MainMenuScreen(WorldCore game) {
         this.game = game;
@@ -70,7 +73,8 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                GameScreen nextGameScreen = new GameScreen(game);
+                game.setScreen(nextGameScreen);
             }
         });
         leaderboardsButton.addListener(new ClickListener() {
