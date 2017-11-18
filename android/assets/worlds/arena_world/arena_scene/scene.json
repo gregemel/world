@@ -1,0 +1,23 @@
+{
+  "sky": {
+    "modelFile": "spacedome.g3db",
+    "skinFile": "space.jpg"
+  },
+  "ground": {
+    "modelFile": "arena.g3db",
+    "skinFile": "space.jpg"
+  },
+  "creatures": [
+    {
+      "goblin": {
+        "modelFile": "monster.j3dj",
+        "skinFile": "monster.jpg",
+        "startLocation": {
+          "x": "80",
+          "y": "0",
+          "z": "-80"
+        }
+      }
+    }
+  ]
+}
