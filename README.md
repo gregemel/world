@@ -4,7 +4,7 @@ An immersive world to explore on your Android device.
 Built with 3D LibGDX, Ashley, Bullet, Blender.
 
 
-Currently, the world is limited to fighting monsters in a stone wall arena, first person shooter style.
+Currently, the world is limited to fighting creatures in a stone wall arena, first person shooter style.
 The libDGX based application targets Android, but the core module can run on a Linux desktop for quick testing.    
 
 ### android controls:
@@ -24,9 +24,9 @@ The libDGX based application targets Android, but the core module can run on a L
 
 ## Next
 * file driven worlds, scenes, etc.
-* more interesting scenes and creatures.
-* goap driven monster ai
-* tutorials for developers
+* more interesting scenes and creatures, models, and textures
+* goap driven creature ai
+* tutorials, maybe...
 * more...
 
 
@@ -34,7 +34,7 @@ The libDGX based application targets Android, but the core module can run on a L
 Building a 3D Game with LibGDX
 by Sebastián Di Giuseppe; Elmar van Rijnswou; Andreas Krühlmann
 
-Monster, scene models, textures came from the book's repository and may be copyrighted.
+Creature, scene models, textures came from the book's repository and may be copyrighted.
 * https://github.com/DeeepGames/SpaceGladiators
 *
 * more models and textures at: https://opengameart.org/

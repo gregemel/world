@@ -10,14 +10,12 @@ import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.emelwerx.world.databags.World;
+import com.emelwerx.world.systems.CreatureSystem;
 import com.emelwerx.world.systems.WorldUiSystem;
 import com.emelwerx.world.databags.Scene;
 import com.emelwerx.world.systems.PhysicsSystem;
-import com.emelwerx.world.systems.MonsterSystem;
 import com.emelwerx.world.systems.PlayerSystem;
 import com.emelwerx.world.systems.RenderSystem;
-
-import java.io.InputStream;
 
 import static java.lang.String.format;
 
@@ -87,7 +85,7 @@ public class WorldLoader {
         RenderSystem renderSystem = createRenderSystem(engine);
         createPhysicsSystem(engine);
         createPlayerSystem(engine, renderSystem);
-        createMonsterSystem(engine);
+        createCreatureSystem(engine);
         world.setEntityEngine(engine);
     }
 
@@ -119,9 +117,9 @@ public class WorldLoader {
         engine.addSystem(playerSystem);
     }
 
-    private static void createMonsterSystem(Engine engine) {
-        MonsterSystem monsterSystem = MonsterSystemFactory.create(world);
-        engine.addSystem(monsterSystem);
+    private static void createCreatureSystem(Engine engine) {
+        CreatureSystem creatureSystem = CreatureSystemFactory.create(world);
+        engine.addSystem(creatureSystem);
     }
 
     private static void loadFirstScene() {

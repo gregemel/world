@@ -1,6 +1,6 @@
 package com.emelwerx.world.databags;
 
-public class MonsterAnimations {
+public class CreatureAnimation {
     private static final String id = "MilkShape3D Skele|DefaultAction";
     private static final float offsetDeath2 = 22.6f;
     private static final float durationDeath2 = 3.4f;

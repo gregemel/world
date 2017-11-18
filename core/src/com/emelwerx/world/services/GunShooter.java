@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.emelwerx.world.databags.AnimationComponent;
-import com.emelwerx.world.databags.MonsterComponent;
+import com.emelwerx.world.databags.CreatureComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.PlayerSystemState;
 
@@ -56,17 +56,17 @@ public class GunShooter {
         if (rayTestCB.hasHit()) {
             btCollisionObject obj = rayTestCB.getCollisionObject();
             Entity entity = (Entity)obj.userData;
-            MonsterComponent monsterComponent = entity.getComponent(MonsterComponent.class);
-            if (monsterComponent != null) {
-                if(monsterComponent.getMonsterState() != MonsterComponent.MONSTER_STATE.DYING) {
-                    Gdx.app.log("PlayerSystem", format("HIT monster %s", entity.toString()));
-                    monsterComponent.setMonsterState(MonsterComponent.MONSTER_STATE.DYING);
+            CreatureComponent creatureComponent = entity.getComponent(CreatureComponent.class);
+            if (creatureComponent != null) {
+                if(creatureComponent.getCreatureState() != CreatureComponent.CREATURE_STATE.DYING) {
+                    Gdx.app.log("PlayerSystem", format("HIT creature %s", entity.toString()));
+                    creatureComponent.setCreatureState(CreatureComponent.CREATURE_STATE.DYING);
                     PlayerComponent.setScore(PlayerComponent.getScore() + 100);
                 } else {
-                    Gdx.app.log("PlayerSystem", format("you hit a dying monster %s", entity.toString()));
+                    Gdx.app.log("PlayerSystem", format("you hit a dying creature %s", entity.toString()));
                 }
             } else {
-                Gdx.app.log("PlayerSystem", format("hit not a monster %s", entity.toString()));
+                Gdx.app.log("PlayerSystem", format("hit not a creature %s", entity.toString()));
             }
         } else {
             Gdx.app.log("PlayerSystem", "miss");

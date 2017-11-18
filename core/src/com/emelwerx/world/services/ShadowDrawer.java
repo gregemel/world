@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.math.Vector3;
 import com.emelwerx.world.databags.AnimationComponent;
+import com.emelwerx.world.databags.CreatureComponent;
 import com.emelwerx.world.databags.ModelComponent;
-import com.emelwerx.world.databags.MonsterComponent;
 import com.emelwerx.world.databags.PlayerComponent;
 import com.emelwerx.world.databags.RenderSystemState;
 
@@ -35,9 +35,9 @@ public class ShadowDrawer {
     }
 
     private static void render(RenderSystemState renderSystemState, ModelBatch modelBatch, Entity entity) {
-        boolean isPlayerOrMonster = entity.getComponent(PlayerComponent.class) != null
-                || entity.getComponent(MonsterComponent.class) != null;
-        if (isPlayerOrMonster) {
+        boolean isPlayerOrCreature = entity.getComponent(PlayerComponent.class) != null
+                || entity.getComponent(CreatureComponent.class) != null;
+        if (isPlayerOrCreature) {
             ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
             if (isVisible(renderSystemState, modelComponent.getInstance())) {
                 modelBatch.render(modelComponent.getInstance());

@@ -11,8 +11,8 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.Random;
 
-public class MonsterSystemState {
-    private ImmutableArray<Entity> monsters;
+public class CreatureSystemState {
+    private ImmutableArray<Entity> creatures;
     private Entity player;
     private World gameWorld;
 
@@ -22,7 +22,7 @@ public class MonsterSystemState {
     private Vector3 playerPosition = new Vector3();
 
     //this should come from the character component
-    private Vector3 currentMonsterPosition = new Vector3();
+    private Vector3 currentCreaturePosition = new Vector3();
 
     private Matrix4 ghost = new Matrix4();
     private Vector3 translation = new Vector3();
@@ -30,14 +30,14 @@ public class MonsterSystemState {
     private Random random = new Random();
 
     private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
-    private ComponentMapper<MonsterComponent> sm = ComponentMapper.getFor(MonsterComponent.class);
+    private ComponentMapper<CreatureComponent> sm = ComponentMapper.getFor(CreatureComponent.class);
 
-    public ImmutableArray<Entity> getMonsters() {
-        return monsters;
+    public ImmutableArray<Entity> getCreatures() {
+        return creatures;
     }
 
-    public void setMonsters(ImmutableArray<Entity> monsters) {
-        this.monsters = monsters;
+    public void setCreatures(ImmutableArray<Entity> creatures) {
+        this.creatures = creatures;
     }
 
     public Entity getPlayer() {
@@ -80,12 +80,12 @@ public class MonsterSystemState {
         this.playerPosition = playerPosition;
     }
 
-    public Vector3 getCurrentMonsterPosition() {
-        return currentMonsterPosition;
+    public Vector3 getCurrentCreaturePosition() {
+        return currentCreaturePosition;
     }
 
-    public void setCurrentMonsterPosition(Vector3 currentMonsterPosition) {
-        this.currentMonsterPosition = currentMonsterPosition;
+    public void setCurrentCreaturePosition(Vector3 currentCreaturePosition) {
+        this.currentCreaturePosition = currentCreaturePosition;
     }
 
     public Matrix4 getGhostMatrix() {
@@ -113,11 +113,11 @@ public class MonsterSystemState {
         this.cm = cm;
     }
 
-    public ComponentMapper<MonsterComponent> getSm() {
+    public ComponentMapper<CreatureComponent> getSm() {
         return sm;
     }
 
-    public void setSm(ComponentMapper<MonsterComponent> sm) {
+    public void setSm(ComponentMapper<CreatureComponent> sm) {
         this.sm = sm;
     }
 }

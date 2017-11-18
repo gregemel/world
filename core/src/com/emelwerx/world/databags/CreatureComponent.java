@@ -5,22 +5,22 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.Locale;
 
-public class MonsterComponent extends Component {
+public class CreatureComponent extends Component {
 
-    private MONSTER_STATE monsterState = MONSTER_STATE.IDLE;
+    private CREATURE_STATE creatureState = CREATURE_STATE.IDLE;
     private float timeSinceDeath;
     private AnimationComponent animationComponent;
-    public MonsterComponent(MONSTER_STATE monsterState){
-        this.monsterState = monsterState;
+    public CreatureComponent(CREATURE_STATE creatureState){
+        this.creatureState = creatureState;
     }
 
-    public MONSTER_STATE getMonsterState() {
-        return monsterState;
+    public CREATURE_STATE getCreatureState() {
+        return creatureState;
     }
 
-    public void setMonsterState(MONSTER_STATE monsterState) {
-        Gdx.app.log("MonsterComponent", String.format(Locale.US,"setMonsterState: %s, %s", this.toString(), monsterState.toString()));
-        this.monsterState = monsterState;
+    public void setCreatureState(CREATURE_STATE creatureState) {
+        Gdx.app.log("CreatureComponent", String.format(Locale.US,"setCreatureState: %s, %s", this.toString(), creatureState.toString()));
+        this.creatureState = creatureState;
     }
 
     public float getTimeSinceDeath() {
@@ -39,7 +39,7 @@ public class MonsterComponent extends Component {
         this.animationComponent = animationComponent;
     }
 
-    public enum MONSTER_STATE {
+    public enum CREATURE_STATE {
         IDLE,
         DYING,
         HUNTING

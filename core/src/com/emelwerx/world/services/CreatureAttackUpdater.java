@@ -6,22 +6,22 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.emelwerx.world.databags.CharacterComponent;
 import com.emelwerx.world.databags.ModelComponent;
-import com.emelwerx.world.databags.MonsterSystemState;
+import com.emelwerx.world.databags.CreatureSystemState;
 
-public class MonsterAttachingUpdater {
+public class CreatureAttackUpdater {
 
     public static void update(
             float delta,
             ModelComponent playerModelComponent,
-            Entity monsterEntity,
-            MonsterSystemState monsterSystemState) {
-        ModelComponent monsterModelComponent = monsterEntity.getComponent(ModelComponent.class);
+            Entity creatureEntity,
+            CreatureSystemState creatureSystemState) {
+        ModelComponent creatureModelComponent = creatureEntity.getComponent(ModelComponent.class);
         Quaternion rotationToFacePlayer = getRotationToFaceTarget(delta,
-                playerModelComponent, monsterEntity, monsterModelComponent, monsterSystemState);
+                playerModelComponent, creatureEntity, creatureModelComponent, creatureSystemState);
 
-        Vector3 translation = monsterSystemState.getTranslation();
+        Vector3 translation = creatureSystemState.getTranslation();
 
-        monsterModelComponent.getInstance().transform.set(
+        creatureModelComponent.getInstance().transform.set(
                 translation.x, translation.y, translation.z,
                 rotationToFacePlayer.x, rotationToFacePlayer.y, rotationToFacePlayer.z,
                 rotationToFacePlayer.w);
@@ -30,22 +30,22 @@ public class MonsterAttachingUpdater {
     private static Quaternion getRotationToFaceTarget(float delta,
                                                     ModelComponent target,
                                                     Entity entity,
-                                                    ModelComponent monsterModelComponent,
-                                                    MonsterSystemState monsterSystemState) {
+                                                    ModelComponent creatureModelComponent,
+                                                    CreatureSystemState creatureSystemState) {
 
-        float theta = getTheta(target, monsterModelComponent, monsterSystemState);
+        float theta = getTheta(target, creatureModelComponent, creatureSystemState);
 
-        Quaternion rot = monsterSystemState.getQuaternion().setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
+        Quaternion rot = creatureSystemState.getQuaternion().setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
 
-        CharacterComponent characterComponent = monsterSystemState.getCm().get(entity);
-        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(monsterModelComponent.getInstance().transform);
+        CharacterComponent characterComponent = creatureSystemState.getCm().get(entity);
+        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(creatureModelComponent.getInstance().transform);
 
         Vector3 walkDirection = getWalkDirection(delta, characterComponent);
         characterComponent.getCharacterController().setWalkDirection(walkDirection);
 
-        Matrix4 ghostMatrix = monsterSystemState.getGhostMatrix();
+        Matrix4 ghostMatrix = creatureSystemState.getGhostMatrix();
         ghostMatrix.set(0, 0, 0, 0);
-        Vector3 translation = monsterSystemState.getTranslation();
+        Vector3 translation = creatureSystemState.getTranslation();
         translation.set(0, 0, 0);
         characterComponent.getGhostObject().getWorldTransform(ghostMatrix);
         ghostMatrix.getTranslation(translation);
@@ -54,16 +54,16 @@ public class MonsterAttachingUpdater {
     }
 
     private static float getTheta(ModelComponent target,
-                                  ModelComponent monsterModelComponent,
-                                  MonsterSystemState monsterSystemState) {
-        Vector3 targetPosition = monsterSystemState.getPlayerPosition();
+                                  ModelComponent creatureModelComponent,
+                                  CreatureSystemState creatureSystemState) {
+        Vector3 targetPosition = creatureSystemState.getPlayerPosition();
         target.getInstance().transform.getTranslation(targetPosition);
 
-        Vector3 monsterPosition = monsterSystemState.getCurrentMonsterPosition();
-        monsterModelComponent.getInstance().transform.getTranslation(monsterPosition);
+        Vector3 creaturePosition = creatureSystemState.getCurrentCreaturePosition();
+        creatureModelComponent.getInstance().transform.getTranslation(creaturePosition);
 
-        float dX = targetPosition.x - monsterPosition.x;
-        float dZ = targetPosition.z - monsterPosition.z;
+        float dX = targetPosition.x - creaturePosition.x;
+        float dZ = targetPosition.z - creaturePosition.z;
         return (float) (Math.atan2(dX, dZ));
     }
 

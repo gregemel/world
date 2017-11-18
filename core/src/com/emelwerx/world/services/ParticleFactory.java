@@ -29,10 +29,10 @@ public class ParticleFactory {
         return particleComponent;
     }
 
-    public static ParticleEffect createParticleEffect(ModelComponent monsterModelComponent, ParticleComponent particleComponent) {
+    public static ParticleEffect createParticleEffect(ModelComponent creatureModelComponent, ParticleComponent particleComponent) {
         ParticleEffect effect = particleComponent.getOriginalEffect().copy();
         ((RegularEmitter) effect.getControllers().first().emitter).setEmissionMode(RegularEmitter.EmissionMode.EnabledUntilCycleEnd);
-        effect.setTransform(monsterModelComponent.getInstance().transform);
+        effect.setTransform(creatureModelComponent.getInstance().transform);
         effect.scale(3.25f, 1, 1.5f);
         effect.init();
         effect.start();
