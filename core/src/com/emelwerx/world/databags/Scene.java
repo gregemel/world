@@ -7,6 +7,20 @@ public class Scene {
     private String name;
     private Entity sky;
     private Entity ground;
+    private int maxSpawnCount;
+
+    //create spawn spots
+
+    //max number of concurrent creatures
+
+
+    public int getMaxSpawnCount() {
+        return maxSpawnCount;
+    }
+
+    public void setMaxSpawnCount(int maxSpawnCount) {
+        this.maxSpawnCount = maxSpawnCount;
+    }
 
     public String getName() {
         return name;

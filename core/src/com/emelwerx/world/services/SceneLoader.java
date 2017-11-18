@@ -2,15 +2,19 @@ package com.emelwerx.world.services;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.PhysicsComponent;
 import com.emelwerx.world.databags.Scene;
 import com.emelwerx.world.databags.MotionState;
+import com.emelwerx.world.databags.World;
 
 import java.util.Locale;
 
@@ -18,13 +22,37 @@ import static java.lang.String.format;
 
 public class SceneLoader {
 
-    public static Scene load(String name, int x, int y, int z) {
-        Gdx.app.log("SceneLoader", format("load %s, %d, %d, %d", name, x, y, z));
+    public static Scene load(World world, int x, int y, int z) {
+
+        String worldName = world.getName();
+        String sceneName = world.getFirstSceneName();
+
+        String sceneFilename = "worlds/" + worldName + "/" + sceneName + "/scene.json";
+        Gdx.app.log("SceneLoader", format("load %s, %d, %d, %d", sceneFilename, x, y, z));
+
+        FileHandle fileHandle = Gdx.files.internal(sceneFilename);
+
+        JsonReader reader = new JsonReader();
+        JsonValue value = reader.parse(fileHandle);
+
+        JsonValue sky = value.get("sky");
+        JsonValue ground = value.get("ground");
+
+
+
+        //todo: drive the remaining load process with the json file settings
+
+
+
+
 
         Scene scene = new Scene();
-        scene.setName(name);
+
+        scene.setName(sceneName);
         scene.setSky(loadSky("spacedome", x, y, z));
         scene.setGround(loadGround("arena", x, y, z));
+
+        scene.setMaxSpawnCount(3);
 
         return scene;
     }

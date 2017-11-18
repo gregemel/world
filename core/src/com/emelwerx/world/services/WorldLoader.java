@@ -3,9 +3,12 @@ package com.emelwerx.world.services;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.emelwerx.world.databags.World;
 import com.emelwerx.world.systems.WorldUiSystem;
 import com.emelwerx.world.databags.Scene;
@@ -13,6 +16,8 @@ import com.emelwerx.world.systems.PhysicsSystem;
 import com.emelwerx.world.systems.MonsterSystem;
 import com.emelwerx.world.systems.PlayerSystem;
 import com.emelwerx.world.systems.RenderSystem;
+
+import java.io.InputStream;
 
 import static java.lang.String.format;
 
@@ -29,12 +34,44 @@ public class WorldLoader {
         world = new World();
         worldUiSystem = ui;
 
+        loadWorldFile();
         setDebug();
         addSystems();
         loadFirstScene();
         createPlayer(0, 6, 0);
 
         return world;
+    }
+
+    private static void loadWorldFile() {
+        String name = getFirstWorldName();
+        world.setName(name);
+        String firstWorld = name + "/world.json";
+        Gdx.app.log("WorldLoader", format("loading first world : %s", firstWorld));
+
+        String firstScene = getFirstSceneName(firstWorld);
+
+        world.setFirstSceneName(firstScene);
+    }
+
+    private static String getFirstSceneName(String firstWorld) {
+        FileHandle fileHandle = Gdx.files.internal("worlds/" + firstWorld);
+
+        JsonReader reader = new JsonReader();
+        JsonValue value = reader.parse(fileHandle);
+
+        return value.getString("firstScene");
+    }
+
+    private static String getFirstWorldName() {
+        String firstWorld = "worlds/start.json";
+        Gdx.app.log("WorldLoader", format("loading start file : %s", firstWorld));
+        FileHandle fileHandle = Gdx.files.internal(firstWorld);
+
+        JsonReader reader = new JsonReader();
+        JsonValue value = reader.parse(fileHandle);
+
+        return value.getString("firstWorld");
     }
 
     private static void setDebug() {
@@ -46,7 +83,7 @@ public class WorldLoader {
     }
 
     private static void addSystems() {
-        Engine engine = createEntitySystem();
+        Engine engine = createEntityEngine();
         RenderSystem renderSystem = createRenderSystem(engine);
         createPhysicsSystem(engine);
         createPlayerSystem(engine, renderSystem);
@@ -54,8 +91,8 @@ public class WorldLoader {
         world.setEntityEngine(engine);
     }
 
-    private static Engine createEntitySystem() {
-        Gdx.app.log("WorldLoader", "createEntitySystem");
+    private static Engine createEntityEngine() {
+        Gdx.app.log("WorldLoader", "createEntityEngine");
         return new Engine();
     }
 
@@ -88,7 +125,7 @@ public class WorldLoader {
     }
 
     private static void loadFirstScene() {
-        Scene arena = SceneLoader.load("arena", 0, 0, 0);
+        Scene arena = SceneLoader.load(world, 0, 0, 0);
         world.setCurrentScene(arena);
         Engine entityEngine = world.getEntityEngine();
         entityEngine.addEntity(arena.getGround());

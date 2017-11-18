@@ -8,21 +8,26 @@ import static java.lang.String.format;
 
 public class MonsterSpawner {
     public static void update(MonsterSystemState monsterSystemState) {
-        int numberOfMonsters = monsterSystemState.getMonsters().size();
-        if (numberOfMonsters < 1) {
+        if (getCurrentMonsterCount(monsterSystemState) < getMaxSpawnCount(monsterSystemState)) {
             Gdx.app.log("MonsterSystem", "spawning monster...");
             spawnMonster(monsterSystemState);
         }
+    }
+
+    private static int getMaxSpawnCount(MonsterSystemState monsterSystemState) {
+        return monsterSystemState.getGameWorld().getCurrentScene().getMaxSpawnCount();
+    }
+
+    private static int getCurrentMonsterCount(MonsterSystemState monsterSystemState) {
+        return monsterSystemState.getMonsters().size();
     }
 
     private static void spawnMonster(MonsterSystemState monsterSystemState) {
         Entity monster = MonsterFactory.create(
                 "monster",
                 monsterSystemState.getGameWorld());
-
-        Gdx.app.log("MonsterSystem", format("monster spawned: %s", monster.toString()));
-
         monsterSystemState.getEntityEngine().addEntity(monster);
+        Gdx.app.log("MonsterSystem", format("monster spawned: %s", monster.toString()));
     }
 }
 
