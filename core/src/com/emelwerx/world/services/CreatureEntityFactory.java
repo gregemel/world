@@ -41,6 +41,13 @@ public class CreatureEntityFactory {
         float y = 33;
         float z = zSpawns[random.nextInt(zSpawns.length)];
 
+        return create(gameWorld, name, x, y, z);
+    }
+
+    public static Entity create(World gameWorld, String name, float x, float y, float z) {
+        Gdx.app.log("CreatureEntityFactory", String.format(Locale.US,
+                "creating creature %s, %s", name, gameWorld.toString()));
+
         Entity entity = new Entity();
         attachComponents(name, gameWorld, x, y, z, entity);
         return entity;
