@@ -15,7 +15,7 @@ public class PlayerItemFactory {
     public static Entity create(String name, float x, float y, float z) {
         Gdx.app.log("PlayerItemFactory", format(Locale.US,"creating entity %s, %f, %f, %f", name, x, y, z));
 
-        Model itemModel = ModelLoader.loadModel(name);
+        Model itemModel = ModelLoader.loadModel(name + ".g3dj");
         ModelComponent itemModelComponent = ModelComponentFactory.create(itemModel, x, y, z);
 
         itemModelComponent.getInstance().transform.rotate(0, 1, 0, 180);

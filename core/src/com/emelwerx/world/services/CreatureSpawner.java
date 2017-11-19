@@ -24,7 +24,7 @@ public class CreatureSpawner {
 
     private static void spawnCreature(CreatureSystemState creatureSystemState) {
         Entity creatureEntity = CreatureEntityFactory.create(
-                "monster",
+                "monster.g3dj",
                 creatureSystemState.getGameWorld());
         creatureSystemState.getEntityEngine().addEntity(creatureEntity);
         Gdx.app.log("CreatureSystem", format("creatureEntity spawned: %s", creatureEntity.toString()));

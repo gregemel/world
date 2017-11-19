@@ -38,7 +38,9 @@ public class SceneLoader {
         JsonValue sky = value.get("sky");
         JsonValue ground = value.get("ground");
 
+        String skyModelFilename = sky.getString("modelFile");
 
+        String groundModelFilename = ground.getString("modelFile");
 
         //todo: drive the remaining load process with the json file settings
 
@@ -49,8 +51,8 @@ public class SceneLoader {
         Scene scene = new Scene();
 
         scene.setName(sceneName);
-        scene.setSky(loadSky("spacedome", x, y, z));
-        scene.setGround(loadGround("arena", x, y, z));
+        scene.setSky(loadSky(skyModelFilename, x, y, z));
+        scene.setGround(loadGround(groundModelFilename, x, y, z));
 
         scene.setMaxSpawnCount(3);
 

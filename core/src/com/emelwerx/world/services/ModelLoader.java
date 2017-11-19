@@ -18,7 +18,7 @@ public class ModelLoader {
     public static Model loadModel(String name) {
         Gdx.app.log("ModelComponentFactory", format("loadModel %s", name));
         com.badlogic.gdx.assets.loaders.ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
-        ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name + ".g3dj"));
+        ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name));
         return new Model(modelData, new TextureProvider.FileTextureProvider());
     }
 
@@ -37,7 +37,7 @@ public class ModelLoader {
     public static Model getSkyModel(String name) {
         Gdx.app.log("ModelComponentFactory", format("getSkyModel %s", name));
         G3dModelLoader modelLoader = new G3dModelLoader(new UBJsonReader());
-        return modelLoader.loadModel(Gdx.files.getFileHandle("data/" + name + ".g3db", Files.FileType.Internal));
+        return modelLoader.loadModel(Gdx.files.getFileHandle("data/" + name, Files.FileType.Internal));
     }
 
 }
