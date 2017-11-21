@@ -39,7 +39,7 @@ public class CreatureSystem extends EntitySystem implements EntityListener {
     }
 
     public void update(float delta) {
-//        CreatureSpawner.update(creatureSystemState);
+        CreatureSpawner.update(creatureSystemState);
         CreatureUpdater.updateAll(delta, creatureSystemState);
     }
 

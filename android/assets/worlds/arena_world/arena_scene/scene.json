@@ -17,9 +17,9 @@
       "goblin": {
         "modelFile": "monster.g3dj",
         "startLocation": {
-          "x": "12",
-          "y": "33",
-          "z": "-80"
+          "x": "-70",
+          "y": "10",
+          "z": "-10"
         }
       }
     },
@@ -27,9 +27,9 @@
       "goblin": {
         "modelFile": "monster.g3dj",
         "startLocation": {
-          "x": "-12",
-          "y": "33",
-          "z": "-80"
+          "x": "70",
+          "y": "10",
+          "z": "-10"
         }
       }
     },
@@ -37,9 +37,9 @@
       "goblin": {
         "modelFile": "monster.g3dj",
         "startLocation": {
-          "x": "-12",
-          "y": "33",
-          "z": "80"
+          "x": "0",
+          "y": "10",
+          "z": "-70"
         }
       }
     }

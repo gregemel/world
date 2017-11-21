@@ -76,7 +76,9 @@ public class SceneLoader {
         float z = location.getFloat("z");
 
         Gdx.app.log("SceneLoader", format(Locale.US, "load goblin %s, %.2f, %.2f, %.2f", modelFilename, x, y, z));
-        CreatureEntityFactory.create(world, modelFilename, x, y, z);
+        Entity creatureEntity = CreatureEntityFactory.create(world, modelFilename, x, y, z);
+        world.getEntityEngine().addEntity(creatureEntity);
+
     }
 
     private static Entity loadSky(String name, int x, int y, int z) {
