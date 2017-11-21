@@ -47,6 +47,11 @@ public class SceneLoader {
         scene.setSky(loadSky(skyModelFilename, x, y, z));
         scene.setGround(loadGround(groundModelFilename, x, y, z));
 
+        JsonValue location = jsonScene.get("player").get("startLocation");
+        scene.getPlayerStartLocation().x = location.getFloat("x");
+        scene.getPlayerStartLocation().y = location.getFloat("y");
+        scene.getPlayerStartLocation().z = location.getFloat("z");
+
         scene.setMaxSpawnCount(3);
 
         loadCreatures(world, jsonScene.get("creatures"));

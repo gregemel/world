@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
@@ -35,8 +36,8 @@ public class WorldLoader {
         loadWorldFile();
         setDebug();
         addSystems();
-        loadFirstScene();
-        createPlayer(0, 6, 0);
+        Scene scene = loadFirstScene();
+        createPlayer(scene);
 
         return world;
     }
@@ -122,17 +123,21 @@ public class WorldLoader {
         engine.addSystem(creatureSystem);
     }
 
-    private static void loadFirstScene() {
+    private static Scene loadFirstScene() {
         Scene arena = SceneLoader.load(world, 0, 0, 0);
         world.setCurrentScene(arena);
         Engine entityEngine = world.getEntityEngine();
         entityEngine.addEntity(arena.getGround());
         entityEngine.addEntity(arena.getSky());
         world.getPlayerSystem().getPlayerSystemState().setSkyEntity(arena.getSky());
+        return arena;
     }
 
-    private static void createPlayer(float x, float y, float z) {
-        Entity player = PlayerFactory.create(world.getPhysicsSystem(), x, y, z);
+    private static void createPlayer(Scene arena) {
+
+        Vector3 start = arena.getPlayerStartLocation();
+
+        Entity player = PlayerFactory.create(world.getPhysicsSystem(), start.x, start.y, start.z);
         world.setPlayer(player);
         world.getEntityEngine().addEntity(player);
 

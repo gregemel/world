@@ -35,7 +35,7 @@ public class RenderSystem extends EntitySystem {
 
     public void update(float delta) {
         ShadowDrawer.draw(renderSystemState, delta);
-        ModelDrawer.draw(renderSystemState);
+        ModelDrawer.drawEntities(renderSystemState);
         ParticleDrawer.draw(renderSystemState);
         PlayerItemDrawer.draw(renderSystemState);
     }
