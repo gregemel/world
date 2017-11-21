@@ -11,6 +11,8 @@ import com.emelwerx.world.databags.CharacterComponent;
 import com.emelwerx.world.databags.ModelComponent;
 import com.emelwerx.world.databags.PlayerSystemState;
 
+import java.util.Locale;
+
 import static java.lang.String.format;
 
 public class PlayerMovementService {
@@ -27,6 +29,7 @@ public class PlayerMovementService {
         ModelComponent modelComponent = playerSystemState.getModelComponent();
         Camera camera = playerSystemState.getCamera();
 
+        updateCameraRotation(playerSystemState, camera);
         updatePlayerDirection(delta, playerSystemState, characterComponent, modelComponent, camera);
         updateTranslation(playerSystemState, characterComponent, modelComponent, camera);
         checkAttack(playerSystemState);
@@ -34,7 +37,31 @@ public class PlayerMovementService {
     }
 
     private static void updatePlayerDirection(float delta, PlayerSystemState playerSystemState, CharacterComponent characterComponent, ModelComponent modelComponent, Camera camera) {
+        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
+        Vector3 playerVector = playerSystemState.getTmp();
+        playerVector.set(0, 0, 0);
+        Vector3 walkDirection = getWalkDirection(playerVector, camera, characterComponent);
+        walkDirection.add(playerVector);
+        walkDirection.scl(10f * delta);
+        characterComponent.getCharacterController().setWalkDirection(walkDirection);
 
+        lastLog+=delta;
+        if(lastLog>5f) {
+            lastLog=0f;
+
+//            Gdx.app.log("PlayerMovementService", format("walkDirection(%s), playerVector(%s)",
+//                    walkDirection.toString(), playerVector.toString()));
+
+            Matrix4 matrix4 = modelComponent.getInstance().transform;
+
+            Gdx.app.log("**player location**", format(Locale.US,"\n%s\n(%f, %f, %f)",
+                    matrix4,
+                    matrix4.getValues()[12], matrix4.getValues()[13], matrix4.getValues()[14]));
+
+        }
+    }
+
+    private static void updateCameraRotation(PlayerSystemState playerSystemState, Camera camera) {
         float deltaX;
         float deltaY;
 
@@ -47,51 +74,31 @@ public class PlayerMovementService {
         }
 
 
-        Vector3 tmp = playerSystemState.getTmp();
-        tmp.set(0, 0, 0);
+        Vector3 cameraRotation = playerSystemState.getTmp();
+        cameraRotation.set(0, 0, 0);
         camera.rotate(camera.up, deltaX);
-        tmp.set(camera.direction).crs(camera.up).nor();
-        camera.direction.rotate(tmp, deltaY);
-        tmp.set(0, 0, 0);
-
-        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
-
-        Vector3 walkDirection = getWalkDirection(tmp, camera, characterComponent);
-
-        lastLog+=delta;
-        if(lastLog>5f) {
-            lastLog=0f;
-
-            Gdx.app.log("PlayerMovementService", format("walkDirection(%s), tmp(%s)",
-                    walkDirection.toString(), tmp.toString()));
-
-            Gdx.app.log("**player location**", format("modelComponent.getInstance().transform\n%s", modelComponent.getInstance().transform));
-
-        }
-
-        walkDirection.add(tmp);
-        walkDirection.scl(10f * delta);
-        characterComponent.getCharacterController().setWalkDirection(walkDirection);
+        cameraRotation.set(camera.direction).crs(camera.up).nor();
+        camera.direction.rotate(cameraRotation, deltaY);
     }
 
-    private static Vector3 getWalkDirection(Vector3 tmp, Camera camera, CharacterComponent characterComponent) {
+    private static Vector3 getWalkDirection(Vector3 playerVector, Camera camera, CharacterComponent characterComponent) {
         Vector3 walkDirection = characterComponent.getWalkDirection();
         walkDirection.set(0, 0, 0);
 
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            getAndroidPlayerControl(tmp, camera, walkDirection);
+            getAndroidPlayerControl(playerVector, camera, walkDirection);
 
         } else {
-            getDesktopPlayerControl(tmp, camera, walkDirection);
+            getDesktopPlayerControl(playerVector, camera, walkDirection);
         }
         return walkDirection;
     }
 
-    private static void getDesktopPlayerControl(Vector3 tmp, Camera camera, Vector3 walkDirection) {
+    private static void getDesktopPlayerControl(Vector3 playerVector, Camera camera, Vector3 walkDirection) {
         if (Gdx.input.isKeyPressed(forward)) walkDirection.add(camera.direction);
         if (Gdx.input.isKeyPressed(backwards)) walkDirection.sub(camera.direction);
-        if (Gdx.input.isKeyPressed(left)) tmp.set(camera.direction).crs(camera.up).scl(-1);
-        if (Gdx.input.isKeyPressed(right)) tmp.set(camera.direction).crs(camera.up);
+        if (Gdx.input.isKeyPressed(left)) playerVector.set(camera.direction).crs(camera.up).scl(-1);
+        if (Gdx.input.isKeyPressed(right)) playerVector.set(camera.direction).crs(camera.up);
     }
 
     private static void getAndroidPlayerControl(Vector3 tmp, Camera camera, Vector3 walkDirection) {
@@ -101,7 +108,11 @@ public class PlayerMovementService {
         if (ControllerWidget.getMovementVector().x > 0) tmp.set(camera.direction).crs(camera.up);
     }
 
-    private static void updateTranslation(PlayerSystemState playerSystemState, CharacterComponent characterComponent, ModelComponent modelComponent, Camera camera) {
+    private static void updateTranslation(
+            PlayerSystemState playerSystemState,
+            CharacterComponent characterComponent,
+            ModelComponent modelComponent,
+            Camera camera) {
         Vector3 translation = playerSystemState.getTranslation();
         translation.set(0, 0, 0);
 
@@ -114,8 +125,8 @@ public class PlayerMovementService {
         camera.position.set(translation.x, translation.y, translation.z);
         camera.update(true);
 
-        playerSystemState.getSkyEntity().getComponent(ModelComponent.class).getInstance()
-                .transform.setToTranslation(translation.x, translation.y, translation.z);
+//        playerSystemState.getSkyEntity().getComponent(ModelComponent.class).getInstance()
+//                .transform.setToTranslation(translation.x, translation.y, translation.z);
     }
 
     private static void setPlayerGhostTranslation(PlayerSystemState playerSystemState, CharacterComponent characterComponent, Vector3 translation) {
@@ -137,5 +148,4 @@ public class PlayerMovementService {
             characterComponent.getCharacterController().jump();
         }
     }
-
 }
