@@ -8,10 +8,10 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
-import com.emelwerx.world.databags.AnimationComponent;
-import com.emelwerx.world.databags.MonsterComponent;
-import com.emelwerx.world.databags.PlayerComponent;
-import com.emelwerx.world.databags.PlayerSystemState;
+import com.emelwerx.world.databags.components.AnimationComponent;
+import com.emelwerx.world.databags.components.CreatureComponent;
+import com.emelwerx.world.databags.components.PlayerComponent;
+import com.emelwerx.world.databags.systemstates.PlayerSystemState;
 
 import static java.lang.String.format;
 
@@ -31,11 +31,11 @@ public class GunShooter {
 
         checkForDamage(rayTestCB);
 
-        animate(playerSystemState);
+        animate(playerSystemState.getPlayerItemEntity());
     }
 
-    private static void animate(PlayerSystemState playerSystemState) {
-        AnimationComponent animationComponent = playerSystemState.getItem().getComponent(AnimationComponent.class);
+    private static void animate(Entity entity) {
+        AnimationComponent animationComponent = entity.getComponent(AnimationComponent.class);
         animationComponent.getAnimationController().animate("Armature|shoot", 1, 3, null, 0);
     }
 
@@ -56,20 +56,20 @@ public class GunShooter {
         if (rayTestCB.hasHit()) {
             btCollisionObject obj = rayTestCB.getCollisionObject();
             Entity entity = (Entity)obj.userData;
-            MonsterComponent monsterComponent = entity.getComponent(MonsterComponent.class);
-            if (monsterComponent != null) {
-                if(monsterComponent.getMonsterState() != MonsterComponent.MONSTER_STATE.DYING) {
-                    Gdx.app.log("PlayerSystem", format("HIT monster %s", entity.toString()));
-                    monsterComponent.setMonsterState(MonsterComponent.MONSTER_STATE.DYING);
+            CreatureComponent creatureComponent = entity.getComponent(CreatureComponent.class);
+            if (creatureComponent != null) {
+                if(creatureComponent.getCreatureState() != CreatureComponent.CREATURE_STATE.DYING) {
+                    Gdx.app.log("GunShooter", format("HIT creature %s", entity.toString()));
+                    creatureComponent.setCreatureState(CreatureComponent.CREATURE_STATE.DYING);
                     PlayerComponent.setScore(PlayerComponent.getScore() + 100);
                 } else {
-                    Gdx.app.log("PlayerSystem", format("you hit a dying monster %s", entity.toString()));
+                    Gdx.app.log("GunShooter", format("you hit a dying creature %s", entity.toString()));
                 }
             } else {
-                Gdx.app.log("PlayerSystem", format("hit not a monster %s", entity.toString()));
+                Gdx.app.log("GunShooter", format("hit not a creature %s", entity.toString()));
             }
         } else {
-            Gdx.app.log("PlayerSystem", "miss");
+            Gdx.app.log("GunShooter", "miss");
         }
     }
 

@@ -16,7 +16,7 @@ public class WorldCore extends ApplicationAdapter {
     @Override
     public void create() {
         Gdx.app.log("WorldCore", "create");
-        new Assets();
+        Assets.init();
         Settings.load();
         Gdx.input.setCatchBackKey(true);
         MainMenuScreen firstScreen = new MainMenuScreen(this);

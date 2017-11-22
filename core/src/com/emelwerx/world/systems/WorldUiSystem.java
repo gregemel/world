@@ -1,7 +1,7 @@
 package com.emelwerx.world.systems;
 
 import com.badlogic.gdx.Gdx;
-import com.emelwerx.world.databags.WorldUiSystemState;
+import com.emelwerx.world.databags.systemstates.WorldUiSystemState;
 
 public class WorldUiSystem {
 

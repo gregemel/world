@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.WorldCore;
-import com.emelwerx.world.ui.screens.GameScreen;
+import com.emelwerx.world.ui.screens.WorldScreen;
 import com.emelwerx.world.ui.screens.LeaderboardsScreen;
 
 public class GameOverWidget extends Actor {
@@ -37,7 +37,7 @@ public class GameOverWidget extends Actor {
         retryB.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new WorldScreen(game));
             }
         });
         leaderB.addListener(new ClickListener() {

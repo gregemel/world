@@ -6,12 +6,16 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-//this appears to only apply to gui elements
+
 public class Assets {
+
+    //skin is only for gui elements
     public static Skin skin;
+
+    //asset manager is only used by the particle system
     public static AssetManager assetManager;
 
-    public Assets() {
+    private Assets() {
         skin = new Skin();
         FileHandle fileHandle = Gdx.files.internal("data/uiskin.json");
         FileHandle atlasFile = fileHandle.sibling("uiskin.atlas");
@@ -21,6 +25,12 @@ public class Assets {
         skin.load(fileHandle);
 
         assetManager = new AssetManager();
+    }
+
+    public static Assets init() {
+        Assets assets = new Assets();
+
+        return assets;
     }
 
     public static void dispose() {

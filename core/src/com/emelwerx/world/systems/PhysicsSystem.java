@@ -8,9 +8,9 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
-import com.emelwerx.world.databags.CharacterComponent;
-import com.emelwerx.world.databags.PhysicsComponent;
-import com.emelwerx.world.databags.PhysicsSystemState;
+import com.emelwerx.world.databags.components.CharacterComponent;
+import com.emelwerx.world.databags.components.PhysicsComponent;
+import com.emelwerx.world.databags.systemstates.PhysicsSystemState;
 
 import static java.lang.String.format;
 

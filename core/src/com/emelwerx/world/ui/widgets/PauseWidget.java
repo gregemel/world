@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.WorldCore;
 import com.emelwerx.world.services.Settings;
-import com.emelwerx.world.ui.screens.GameScreen;
+import com.emelwerx.world.ui.screens.WorldScreen;
 
 public class PauseWidget extends Actor {
     private WorldCore game;
@@ -61,7 +61,7 @@ public class PauseWidget extends Actor {
         restartButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new WorldScreen(game));
             }
         });
         quitButton.addListener(new ClickListener() {

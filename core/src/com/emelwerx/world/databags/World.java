@@ -8,6 +8,7 @@ import com.emelwerx.world.systems.PlayerSystem;
 import com.emelwerx.world.systems.RenderSystem;
 
 public class World {
+    private String name;
     private boolean debug = false;
     private DebugDrawer debugDrawer;
     private Engine entityEngine;
@@ -17,6 +18,23 @@ public class World {
     private PlayerSystem playerSystem;
     private RenderSystem renderSystem;
     private Scene currentScene;
+    private String firstSceneName;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFirstSceneName() {
+        return firstSceneName;
+    }
+
+    public void setFirstSceneName(String firstSceneName) {
+        this.firstSceneName = firstSceneName;
+    }
 
     public Scene getCurrentScene() {
         return currentScene;
@@ -52,6 +70,10 @@ public class World {
 
     public Entity getEntityCharacter() {
         return entityCharacter;
+    }
+
+    public void setEntityCharacter(Entity entityCharacter) {
+        this.entityCharacter = entityCharacter;
     }
 
     public void setPlayer(Entity character) {
