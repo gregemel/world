@@ -1,5 +1,6 @@
 package com.emelwerx.world.services.loaders;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -58,6 +59,12 @@ public class SceneLoader {
 
         loadCreatures(world, jsonScene.get("creatures"));
 
+        world.setCurrentScene(scene);
+        Engine entityEngine = world.getEntityEngine();
+        entityEngine.addEntity(scene.getGround());
+        entityEngine.addEntity(scene.getSky());
+        world.getPlayerSystem().getPlayerSystemState().setSkyEntity(scene.getSky());
+
         return scene;
     }
 
@@ -85,7 +92,7 @@ public class SceneLoader {
 
     private static Entity loadSky(String name, int x, int y, int z) {
         Gdx.app.log("SceneLoader", format(Locale.US,"load sky %s, %d, %d, %d", name, x, y, z));
-        Model model = ModelLoader.getSkyModel(name);
+        Model model = ModelLoader.loadSky(name);
         ModelComponent modelComponent = ModelComponentFactory.create(model, x, y, z);
 
         Entity entity = new Entity();
@@ -95,22 +102,27 @@ public class SceneLoader {
 
     private static Entity loadGround(String name, int x, int y, int z) {
         Gdx.app.log("SceneLoader", format(Locale.US,"loadGround %s, %d, %d, %d", name, x, y, z));
+
         Entity entity = new Entity();
 
-        Model model = ModelLoader.loadModel(name);
-        ModelComponent modelComponent = ModelComponentFactory.create(model, x, y, z);
+        ModelComponent modelComponent = getModelComponent(name, x, y, z);
         entity.add(modelComponent);
 
-        PhysicsComponent physicsComponent = getPhysicsComponent(entity, model, modelComponent);
+        PhysicsComponent physicsComponent = getPhysicsComponent(entity, modelComponent);
         entity.add(physicsComponent);
 
         return entity;
     }
 
-    private static PhysicsComponent getPhysicsComponent(Entity entity, Model model, ModelComponent modelComponent) {
+    private static ModelComponent getModelComponent(String name, int x, int y, int z) {
+        Model model = ModelLoader.load(name);
+        return ModelComponentFactory.create(model, x, y, z);
+    }
+
+    private static PhysicsComponent getPhysicsComponent(Entity entity, ModelComponent modelComponent) {
         PhysicsComponent physicsComponent = new PhysicsComponent();
 
-        btCollisionShape shape = Bullet.obtainStaticNodeShape(model.nodes);
+        btCollisionShape shape = Bullet.obtainStaticNodeShape(modelComponent.getModel().nodes);
 
         btRigidBody.btRigidBodyConstructionInfo bodyInfo =
                 new btRigidBody.btRigidBodyConstructionInfo(0, null, shape, Vector3.Zero);

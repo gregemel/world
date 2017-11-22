@@ -17,24 +17,31 @@ public class CharacterComponentFactory {
                 entity.toString(), modelComponent.toString()));
 
         CharacterComponent characterComponent = new CharacterComponent();
+        btKinematicCharacterController characterController = getBtKinematicCharacterController(
+                entity, modelComponent, characterComponent);
+        characterComponent.setCharacterController(characterController);
+
+        return characterComponent;
+    }
+
+    private static btKinematicCharacterController getBtKinematicCharacterController(
+            Entity entity,ModelComponent modelComponent, CharacterComponent characterComponent) {
 
         btPairCachingGhostObject ghostObject = new btPairCachingGhostObject();
-        characterComponent.setGhostObject(ghostObject);
+        ghostObject.userData = entity;
         ghostObject.setWorldTransform(modelComponent.getInstance().transform);
-
-        btCapsuleShape capsuleShape = new btCapsuleShape(2f, 2f);
-        characterComponent.setGhostShape(capsuleShape);
-        ghostObject.setCollisionShape(capsuleShape);
         ghostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
 
-        btKinematicCharacterController characterController = new btKinematicCharacterController(
+        btCapsuleShape capsuleShape = new btCapsuleShape(2f, 2f);
+        ghostObject.setCollisionShape(capsuleShape);
+
+        characterComponent.setGhostObject(ghostObject);
+        characterComponent.setGhostShape(capsuleShape);
+
+        return new btKinematicCharacterController(
                 ghostObject,
                 capsuleShape,
                 .35f);
-        characterComponent.setCharacterController(characterController);
-
-        ghostObject.userData = entity;
-        return characterComponent;
     }
 
 }

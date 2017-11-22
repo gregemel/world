@@ -11,23 +11,28 @@ import com.emelwerx.world.services.Assets;
 
 import static java.lang.String.format;
 
-public class ParticleFactory {
+public class ParticleComponentFactory {
 
     public static ParticleComponent create(String name, ParticleSystem particleSystem) {
-        Gdx.app.log("ParticleFactory", format("creating particle component: %s", name));
+        Gdx.app.log("ParticleComponentFactory", format("creating particle component: %s", name));
 
         ParticleComponent particleComponent = new ParticleComponent();
-        ParticleEffectLoader.ParticleEffectLoadParameter loadParam = new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
+        ParticleEffect originalEffect = getParticleEffect(name, particleSystem);
+        particleComponent.setOriginalEffect(originalEffect);
+
+        return particleComponent;
+    }
+
+    private static ParticleEffect getParticleEffect(String name, ParticleSystem particleSystem) {
+        ParticleEffectLoader.ParticleEffectLoadParameter loadParam
+                = new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
 
         if (!Assets.assetManager.isLoaded("data/" + name + ".pfx")) {
             Assets.assetManager.load("data/" + name + ".pfx", ParticleEffect.class, loadParam);
             Assets.assetManager.finishLoading();
         }
 
-        ParticleEffect originalEffect = Assets.assetManager.get("data/" + name + ".pfx");
-        particleComponent.setOriginalEffect(originalEffect);
-
-        return particleComponent;
+        return Assets.assetManager.get("data/" + name + ".pfx");
     }
 
     public static ParticleEffect createParticleEffect(ModelComponent creatureModelComponent, ParticleComponent particleComponent) {

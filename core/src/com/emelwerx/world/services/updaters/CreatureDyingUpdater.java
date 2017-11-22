@@ -10,7 +10,7 @@ import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.components.CreatureComponent;
 import com.emelwerx.world.databags.systemstates.CreatureSystemState;
 import com.emelwerx.world.databags.components.ParticleComponent;
-import com.emelwerx.world.services.factories.ParticleFactory;
+import com.emelwerx.world.services.factories.ParticleComponentFactory;
 
 import static java.lang.String.format;
 
@@ -46,7 +46,7 @@ public class CreatureDyingUpdater {
         boolean isParticleStartNeeded = !particleComponent.isUsed();
         if (isParticleStartNeeded) {
             particleComponent.setUsed(true);
-            ParticleEffect particleEffect = ParticleFactory.createParticleEffect(creatureModelComponent, particleComponent);
+            ParticleEffect particleEffect = ParticleComponentFactory.createParticleEffect(creatureModelComponent, particleComponent);
             ParticleSystem particleSystem = creatureSystemState.getGameWorld().getRenderSystem().getRenderSystemState().getParticleSystem();
             particleSystem.add(particleEffect);
         }

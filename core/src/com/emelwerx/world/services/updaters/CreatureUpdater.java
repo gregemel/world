@@ -11,7 +11,6 @@ import java.util.Locale;
 
 import static java.lang.String.format;
 
-
 public class CreatureUpdater {
 
     private static float lastUpdated = 5.1f;
@@ -21,9 +20,12 @@ public class CreatureUpdater {
         if(lastUpdated>5.0f) {
             isLogging = true;
             lastUpdated = 0f;
+        } else {
+            lastUpdated+=delta;
+            isLogging = false;
         }
 
-            for(Entity creatureEntity: creatureSystemState.getCreatures()) {
+        for(Entity creatureEntity: creatureSystemState.getCreatures()) {
             CreatureComponent creatureComponent = creatureEntity.getComponent(CreatureComponent.class);
             CreatureComponent.CREATURE_STATE state = creatureComponent.getCreatureState();
 
@@ -46,8 +48,7 @@ public class CreatureUpdater {
                 ModelComponent creatureModelComponent = creatureEntity.getComponent(ModelComponent.class);
                 Matrix4 matrix4 = creatureModelComponent.getInstance().transform;
 
-                Gdx.app.log("**creature location**", format(Locale.US,"\n%s\n(%f, %f, %f)",
-                        matrix4,
+                Gdx.app.log("**creature location**", format(Locale.US,"(%f, %f, %f)",
                         matrix4.getValues()[12], matrix4.getValues()[13], matrix4.getValues()[14]));
 
             }

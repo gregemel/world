@@ -30,6 +30,7 @@ public class CreatureEntityFactory {
     private static Model cachedGoblinModel;
     private static final float modelScalar = 0.0025f;
 
+    //todo: this needs to come from the scene (file)
     private static float[] xSpawns = {12, -12, 80, -80};
     private static float[] zSpawns = {-80, 80, -12, 12};
 
@@ -91,14 +92,14 @@ public class CreatureEntityFactory {
     private static Model getCachedCreatureModel(String name) {
         //todo: model cache should be a hash map collection of name/model pairs -ge[2017-11-12]
         if (cachedGoblinModel == null) {
-            cachedGoblinModel = ModelLoader.loadModel(name, modelScalar);
+            cachedGoblinModel = ModelLoader.load(name, modelScalar);
         }
         return cachedGoblinModel;
     }
 
     private static ParticleComponent getParticleComponent(World gameWorld) {
         ParticleSystem particleSystem = gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem();
-        return ParticleFactory.create("dieparticle", particleSystem);
+        return ParticleComponentFactory.create("dieparticle", particleSystem);
     }
 
     private static AnimationComponent getAnimationComponent(ModelComponent modelComponent) {

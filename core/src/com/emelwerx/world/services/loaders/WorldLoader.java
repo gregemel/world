@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.emelwerx.world.databags.World;
 import com.emelwerx.world.services.factories.CreatureSystemFactory;
 import com.emelwerx.world.services.factories.PhysicsSystemFactory;
-import com.emelwerx.world.services.factories.PlayerFactory;
+import com.emelwerx.world.services.factories.PlayerEntityFactory;
 import com.emelwerx.world.services.factories.PlayerItemFactory;
 import com.emelwerx.world.services.factories.PlayerSystemFactory;
 import com.emelwerx.world.services.factories.RenderSystemFactory;
@@ -42,8 +42,8 @@ public class WorldLoader {
         loadWorldFile();
         setDebug();
         addSystems();
-        Scene scene = loadFirstScene();
-        createPlayer(scene);
+        Scene firstScene = SceneLoader.load(world, 0, 0, 0);
+        createPlayer(firstScene);
 
         return world;
     }
@@ -129,21 +129,11 @@ public class WorldLoader {
         engine.addSystem(creatureSystem);
     }
 
-    private static Scene loadFirstScene() {
-        Scene arena = SceneLoader.load(world, 0, 0, 0);
-        world.setCurrentScene(arena);
-        Engine entityEngine = world.getEntityEngine();
-        entityEngine.addEntity(arena.getGround());
-        entityEngine.addEntity(arena.getSky());
-        world.getPlayerSystem().getPlayerSystemState().setSkyEntity(arena.getSky());
-        return arena;
-    }
-
     private static void createPlayer(Scene arena) {
 
         Vector3 start = arena.getPlayerStartLocation();
 
-        Entity player = PlayerFactory.create(world.getPhysicsSystem(), start.x, start.y, start.z);
+        Entity player = PlayerEntityFactory.create(world.getPhysicsSystem(), start.x, start.y, start.z);
         world.setPlayer(player);
         world.getEntityEngine().addEntity(player);
 

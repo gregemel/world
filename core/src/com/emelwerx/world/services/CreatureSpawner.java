@@ -10,7 +10,7 @@ import static java.lang.String.format;
 public class CreatureSpawner {
     public static void update(CreatureSystemState creatureSystemState) {
         if (getCurrentCreatureCount(creatureSystemState) < getMaxSpawnCount(creatureSystemState)) {
-            Gdx.app.log("CreatureSystem", "spawning creature...");
+            Gdx.app.log("CreatureSpawner", "spawning creature...");
             spawnCreature(creatureSystemState);
         }
     }
@@ -28,7 +28,7 @@ public class CreatureSpawner {
                 "monster.g3dj",
                 creatureSystemState.getGameWorld());
         creatureSystemState.getEntityEngine().addEntity(creatureEntity);
-        Gdx.app.log("CreatureSystem", format("creatureEntity spawned: %s", creatureEntity.toString()));
+        Gdx.app.log("CreatureSpawner", format("spawned: %s", creatureEntity.toString()));
     }
 }
 
