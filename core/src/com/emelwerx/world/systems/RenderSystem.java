@@ -4,12 +4,12 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
-import com.emelwerx.world.databags.ModelComponent;
-import com.emelwerx.world.databags.RenderSystemState;
-import com.emelwerx.world.services.ModelDrawer;
-import com.emelwerx.world.services.ParticleDrawer;
-import com.emelwerx.world.services.PlayerItemDrawer;
-import com.emelwerx.world.services.ShadowDrawer;
+import com.emelwerx.world.databags.components.ModelComponent;
+import com.emelwerx.world.databags.systemstates.RenderSystemState;
+import com.emelwerx.world.services.drawers.ModelDrawer;
+import com.emelwerx.world.services.drawers.ParticleDrawer;
+import com.emelwerx.world.services.drawers.PlayerItemDrawer;
+import com.emelwerx.world.services.drawers.ShadowDrawer;
 
 import java.util.Locale;
 

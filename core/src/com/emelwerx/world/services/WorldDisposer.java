@@ -2,7 +2,7 @@ package com.emelwerx.world.services;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
-import com.emelwerx.world.databags.CharacterComponent;
+import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.World;
 
 import static java.lang.String.format;

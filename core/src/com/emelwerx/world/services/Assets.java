@@ -6,9 +6,13 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-//this appears to only apply to gui elements
+
 public class Assets {
+
+    //skin is only for gui elements
     public static Skin skin;
+
+    //asset manager is only used by the particle system
     public static AssetManager assetManager;
 
     private Assets() {

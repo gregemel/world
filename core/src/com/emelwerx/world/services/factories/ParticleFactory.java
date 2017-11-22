@@ -1,0 +1,42 @@
+package com.emelwerx.world.services.factories;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
+import com.emelwerx.world.databags.components.ModelComponent;
+import com.emelwerx.world.databags.components.ParticleComponent;
+import com.emelwerx.world.services.Assets;
+
+import static java.lang.String.format;
+
+public class ParticleFactory {
+
+    public static ParticleComponent create(String name, ParticleSystem particleSystem) {
+        Gdx.app.log("ParticleFactory", format("creating particle component: %s", name));
+
+        ParticleComponent particleComponent = new ParticleComponent();
+        ParticleEffectLoader.ParticleEffectLoadParameter loadParam = new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
+
+        if (!Assets.assetManager.isLoaded("data/" + name + ".pfx")) {
+            Assets.assetManager.load("data/" + name + ".pfx", ParticleEffect.class, loadParam);
+            Assets.assetManager.finishLoading();
+        }
+
+        ParticleEffect originalEffect = Assets.assetManager.get("data/" + name + ".pfx");
+        particleComponent.setOriginalEffect(originalEffect);
+
+        return particleComponent;
+    }
+
+    public static ParticleEffect createParticleEffect(ModelComponent creatureModelComponent, ParticleComponent particleComponent) {
+        ParticleEffect effect = particleComponent.getOriginalEffect().copy();
+        ((RegularEmitter) effect.getControllers().first().emitter).setEmissionMode(RegularEmitter.EmissionMode.EnabledUntilCycleEnd);
+        effect.setTransform(creatureModelComponent.getInstance().transform);
+        effect.scale(3.25f, 1, 1.5f);
+        effect.init();
+        effect.start();
+        return effect;
+    }
+}

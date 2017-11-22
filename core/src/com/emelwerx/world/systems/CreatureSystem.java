@@ -7,12 +7,12 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.emelwerx.world.databags.CharacterComponent;
-import com.emelwerx.world.databags.CreatureComponent;
-import com.emelwerx.world.databags.CreatureSystemState;
-import com.emelwerx.world.databags.PlayerComponent;
+import com.emelwerx.world.databags.components.CharacterComponent;
+import com.emelwerx.world.databags.components.CreatureComponent;
+import com.emelwerx.world.databags.systemstates.CreatureSystemState;
+import com.emelwerx.world.databags.components.PlayerComponent;
 import com.emelwerx.world.services.CreatureSpawner;
-import com.emelwerx.world.services.CreatureUpdater;
+import com.emelwerx.world.services.updaters.CreatureUpdater;
 
 import static java.lang.String.format;
 

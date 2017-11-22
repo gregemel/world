@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
-import com.emelwerx.world.databags.CreatureComponent;
-import com.emelwerx.world.databags.PlayerComponent;
+import com.emelwerx.world.databags.components.CreatureComponent;
+import com.emelwerx.world.databags.components.PlayerComponent;
 import com.emelwerx.world.services.CreaturePlayerHitDamager;
 
 import static java.lang.String.format;

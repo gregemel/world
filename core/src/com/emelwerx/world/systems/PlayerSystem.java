@@ -8,11 +8,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.emelwerx.world.services.Settings;
-import com.emelwerx.world.databags.CharacterComponent;
-import com.emelwerx.world.databags.ModelComponent;
-import com.emelwerx.world.databags.PlayerComponent;
-import com.emelwerx.world.databags.PlayerSystemState;
-import com.emelwerx.world.services.PlayerMovementService;
+import com.emelwerx.world.databags.components.CharacterComponent;
+import com.emelwerx.world.databags.components.ModelComponent;
+import com.emelwerx.world.databags.components.PlayerComponent;
+import com.emelwerx.world.databags.systemstates.PlayerSystemState;
+import com.emelwerx.world.services.updaters.PlayerMoveUpdater;
 
 import static java.lang.String.format;
 
@@ -37,7 +37,7 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     @Override
     public void update(float delta) {
         if (getPlayerSystemState().getPlayerEntity() == null) return;
-        PlayerMovementService.update(delta, playerSystemState);
+        PlayerMoveUpdater.update(delta, playerSystemState);
         updateStatus();
         checkGameOver();
     }

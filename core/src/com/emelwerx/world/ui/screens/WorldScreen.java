@@ -3,14 +3,14 @@ package com.emelwerx.world.ui.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.emelwerx.world.services.Settings;
-import com.emelwerx.world.services.WorldUiSystemFactory;
+import com.emelwerx.world.services.factories.WorldUiSystemFactory;
 import com.emelwerx.world.systems.WorldUiSystem;
 import com.emelwerx.world.WorldCore;
 import com.emelwerx.world.databags.World;
 import com.emelwerx.world.services.PauseChecker;
 import com.emelwerx.world.services.WorldDisposer;
-import com.emelwerx.world.services.WorldLoader;
-import com.emelwerx.world.services.WorldDrawer;
+import com.emelwerx.world.services.loaders.WorldLoader;
+import com.emelwerx.world.services.drawers.WorldDrawer;
 
 public class WorldScreen implements Screen {
     private WorldUiSystem worldUiSystem;
