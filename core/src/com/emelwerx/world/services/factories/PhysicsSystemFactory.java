@@ -3,9 +3,12 @@ package com.emelwerx.world.services.factories;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btAxisSweep3;
+import com.badlogic.gdx.physics.bullet.collision.btBroadphaseInterface;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionConfiguration;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionDispatcher;
 import com.badlogic.gdx.physics.bullet.collision.btDefaultCollisionConfiguration;
 import com.badlogic.gdx.physics.bullet.collision.btGhostPairCallback;
+import com.badlogic.gdx.physics.bullet.dynamics.btConstraintSolver;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
 import com.emelwerx.world.databags.systemstates.PhysicsSystemState;
@@ -18,35 +21,29 @@ public class PhysicsSystemFactory {
         PhysicsSystemState physicsSystemState = new PhysicsSystemState();
 
         initializeCollisionSystem();
-
-        btDefaultCollisionConfiguration collisionConfiguration = getCollisionConfiguration();
-        physicsSystemState.setCollisionConfiguration(collisionConfiguration);
-
-        btCollisionDispatcher dispatcher = getCollisionDispatcher(collisionConfiguration);
-        physicsSystemState.setDispatcher(dispatcher);
-
-        btAxisSweep3 broadPhase = getBroadphase();
-        physicsSystemState.setBroadphaseInterface(broadPhase);
-
-        btSequentialImpulseConstraintSolver solver = getSolver();
-        physicsSystemState.setSolver(solver);
-
-        btGhostPairCallback ghostPairCallback = getGhostPairCallback();
-        physicsSystemState.setGhostPairCallback(ghostPairCallback);
-
-        broadPhase.getOverlappingPairCache().setInternalGhostPairCallback(ghostPairCallback);
-
-        physicsSystemState.setCollisionWorld(
-                getCollisionWorld(collisionConfiguration, dispatcher, broadPhase, solver));
+        attachCollisionConfiguration(physicsSystemState);
+        attachCollisionDispatcher(physicsSystemState);
+        attachBroadphase(physicsSystemState);
+        attachSolver(physicsSystemState);
+        attachGhostPairCallback(physicsSystemState);
+        attachCollisionWorld(physicsSystemState);
 
         return new PhysicsSystem(physicsSystemState);
     }
 
+    private static void attachCollisionWorld(PhysicsSystemState physicsSystemState) {
+        physicsSystemState.setCollisionWorld(getCollisionWorld(
+                physicsSystemState.getCollisionConfiguration(),
+                physicsSystemState.getDispatcher(),
+                physicsSystemState.getBroadphaseInterface(),
+                physicsSystemState.getSolver()));
+    }
+
     private static btDiscreteDynamicsWorld getCollisionWorld(
-            btDefaultCollisionConfiguration collisionConfiguration,
+            btCollisionConfiguration collisionConfiguration,
             btCollisionDispatcher dispatcher,
-            btAxisSweep3 broadphase,
-            btSequentialImpulseConstraintSolver solver) {
+            btBroadphaseInterface broadphase,
+            btConstraintSolver solver) {
 
         btDiscreteDynamicsWorld collisionWorld = new btDiscreteDynamicsWorld(
                 dispatcher, broadphase, solver, collisionConfiguration);
@@ -55,27 +52,39 @@ public class PhysicsSystemFactory {
         return collisionWorld;
     }
 
-    private static btGhostPairCallback getGhostPairCallback() {
-        return new btGhostPairCallback();
+    private static btGhostPairCallback attachGhostPairCallback(PhysicsSystemState physicsSystemState) {
+        btGhostPairCallback btGhostPairCallback = new btGhostPairCallback();
+        physicsSystemState.setGhostPairCallback(btGhostPairCallback);
+        physicsSystemState.getBroadphaseInterface().getOverlappingPairCache().setInternalGhostPairCallback(btGhostPairCallback);
+
+        return btGhostPairCallback;
     }
 
-    private static btSequentialImpulseConstraintSolver getSolver() {
-        return new btSequentialImpulseConstraintSolver();
+    private static btSequentialImpulseConstraintSolver attachSolver(PhysicsSystemState physicsSystemState) {
+        btSequentialImpulseConstraintSolver btSequentialImpulseConstraintSolver = new btSequentialImpulseConstraintSolver();
+        physicsSystemState.setSolver(btSequentialImpulseConstraintSolver);
+        return btSequentialImpulseConstraintSolver;
     }
 
-    private static btAxisSweep3 getBroadphase() {
-        return new btAxisSweep3(
-                    new Vector3(-1000, -1000, -1000),
-                    new Vector3(1000, 1000, 1000));
+    private static btAxisSweep3 attachBroadphase(PhysicsSystemState physicsSystemState) {
+        btAxisSweep3 btAxisSweep3 = new btAxisSweep3(
+                new Vector3(-1000, -1000, -1000),
+                new Vector3(1000, 1000, 1000));
+        physicsSystemState.setBroadphaseInterface(btAxisSweep3);
+        return btAxisSweep3;
     }
 
-    private static btCollisionDispatcher getCollisionDispatcher(
-            btDefaultCollisionConfiguration collisionConfiguration) {
-        return new btCollisionDispatcher(collisionConfiguration);
+    private static btCollisionDispatcher attachCollisionDispatcher(PhysicsSystemState physicsSystemState) {
+        btCollisionConfiguration collisionConfiguration = physicsSystemState.getCollisionConfiguration();
+        btCollisionDispatcher btCollisionDispatcher = new btCollisionDispatcher(collisionConfiguration);
+        physicsSystemState.setDispatcher(btCollisionDispatcher);
+        return btCollisionDispatcher;
     }
 
-    private static btDefaultCollisionConfiguration getCollisionConfiguration() {
-        return new btDefaultCollisionConfiguration();
+    private static btDefaultCollisionConfiguration attachCollisionConfiguration(PhysicsSystemState physicsSystemState) {
+        btDefaultCollisionConfiguration btDefaultCollisionConfiguration = new btDefaultCollisionConfiguration();
+        physicsSystemState.setCollisionConfiguration(btDefaultCollisionConfiguration);
+        return btDefaultCollisionConfiguration;
     }
 
     private static CollisionSystem initializeCollisionSystem() {

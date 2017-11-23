@@ -31,36 +31,33 @@ public class PlayerEntityFactory {
 
         Entity entity = new Entity();
         attachComponents(entity, x, y, z);
-        setPhysicsSystem(physicsSystem, entity);
+        attachPhysicsSystem(physicsSystem, entity);
         return entity;
     }
 
     private static void attachComponents(Entity entity, float x, float y, float z) {
-        ModelComponent modelComponent = getModelComponent(x, y, z);
+        ModelComponent modelComponent = createModelComponent(x, y, z);
         entity.add(modelComponent);
-
         CharacterComponent characterComponent = CharacterComponentFactory.create(entity, modelComponent);
         entity.add(characterComponent);
-
         entity.add(new PlayerComponent());
     }
 
-    private static ModelComponent getModelComponent(float x, float y, float z) {
-        Model playerModel = getModel();
-        return ModelComponentFactory.create(playerModel, x, y, z);
-    }
-
-    private static Model getModel() {
+    private static ModelComponent createModelComponent(float x, float y, float z) {
         ModelBuilder modelBuilder = new ModelBuilder();
         Texture playerTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
         Material material = new Material(TextureAttribute.createDiffuse(playerTexture),
                 ColorAttribute.createSpecular(1, 1, 1, 1), FloatAttribute.createShininess(8f));
 
-        return modelBuilder.createCapsule(2f, 6f, 16, material, VertexAttributes.Usage.Position |
-                VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
+        Model playerModel=  modelBuilder.createCapsule(
+                2f, 6f, 16, material,
+                VertexAttributes.Usage.Position
+                        | VertexAttributes.Usage.Normal
+                        | VertexAttributes.Usage.TextureCoordinates);
+        return ModelComponentFactory.create(playerModel, x, y, z);
     }
 
-    private static void setPhysicsSystem(PhysicsSystem physicsSystem, Entity entity) {
+    private static void attachPhysicsSystem(PhysicsSystem physicsSystem, Entity entity) {
         btDiscreteDynamicsWorld collisionWorld = physicsSystem.getPhysicsSystemState().getCollisionWorld();
         btPairCachingGhostObject ghostObject = entity.getComponent(CharacterComponent.class).getGhostObject();
         collisionWorld.addCollisionObject(ghostObject,
