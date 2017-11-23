@@ -22,7 +22,7 @@ public class RenderSystemState {
     private Entity gun;
     private Vector3 position;
     private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
-    private PerspectiveCamera perspectiveCamera;
+    private PerspectiveCamera worldPerspectiveCamera;
     private PerspectiveCamera playerItemCamera;
     private ParticleSystem particleSystem;
 
@@ -86,12 +86,12 @@ public class RenderSystemState {
         this.animationComponentFactory = animationComponentFactory;
     }
 
-    public PerspectiveCamera getPerspectiveCamera() {
-        return perspectiveCamera;
+    public PerspectiveCamera getWorldPerspectiveCamera() {
+        return worldPerspectiveCamera;
     }
 
-    public void setPerspectiveCamera(PerspectiveCamera perspectiveCamera) {
-        this.perspectiveCamera = perspectiveCamera;
+    public void setWorldPerspectiveCamera(PerspectiveCamera worldPerspectiveCamera) {
+        this.worldPerspectiveCamera = worldPerspectiveCamera;
     }
 
     public PerspectiveCamera getPlayerItemCamera() {

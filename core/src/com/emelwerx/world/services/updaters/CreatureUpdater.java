@@ -38,7 +38,7 @@ public class CreatureUpdater {
                     CreatureAttackUpdater.update(delta, playerModel, creatureEntity, creatureSystemState);
                     break;
                 case DYING:
-                    CreatureDyingUpdater.update(delta, creatureEntity, creatureSystemState);
+                    CreatureDyingUpdater.update(delta, creatureEntity, creatureSystemState.getWorld());
                     break;
                 default:
                     break;

@@ -12,12 +12,10 @@ import com.emelwerx.world.databags.World;
 import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.CreatureComponent;
 
-import java.util.Random;
-
 public class CreatureSystemState {
     private ImmutableArray<Entity> creatures;
     private Entity player;
-    private World gameWorld;
+    private World world;
 
     private Engine entityEngine;
 
@@ -30,7 +28,6 @@ public class CreatureSystemState {
     private Matrix4 ghost = new Matrix4();
     private Vector3 translation = new Vector3();
     private Quaternion quaternion = new Quaternion();
-    private Random random = new Random();
 
     private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
     private ComponentMapper<CreatureComponent> sm = ComponentMapper.getFor(CreatureComponent.class);
@@ -67,12 +64,12 @@ public class CreatureSystemState {
         this.entityEngine = entityEngine;
     }
 
-    public World getGameWorld() {
-        return gameWorld;
+    public World getWorld() {
+        return world;
     }
 
-    public void setGameWorld(World gameWorld) {
-        this.gameWorld = gameWorld;
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public Vector3 getPlayerPosition() {

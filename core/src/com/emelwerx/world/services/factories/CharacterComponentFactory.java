@@ -2,6 +2,7 @@ package com.emelwerx.world.services.factories;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCapsuleShape;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btPairCachingGhostObject;
@@ -17,31 +18,35 @@ public class CharacterComponentFactory {
                 entity.toString(), modelComponent.toString()));
 
         CharacterComponent characterComponent = new CharacterComponent();
-        btKinematicCharacterController characterController = getBtKinematicCharacterController(
-                entity, modelComponent, characterComponent);
-        characterComponent.setCharacterController(characterController);
-
+        attachController(entity, modelComponent, characterComponent);
+        characterComponent.setWalkDirection(new Vector3());
+        characterComponent.setCharacterDirection(new Vector3());
         return characterComponent;
     }
 
-    private static btKinematicCharacterController getBtKinematicCharacterController(
-            Entity entity,ModelComponent modelComponent, CharacterComponent characterComponent) {
+    private static void attachController(Entity entity, ModelComponent modelComponent, CharacterComponent characterComponent) {
+        btPairCachingGhostObject ghostObject = getBtPairCachingGhostObject(entity, modelComponent);
+        btCapsuleShape capsuleShape = getBtCapsuleShape(characterComponent, ghostObject);
+        btKinematicCharacterController characterController = new btKinematicCharacterController(
+                ghostObject,
+                capsuleShape,
+                .35f);
+        characterComponent.setCharacterController(characterController);
+    }
 
+    private static btCapsuleShape getBtCapsuleShape(CharacterComponent characterComponent, btPairCachingGhostObject ghostObject) {
+        btCapsuleShape capsuleShape = new btCapsuleShape(2f, 2f);
+        ghostObject.setCollisionShape(capsuleShape);
+        characterComponent.setGhostObject(ghostObject);
+        characterComponent.setGhostShape(capsuleShape);
+        return capsuleShape;
+    }
+
+    private static btPairCachingGhostObject getBtPairCachingGhostObject(Entity entity, ModelComponent modelComponent) {
         btPairCachingGhostObject ghostObject = new btPairCachingGhostObject();
         ghostObject.userData = entity;
         ghostObject.setWorldTransform(modelComponent.getInstance().transform);
         ghostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
-
-        btCapsuleShape capsuleShape = new btCapsuleShape(2f, 2f);
-        ghostObject.setCollisionShape(capsuleShape);
-
-        characterComponent.setGhostObject(ghostObject);
-        characterComponent.setGhostShape(capsuleShape);
-
-        return new btKinematicCharacterController(
-                ghostObject,
-                capsuleShape,
-                .35f);
+        return ghostObject;
     }
-
 }

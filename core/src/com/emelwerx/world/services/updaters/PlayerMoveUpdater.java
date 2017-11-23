@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.emelwerx.world.services.GunShooter;
+import com.emelwerx.world.services.Shooter;
 import com.emelwerx.world.ui.widgets.ControllerWidget;
 import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.ModelComponent;
@@ -139,7 +139,7 @@ public class PlayerMoveUpdater {
 
     private static void checkAttack(PlayerSystemState playerSystemState) {
         if (Gdx.input.justTouched()) {
-            GunShooter.fire(playerSystemState);
+            Shooter.fire(playerSystemState);
         }
     }
 

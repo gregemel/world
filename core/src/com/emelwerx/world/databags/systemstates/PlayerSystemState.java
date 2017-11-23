@@ -22,7 +22,7 @@ public class PlayerSystemState {
     private CharacterComponent characterComponent;
     private ModelComponent modelComponent;
     private WorldUiSystem worldUiSystem;
-    private World gameWorld;
+    private World world;
     private Vector3 rayFrom = new Vector3();
     private Vector3 rayTo = new Vector3();
     private ClosestRayResultCallback rayTestCB;
@@ -111,12 +111,12 @@ public class PlayerSystemState {
         this.worldUiSystem = worldUiSystem;
     }
 
-    public World getGameWorld() {
-        return gameWorld;
+    public World getWorld() {
+        return world;
     }
 
-    public void setGameWorld(World gameWorld) {
-        this.gameWorld = gameWorld;
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public Vector3 getRayFrom() {

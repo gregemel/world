@@ -42,9 +42,16 @@ public class PhysicsSystemFactory {
         return new PhysicsSystem(physicsSystemState);
     }
 
-    private static btDiscreteDynamicsWorld getCollisionWorld(btDefaultCollisionConfiguration collisionConfiguration, btCollisionDispatcher dispatcher, btAxisSweep3 broadphase, btSequentialImpulseConstraintSolver solver) {
-        btDiscreteDynamicsWorld collisionWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+    private static btDiscreteDynamicsWorld getCollisionWorld(
+            btDefaultCollisionConfiguration collisionConfiguration,
+            btCollisionDispatcher dispatcher,
+            btAxisSweep3 broadphase,
+            btSequentialImpulseConstraintSolver solver) {
+
+        btDiscreteDynamicsWorld collisionWorld = new btDiscreteDynamicsWorld(
+                dispatcher, broadphase, solver, collisionConfiguration);
         collisionWorld.setGravity(new Vector3(0, -0.5f, 0));
+
         return collisionWorld;
     }
 
@@ -62,7 +69,8 @@ public class PhysicsSystemFactory {
                     new Vector3(1000, 1000, 1000));
     }
 
-    private static btCollisionDispatcher getCollisionDispatcher(btDefaultCollisionConfiguration collisionConfiguration) {
+    private static btCollisionDispatcher getCollisionDispatcher(
+            btDefaultCollisionConfiguration collisionConfiguration) {
         return new btCollisionDispatcher(collisionConfiguration);
     }
 

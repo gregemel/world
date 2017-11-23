@@ -22,7 +22,7 @@ public class WorldUiSystemFactory {
 
         WorldUiSystemState worldUiSystemState = new WorldUiSystemState();
 
-        worldUiSystemState.setGame(worldCore);
+        worldUiSystemState.setWorldCore(worldCore);
         Stage stage = new Stage(new FitViewport(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT));
         worldUiSystemState.setStage(stage);
         createWidgets(worldUiSystemState);
@@ -34,8 +34,8 @@ public class WorldUiSystemFactory {
     private static void createWidgets(WorldUiSystemState worldUiSystemState) {
         worldUiSystemState.setHealthWidget(new HealthWidget());
         worldUiSystemState.setScoreWidget(new ScoreWidget());
-        worldUiSystemState.setPauseWidget(new PauseWidget(worldUiSystemState.getGame(), worldUiSystemState.getStage()));
-        worldUiSystemState.setGameOverWidget(new GameOverWidget(worldUiSystemState.getGame(), worldUiSystemState.getStage()));
+        worldUiSystemState.setPauseWidget(new PauseWidget(worldUiSystemState.getWorldCore(), worldUiSystemState.getStage()));
+        worldUiSystemState.setGameOverWidget(new GameOverWidget(worldUiSystemState.getWorldCore(), worldUiSystemState.getStage()));
         worldUiSystemState.setCrosshairWidget(new CrosshairWidget());
         worldUiSystemState.setFpsLabel(new Label("", Assets.skin));
         if (Gdx.app.getType() == Application.ApplicationType.Android) {

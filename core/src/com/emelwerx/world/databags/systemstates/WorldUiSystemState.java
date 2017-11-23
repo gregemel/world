@@ -12,7 +12,7 @@ import com.emelwerx.world.ui.widgets.ScoreWidget;
 
 
 public class WorldUiSystemState {
-    private WorldCore game;
+    private WorldCore worldCore;
     private Stage stage;
     private HealthWidget healthWidget;
     private ScoreWidget scoreWidget;
@@ -22,12 +22,12 @@ public class WorldUiSystemState {
     private Label fpsLabel;
     private ControllerWidget controllerWidget;
 
-    public WorldCore getGame() {
-        return game;
+    public WorldCore getWorldCore() {
+        return worldCore;
     }
 
-    public void setGame(WorldCore game) {
-        this.game = game;
+    public void setWorldCore(WorldCore worldCore) {
+        this.worldCore = worldCore;
     }
 
     public Stage getStage() {

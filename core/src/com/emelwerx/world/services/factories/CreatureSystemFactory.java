@@ -8,10 +8,10 @@ import com.emelwerx.world.systems.CreatureSystem;
 import static java.lang.String.format;
 
 public class CreatureSystemFactory {
-    public static CreatureSystem create(World gameWorld) {
-        Gdx.app.log("CreatureSystemFactory", format("creating creature system for %s", gameWorld));
+    public static CreatureSystem create(World world) {
+        Gdx.app.log("CreatureSystemFactory", format("creating creature system for %s", world));
         CreatureSystemState creatureSystemState = new CreatureSystemState();
-        creatureSystemState.setGameWorld(gameWorld);
+        creatureSystemState.setWorld(world);
         return new CreatureSystem(creatureSystemState);
     }
 

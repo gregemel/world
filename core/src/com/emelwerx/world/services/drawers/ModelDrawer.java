@@ -10,7 +10,7 @@ public class ModelDrawer {
 
     public static void drawEntities(RenderSystemState renderSystemState) {
         ModelBatch modelBatch = renderSystemState.getBatch();
-        modelBatch.begin(renderSystemState.getPerspectiveCamera());
+        modelBatch.begin(renderSystemState.getWorldPerspectiveCamera());
 
         for (Entity entity: renderSystemState.getEntities()) {
             boolean isNotThePlayerItem = entity.getComponent(ItemComponent.class) == null;

@@ -34,35 +34,35 @@ public class CreatureEntityFactory {
     private static float[] xSpawns = {12, -12, 80, -80};
     private static float[] zSpawns = {-80, 80, -12, 12};
 
-    public static Entity create(String name, World gameWorld) {
+    public static Entity create(String name, World world) {
         Gdx.app.log("CreatureEntityFactory", String.format(Locale.US,
-                "creating creature %s, %s", name, gameWorld.toString()));
+                "creating creature %s, %s", name, world.toString()));
 
         //todo: spawn location should be determined by the scene -ge[2017-11-12]
         float x = xSpawns[random.nextInt(xSpawns.length)];
         float y = 33;
         float z = zSpawns[random.nextInt(zSpawns.length)];
 
-        return create(gameWorld, name, x, y, z);
+        return create(world, name, x, y, z);
     }
 
-    public static Entity create(World gameWorld, String name, float x, float y, float z) {
+    public static Entity create(World world, String name, float x, float y, float z) {
         Gdx.app.log("CreatureEntityFactory", String.format(Locale.US,
-                "creating creature %s, %s", name, gameWorld.toString()));
+                "creating creature %s, %s", name, world.toString()));
 
         Entity entity = new Entity();
-        attachComponents(name, gameWorld, x, y, z, entity);
+        attachComponents(name, world, x, y, z, entity);
         return entity;
     }
 
-    private static void attachComponents(String name, World gameWorld, float x, float y, float z, Entity entity) {
+    private static void attachComponents(String name, World world, float x, float y, float z, Entity entity) {
         ModelComponent modelComponent = getModelComponent(name, x, y, z);
         entity.add(modelComponent);
 
         CharacterComponent characterComponent = CharacterComponentFactory.create(entity, modelComponent);
         entity.add(characterComponent);
 
-        PhysicsSystem physicsSystem = gameWorld.getPhysicsSystem();
+        PhysicsSystem physicsSystem = world.getPhysicsSystem();
         setPhysics(physicsSystem, entity);
 
         AnimationComponent animationComponent = getAnimationComponent(modelComponent);
@@ -71,7 +71,7 @@ public class CreatureEntityFactory {
         CreatureComponent creatureComponent = CreatureComponentFactory.create(animationComponent);
         entity.add(creatureComponent);
 
-        ParticleComponent particleComponent = getParticleComponent(gameWorld);
+        ParticleComponent particleComponent = getParticleComponent(world);
         entity.add(particleComponent);
     }
 
@@ -97,8 +97,8 @@ public class CreatureEntityFactory {
         return cachedGoblinModel;
     }
 
-    private static ParticleComponent getParticleComponent(World gameWorld) {
-        ParticleSystem particleSystem = gameWorld.getRenderSystem().getRenderSystemState().getParticleSystem();
+    private static ParticleComponent getParticleComponent(World world) {
+        ParticleSystem particleSystem = world.getRenderSystem().getRenderSystemState().getParticleSystem();
         return ParticleComponentFactory.create("dieparticle", particleSystem);
     }
 

@@ -6,7 +6,7 @@ import com.emelwerx.world.databags.systemstates.RenderSystemState;
 public class ParticleDrawer {
 
     public static void draw(RenderSystemState renderSystemState) {
-        renderSystemState.getBatch().begin(renderSystemState.getPerspectiveCamera());
+        renderSystemState.getBatch().begin(renderSystemState.getWorldPerspectiveCamera());
         ParticleSystem particleSystem = renderSystemState.getParticleSystem();
         particleSystem.update(); // not necessary
         particleSystem.begin();

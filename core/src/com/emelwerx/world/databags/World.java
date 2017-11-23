@@ -2,6 +2,7 @@ package com.emelwerx.world.databags;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.emelwerx.world.systems.PhysicsSystem;
 import com.emelwerx.world.systems.PlayerSystem;
@@ -17,8 +18,17 @@ public class World {
     private PhysicsSystem physicsSystem;
     private PlayerSystem playerSystem;
     private RenderSystem renderSystem;
+    private PerspectiveCamera perspectiveCamera;
     private Scene currentScene;
     private String firstSceneName;
+
+    public PerspectiveCamera getPerspectiveCamera() {
+        return perspectiveCamera;
+    }
+
+    public void setPerspectiveCamera(PerspectiveCamera perspectiveCamera) {
+        this.perspectiveCamera = perspectiveCamera;
+    }
 
     public String getName() {
         return name;

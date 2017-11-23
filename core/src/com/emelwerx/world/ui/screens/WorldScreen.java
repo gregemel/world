@@ -7,8 +7,8 @@ import com.emelwerx.world.services.factories.WorldUiSystemFactory;
 import com.emelwerx.world.systems.WorldUiSystem;
 import com.emelwerx.world.WorldCore;
 import com.emelwerx.world.databags.World;
-import com.emelwerx.world.services.PauseChecker;
-import com.emelwerx.world.services.WorldDisposer;
+import com.emelwerx.world.services.Pauser;
+import com.emelwerx.world.services.Disposer;
 import com.emelwerx.world.services.loaders.WorldLoader;
 import com.emelwerx.world.services.drawers.WorldDrawer;
 
@@ -33,7 +33,7 @@ public class WorldScreen implements Screen {
     public void render(float delta) {
         worldUiSystem.update(delta);
         WorldDrawer.draw(world, delta);
-        PauseChecker.checkPause(world);
+        Pauser.check(world);
         worldUiSystem.render();
     }
 
@@ -45,7 +45,7 @@ public class WorldScreen implements Screen {
 
     @Override
     public void dispose() {
-        WorldDisposer.dispose(world);
+        Disposer.dispose(world);
         worldUiSystem.dispose();
     }
 

@@ -11,17 +11,19 @@ import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.emelwerx.world.WorldCore;
+import com.emelwerx.world.databags.World;
 import com.emelwerx.world.databags.systemstates.RenderSystemState;
 import com.emelwerx.world.systems.RenderSystem;
 
 public class RenderSystemFactory {
 
-    public static RenderSystem create() {
+    public static RenderSystem create(World world) {
         Gdx.app.log("RenderSystemFactory", "creating");
         RenderSystemState renderSystemState = new RenderSystemState();
 
         PerspectiveCamera perspectiveCamera = getPerspectiveCamera(renderSystemState);
-        renderSystemState.setPerspectiveCamera(perspectiveCamera);
+        renderSystemState.setWorldPerspectiveCamera(perspectiveCamera);
+        world.setPerspectiveCamera(perspectiveCamera);
 
         Environment environment = getAttributes(renderSystemState);
         renderSystemState.setEnvironment(environment);

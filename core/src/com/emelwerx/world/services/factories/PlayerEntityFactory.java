@@ -26,7 +26,8 @@ import static java.lang.String.format;
 public class PlayerEntityFactory {
 
     public static Entity create(PhysicsSystem physicsSystem, float x, float y, float z) {
-        Gdx.app.log("PlayerEntityFactory", format(Locale.US,"creating entity %s, %f, %f, %f", physicsSystem.toString(), x, y, z));
+        Gdx.app.log("PlayerEntityFactory", format(Locale.US,"creating entity %s, %f, %f, %f",
+                physicsSystem.toString(), x, y, z));
 
         Entity entity = new Entity();
         attachComponents(entity, x, y, z);

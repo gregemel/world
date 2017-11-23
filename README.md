@@ -19,7 +19,7 @@ The libDGX based application targets Android, but the core module can run on a L
 
 ## Purpose
 * An exploration in building immersive 3D games for Android tablets and phones.
-* Learning about extending open source 3D game engines for Java on Android.
+* Learning about extending open source 3D worldCore engines for Java on Android.
 * Finding ways to amuse my kids.
 
 ## Next

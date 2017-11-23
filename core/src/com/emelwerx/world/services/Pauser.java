@@ -6,10 +6,10 @@ import com.emelwerx.world.systems.CreatureSystem;
 import com.emelwerx.world.systems.PhysicsSystem;
 import com.emelwerx.world.systems.PlayerSystem;
 
-public class PauseChecker {
-    public static void checkPause(World gameWorld) {
+public class Pauser {
+    public static void check(World world) {
         boolean run = !Settings.isPaused();
-        Engine entityEngine = gameWorld.getEntityEngine();
+        Engine entityEngine = world.getEntityEngine();
         entityEngine.getSystem(PlayerSystem.class).setProcessing(run);
         entityEngine.getSystem(CreatureSystem.class).setProcessing(run);
         entityEngine.getSystem(PhysicsSystem.class).setProcessing(run);

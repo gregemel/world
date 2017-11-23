@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
@@ -91,7 +92,7 @@ public class WorldLoader {
         Engine engine = createEntityEngine();
         RenderSystem renderSystem = createRenderSystem(engine);
         createPhysicsSystem(engine);
-        createPlayerSystem(engine, renderSystem);
+        createPlayerSystem(engine, renderSystem.getRenderSystemState().getWorldPerspectiveCamera());
         createCreatureSystem(engine);
         world.setEntityEngine(engine);
     }
@@ -102,7 +103,7 @@ public class WorldLoader {
     }
 
     private static RenderSystem createRenderSystem(Engine engine) {
-        RenderSystem renderSystem = RenderSystemFactory.create();
+        RenderSystem renderSystem = RenderSystemFactory.create(world);
         world.setRenderSystem(renderSystem);
         engine.addSystem(renderSystem);
         return renderSystem;
@@ -117,9 +118,9 @@ public class WorldLoader {
         }
     }
 
-    private static void createPlayerSystem(Engine engine, RenderSystem renderSystem) {
+    private static void createPlayerSystem(Engine engine, PerspectiveCamera perspectiveCamera) {
         PlayerSystem playerSystem = PlayerSystemFactory.create(
-                world, worldUiSystem, renderSystem.getRenderSystemState().getPerspectiveCamera());
+                world, worldUiSystem, perspectiveCamera);
         world.setPlayerSystem(playerSystem);
         engine.addSystem(playerSystem);
     }
@@ -130,15 +131,11 @@ public class WorldLoader {
     }
 
     private static void createPlayer(Scene arena) {
-
         Vector3 start = arena.getPlayerStartLocation();
-
         Entity player = PlayerEntityFactory.create(world.getPhysicsSystem(), start.x, start.y, start.z);
         world.setPlayer(player);
         world.getEntityEngine().addEntity(player);
-
-        Entity itemEntity = PlayerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4);
-        addItemToWorld(itemEntity);
+        addItemToWorld(PlayerItemFactory.create("GUNMODEL", 2.5f, -1.9f, -4));
     }
 
     private static void addItemToWorld(Entity itemEntity) {

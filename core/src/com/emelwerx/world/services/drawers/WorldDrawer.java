@@ -3,12 +3,12 @@ package com.emelwerx.world.services.drawers;
 import com.emelwerx.world.databags.World;
 
 public class WorldDrawer {
-    public static void draw(World gameWorld, float delta) {
-        gameWorld.getEntityEngine().update(delta);
-        if (gameWorld.isDebug()) {
-            gameWorld.getDebugDrawer().begin(gameWorld.getRenderSystem().getRenderSystemState().getPerspectiveCamera());
-            gameWorld.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().debugDrawWorld();
-            gameWorld.getDebugDrawer().end();
+    public static void draw(World world, float delta) {
+        world.getEntityEngine().update(delta);
+        if (world.isDebug()) {
+            world.getDebugDrawer().begin(world.getPerspectiveCamera());
+            world.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().debugDrawWorld();
+            world.getDebugDrawer().end();
         }
     }
 }

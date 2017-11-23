@@ -19,7 +19,7 @@ public class ShadowDrawer {
 
     public static void draw(RenderSystemState renderSystemState, float delta) {
         DirectionalShadowLight shadowLight = renderSystemState.getShadowLight();
-        shadowLight.begin(Vector3.Zero, renderSystemState.getPerspectiveCamera().direction);
+        shadowLight.begin(Vector3.Zero, renderSystemState.getWorldPerspectiveCamera().direction);
 
         ModelBatch modelBatch = renderSystemState.getBatch();
         modelBatch.begin(shadowLight.getCamera());
@@ -55,7 +55,7 @@ public class ShadowDrawer {
     }
 
     private static boolean isVisible(RenderSystemState renderSystemState, final ModelInstance instance) {
-        PerspectiveCamera cam = renderSystemState.getPerspectiveCamera();
+        PerspectiveCamera cam = renderSystemState.getWorldPerspectiveCamera();
         return cam.frustum.pointInFrustum(instance.transform.getTranslation(renderSystemState.getPosition()));
     }
 
