@@ -58,5 +58,4 @@ public class ShadowDrawer {
         PerspectiveCamera cam = renderSystemState.getWorldPerspectiveCamera();
         return cam.frustum.pointInFrustum(instance.transform.getTranslation(renderSystemState.getPosition()));
     }
-
 }

@@ -28,7 +28,6 @@ public class CreatureSystem extends EntitySystem implements EntityListener {
     @Override   //EntitySystem
     public void addedToEngine(Engine engine) {
         Gdx.app.log("CreatureSystem", "adding to engine.");
-        creatureSystemState.setEntityEngine(engine);
 
         Family creatureFamily = Family.all(CreatureComponent.class, CharacterComponent.class).get();
         ImmutableArray<Entity> creatureEntities = engine.getEntitiesFor(creatureFamily);

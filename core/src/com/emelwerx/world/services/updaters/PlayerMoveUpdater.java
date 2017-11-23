@@ -37,7 +37,12 @@ public class PlayerMoveUpdater {
         checkJump(playerSystemState, characterComponent);
     }
 
-    private static void updatePlayerDirection(float delta, PlayerSystemState playerSystemState, CharacterComponent characterComponent, ModelComponent modelComponent, Camera camera) {
+    private static void updatePlayerDirection(
+            float delta,
+            PlayerSystemState playerSystemState,
+            CharacterComponent characterComponent,
+            ModelComponent modelComponent,
+            Camera camera) {
         characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
         Vector3 playerVector = playerSystemState.getTmp();
         playerVector.set(0, 0, 0);
@@ -46,19 +51,7 @@ public class PlayerMoveUpdater {
         walkDirection.scl(10f * delta);
         characterComponent.getCharacterController().setWalkDirection(walkDirection);
 
-        lastLog+=delta;
-        if(lastLog>5f) {
-            lastLog=0f;
-
-//            Gdx.app.log("PlayerMoveUpdater", format("walkDirection(%s), playerVector(%s)",
-//                    walkDirection.toString(), playerVector.toString()));
-
-            Matrix4 matrix4 = modelComponent.getInstance().transform;
-
-            Gdx.app.log("**player location**", format(Locale.US,"(%f, %f, %f)",
-                    matrix4.getValues()[12], matrix4.getValues()[13], matrix4.getValues()[14]));
-
-        }
+        log(delta, modelComponent);
     }
 
     private static void updateCameraRotation(PlayerSystemState playerSystemState, Camera camera) {
@@ -130,7 +123,8 @@ public class PlayerMoveUpdater {
 //                .transform.setToTranslation(translation.x, translation.y, translation.z);
     }
 
-    private static void setPlayerGhostTranslation(PlayerSystemState playerSystemState, CharacterComponent characterComponent, Vector3 translation) {
+    private static void setPlayerGhostTranslation(
+            PlayerSystemState playerSystemState, CharacterComponent characterComponent, Vector3 translation) {
         Matrix4 ghost = playerSystemState.getGhost();
         ghost.set(0, 0, 0, 0);
         characterComponent.getGhostObject().getWorldTransform(ghost);
@@ -147,6 +141,16 @@ public class PlayerMoveUpdater {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             characterComponent.getCharacterController().setJumpSpeed(playerSystemState.getJumpForce());
             characterComponent.getCharacterController().jump();
+        }
+    }
+
+    private static void log(float delta, ModelComponent modelComponent) {
+        lastLog+=delta;
+        if(lastLog>5f) {
+            lastLog=0f;
+            Matrix4 matrix4 = modelComponent.getInstance().transform;
+            Gdx.app.log("**player location**", format(Locale.US,"(%f, %f, %f)",
+                    matrix4.getValues()[12], matrix4.getValues()[13], matrix4.getValues()[14]));
         }
     }
 }

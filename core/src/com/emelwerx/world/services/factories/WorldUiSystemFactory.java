@@ -19,57 +19,85 @@ import com.emelwerx.world.ui.widgets.ScoreWidget;
 
 public class WorldUiSystemFactory {
     public static WorldUiSystem create(WorldCore worldCore) {
-
-        WorldUiSystemState worldUiSystemState = new WorldUiSystemState();
-
-        worldUiSystemState.setWorldCore(worldCore);
-        Stage stage = new Stage(new FitViewport(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT));
-        worldUiSystemState.setStage(stage);
+        WorldUiSystemState worldUiSystemState = createWorldUiSystemState(worldCore);
+        attachStage(worldUiSystemState);
         createWidgets(worldUiSystemState);
-        configureWidgets(worldUiSystemState);
-
         return new WorldUiSystem(worldUiSystemState);
     }
 
+    private static void attachStage(WorldUiSystemState worldUiSystemState) {
+        Stage stage = new Stage(new FitViewport(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT));
+        worldUiSystemState.setStage(stage);
+    }
+
+    private static WorldUiSystemState createWorldUiSystemState(WorldCore worldCore) {
+        WorldUiSystemState worldUiSystemState = new WorldUiSystemState();
+        worldUiSystemState.setWorldCore(worldCore);
+        return worldUiSystemState;
+    }
+
     private static void createWidgets(WorldUiSystemState worldUiSystemState) {
-        worldUiSystemState.setHealthWidget(new HealthWidget());
-        worldUiSystemState.setScoreWidget(new ScoreWidget());
-        worldUiSystemState.setPauseWidget(new PauseWidget(worldUiSystemState.getWorldCore(), worldUiSystemState.getStage()));
-        worldUiSystemState.setGameOverWidget(new GameOverWidget(worldUiSystemState.getWorldCore(), worldUiSystemState.getStage()));
-        worldUiSystemState.setCrosshairWidget(new CrosshairWidget());
-        worldUiSystemState.setFpsLabel(new Label("", Assets.skin));
+        attachHealthWidget(worldUiSystemState);
+        attachScoreWidget(worldUiSystemState);
+        attachPauseWidget(worldUiSystemState);
+        attachGameOverWidget(worldUiSystemState);
+        attachCrosshairWidget(worldUiSystemState);
+        attachFpsWidget(worldUiSystemState);
+        attachControllerWidget(worldUiSystemState);
+    }
+
+    private static void attachControllerWidget(WorldUiSystemState worldUiSystemState) {
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            worldUiSystemState.setControllerWidget(new ControllerWidget());
+            ControllerWidget controllerWidget = new ControllerWidget();
+            worldUiSystemState.setControllerWidget(controllerWidget);
+            controllerWidget.addToStage(worldUiSystemState.getStage());
         }
     }
 
-    private static void configureWidgets(WorldUiSystemState worldUiSystemState) {
-        worldUiSystemState.getHealthWidget().setSize(140, 25);
-        worldUiSystemState.getHealthWidget().setPosition(WorldCore.VIRTUAL_WIDTH / 2 - worldUiSystemState.getHealthWidget().getWidth() / 2, 0);
-
-        worldUiSystemState.getScoreWidget().setSize(140, 25);
-        worldUiSystemState.getScoreWidget().setPosition(0, WorldCore.VIRTUAL_HEIGHT - worldUiSystemState.getScoreWidget().getHeight());
-
-        worldUiSystemState.getPauseWidget().setSize(64, 64);
-        worldUiSystemState.getPauseWidget().setPosition(WorldCore.VIRTUAL_WIDTH - worldUiSystemState.getPauseWidget().getWidth(), WorldCore.VIRTUAL_HEIGHT - worldUiSystemState.getPauseWidget().getHeight());
-
-        worldUiSystemState.getGameOverWidget().setSize(280, 100);
-        worldUiSystemState.getGameOverWidget().setPosition(WorldCore.VIRTUAL_WIDTH / 2 - 280 / 2, WorldCore.VIRTUAL_HEIGHT / 2);
-
-        worldUiSystemState.getCrosshairWidget().setPosition(WorldCore.VIRTUAL_WIDTH / 2 - 16, WorldCore.VIRTUAL_HEIGHT / 2 - 16);
-        worldUiSystemState.getCrosshairWidget().setSize(32, 32);
-
-        worldUiSystemState.getFpsLabel().setPosition(0, 10);
-
-        worldUiSystemState.getStage().addActor(worldUiSystemState.getHealthWidget());
-        worldUiSystemState.getStage().addActor(worldUiSystemState.getScoreWidget());
-        worldUiSystemState.getStage().addActor(worldUiSystemState.getCrosshairWidget());
-        worldUiSystemState.getStage().setKeyboardFocus(worldUiSystemState.getPauseWidget());
-        worldUiSystemState.getStage().addActor(worldUiSystemState.getFpsLabel());
-
-        if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            worldUiSystemState.getControllerWidget().addToStage(worldUiSystemState.getStage());
-        }
+    private static void attachFpsWidget(WorldUiSystemState worldUiSystemState) {
+        Label fpsLabel = new Label("", Assets.skin);
+        worldUiSystemState.setFpsLabel(fpsLabel);
+        fpsLabel.setPosition(0, 10);
+        worldUiSystemState.getStage().addActor(fpsLabel);
     }
 
+    private static void attachCrosshairWidget(WorldUiSystemState worldUiSystemState) {
+        CrosshairWidget crosshairWidget = new CrosshairWidget();
+        worldUiSystemState.setCrosshairWidget(crosshairWidget);
+        crosshairWidget.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - 16, WorldCore.VIRTUAL_HEIGHT / 2 - 16);
+        crosshairWidget.setSize(32, 32);
+        worldUiSystemState.getStage().addActor(crosshairWidget);
+    }
+
+    private static void attachGameOverWidget(WorldUiSystemState worldUiSystemState) {
+        GameOverWidget gameOverWidget = new GameOverWidget(worldUiSystemState.getWorldCore(), worldUiSystemState.getStage());
+        worldUiSystemState.setGameOverWidget(gameOverWidget);
+        gameOverWidget.setSize(280, 100);
+        gameOverWidget.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - 280 / 2, WorldCore.VIRTUAL_HEIGHT / 2);
+    }
+
+    private static void attachPauseWidget(WorldUiSystemState worldUiSystemState) {
+        PauseWidget pauseWidget = new PauseWidget(worldUiSystemState.getWorldCore(), worldUiSystemState.getStage());
+        worldUiSystemState.setPauseWidget(pauseWidget);
+        pauseWidget.setSize(64, 64);
+        pauseWidget.setPosition(WorldCore.VIRTUAL_WIDTH - pauseWidget.getWidth(),
+                WorldCore.VIRTUAL_HEIGHT - pauseWidget.getHeight());
+        worldUiSystemState.getStage().setKeyboardFocus(pauseWidget);
+    }
+
+    private static void attachScoreWidget(WorldUiSystemState worldUiSystemState) {
+        ScoreWidget scoreWidget = new ScoreWidget();
+        worldUiSystemState.setScoreWidget(scoreWidget);
+        scoreWidget.setSize(140, 25);
+        scoreWidget.setPosition(0, WorldCore.VIRTUAL_HEIGHT - scoreWidget.getHeight());
+        worldUiSystemState.getStage().addActor(scoreWidget);
+    }
+
+    private static void attachHealthWidget(WorldUiSystemState worldUiSystemState) {
+        HealthWidget healthWidget = new HealthWidget();
+        worldUiSystemState.setHealthWidget(healthWidget);
+        healthWidget.setSize(140, 25);
+        healthWidget.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - healthWidget.getWidth() / 2, 0);
+        worldUiSystemState.getStage().addActor(healthWidget);
+    }
 }

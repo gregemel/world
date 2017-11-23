@@ -49,23 +49,26 @@ public class SceneLoader {
         scene.setName(sceneName);
         scene.setSky(loadSky(skyModelFilename, x, y, z));
         scene.setGround(loadGround(groundModelFilename, x, y, z));
+        setPlayerStartLocation(jsonScene, scene);
+        scene.setMaxSpawnCount(3);
+        loadCreatures(world, jsonScene.get("creatures"));
+        world.setCurrentScene(scene);
+        attachToEntityEngine(world.getEntityEngine(), scene);
+        world.getPlayerSystem().getPlayerSystemState().setSkyEntity(scene.getSky());
 
+        return scene;
+    }
+
+    private static void attachToEntityEngine(Engine entityEngine, Scene scene) {
+        entityEngine.addEntity(scene.getGround());
+        entityEngine.addEntity(scene.getSky());
+    }
+
+    private static void setPlayerStartLocation(JsonValue jsonScene, Scene scene) {
         JsonValue location = jsonScene.get("player").get("startLocation");
         scene.getPlayerStartLocation().x = location.getFloat("x");
         scene.getPlayerStartLocation().y = location.getFloat("y");
         scene.getPlayerStartLocation().z = location.getFloat("z");
-
-        scene.setMaxSpawnCount(3);
-
-        loadCreatures(world, jsonScene.get("creatures"));
-
-        world.setCurrentScene(scene);
-        Engine entityEngine = world.getEntityEngine();
-        entityEngine.addEntity(scene.getGround());
-        entityEngine.addEntity(scene.getSky());
-        world.getPlayerSystem().getPlayerSystemState().setSkyEntity(scene.getSky());
-
-        return scene;
     }
 
     private static void loadCreatures(World world, JsonValue value) {
@@ -87,7 +90,6 @@ public class SceneLoader {
         Gdx.app.log("SceneLoader", format(Locale.US, "load goblin %s, %.2f, %.2f, %.2f", modelFilename, x, y, z));
         Entity creatureEntity = CreatureEntityFactory.create(world, modelFilename, x, y, z);
         world.getEntityEngine().addEntity(creatureEntity);
-
     }
 
     private static Entity loadSky(String name, int x, int y, int z) {
@@ -134,5 +136,4 @@ public class SceneLoader {
         ((btRigidBody) physicsComponent.getBody()).setMotionState(physicsComponent.getMotionState());
         return physicsComponent;
     }
-
 }

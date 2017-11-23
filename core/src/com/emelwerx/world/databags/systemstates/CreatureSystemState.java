@@ -2,7 +2,6 @@ package com.emelwerx.world.databags.systemstates;
 
 
 import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Matrix4;
@@ -16,18 +15,11 @@ public class CreatureSystemState {
     private ImmutableArray<Entity> creatures;
     private Entity player;
     private World world;
-
-    private Engine entityEngine;
-
-    //this should come from the character component
-    private Vector3 playerPosition = new Vector3();
-
-    //this should come from the character component
-    private Vector3 currentCreaturePosition = new Vector3();
-
-    private Matrix4 ghost = new Matrix4();
-    private Vector3 translation = new Vector3();
-    private Quaternion quaternion = new Quaternion();
+    private Vector3 playerPosition;
+    private Vector3 currentCreaturePosition;
+    private Matrix4 ghost;
+    private Vector3 translation;
+    private Quaternion quaternion;
 
     private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
     private ComponentMapper<CreatureComponent> sm = ComponentMapper.getFor(CreatureComponent.class);
@@ -56,13 +48,13 @@ public class CreatureSystemState {
         this.quaternion = quaternion;
     }
 
-    public Engine getEntityEngine() {
-        return entityEngine;
-    }
-
-    public void setEntityEngine(Engine entityEngine) {
-        this.entityEngine = entityEngine;
-    }
+//    public Engine getEntityEngine() {
+//        return entityEngine;
+//    }
+//
+//    public void setEntityEngine(Engine entityEngine) {
+//        this.entityEngine = entityEngine;
+//    }
 
     public World getWorld() {
         return world;

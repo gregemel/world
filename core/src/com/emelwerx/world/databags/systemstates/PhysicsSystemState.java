@@ -14,19 +14,10 @@ public class PhysicsSystemState {
 
     private btCollisionConfiguration collisionConfiguration;
     private btCollisionDispatcher dispatcher;
-    private CollisionSystem collisionListener;
     private btBroadphaseInterface broadphaseInterface;
     private btConstraintSolver solver;
     private btDiscreteDynamicsWorld collisionWorld;
     private btGhostPairCallback ghostPairCallback;
-
-    public CollisionSystem getCollisionListener() {
-        return collisionListener;
-    }
-
-    public void setCollisionListener(CollisionSystem collisionListener) {
-        this.collisionListener = collisionListener;
-    }
 
     public btCollisionConfiguration getCollisionConfiguration() {
         return collisionConfiguration;

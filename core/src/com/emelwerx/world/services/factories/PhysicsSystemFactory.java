@@ -17,7 +17,7 @@ public class PhysicsSystemFactory {
         Gdx.app.log("PhysicsSystemFactory", "creating physics system");
         PhysicsSystemState physicsSystemState = new PhysicsSystemState();
 
-        physicsSystemState.setCollisionListener(getCollisionListener());
+        initializeCollisionSystem();
 
         btDefaultCollisionConfiguration collisionConfiguration = getCollisionConfiguration();
         physicsSystemState.setCollisionConfiguration(collisionConfiguration);
@@ -78,7 +78,7 @@ public class PhysicsSystemFactory {
         return new btDefaultCollisionConfiguration();
     }
 
-    private static CollisionSystem getCollisionListener() {
+    private static CollisionSystem initializeCollisionSystem() {
         CollisionSystem collisionListener = new CollisionSystem();
         collisionListener.enable();
         return collisionListener;

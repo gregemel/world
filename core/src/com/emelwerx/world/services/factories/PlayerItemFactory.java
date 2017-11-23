@@ -16,18 +16,16 @@ public class PlayerItemFactory {
         Gdx.app.log("PlayerItemFactory", format(Locale.US,"creating entity %s, %f, %f, %f", name, x, y, z));
 
         Entity itemEntity = new Entity();
-        ModelComponent itemModelComponent = getModelComponent(name, x, y, z);
-        itemEntity.add(itemModelComponent);
-        itemEntity.add(new ItemComponent());
-        itemEntity.add(AnimationComponentFactory.create(itemModelComponent.getInstance()));
-
+        attachModel(name, x, y, z, itemEntity);
         return itemEntity;
     }
 
-    private static ModelComponent getModelComponent(String name, float x, float y, float z) {
+    private static void attachModel(String name, float x, float y, float z, Entity itemEntity) {
         Model itemModel = ModelLoader.load(name + ".g3dj");
         ModelComponent itemModelComponent = ModelComponentFactory.create(itemModel, x, y, z);
         itemModelComponent.getInstance().transform.rotate(0, 1, 0, 180);
-        return itemModelComponent;
+        itemEntity.add(itemModelComponent);
+        itemEntity.add(new ItemComponent());
+        itemEntity.add(AnimationComponentFactory.create(itemModelComponent.getInstance()));
     }
 }
