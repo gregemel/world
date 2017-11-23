@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.math.Vector3;
+import com.emelwerx.world.databags.World;
 import com.emelwerx.world.services.factories.AnimationComponentFactory;
 
 public class RenderSystemState {
@@ -19,12 +20,21 @@ public class RenderSystemState {
     private ModelBatch batch;
     private Environment environment;
     private DirectionalShadowLight shadowLight;
-    private Entity gun;
+    private Entity playerItem;
     private Vector3 position;
     private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
     private PerspectiveCamera worldPerspectiveCamera;
     private PerspectiveCamera playerItemCamera;
     private ParticleSystem particleSystem;
+    private World world;
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
 
     public float getFOV() {
         return FOV;
@@ -62,12 +72,12 @@ public class RenderSystemState {
         this.shadowLight = shadowLight;
     }
 
-    public Entity getGun() {
-        return gun;
+    public Entity getPlayerItem() {
+        return playerItem;
     }
 
-    public void setPlayersVisibleItem(Entity gun) {
-        this.gun = gun;
+    public void setPlayersVisibleItem(Entity item) {
+        this.playerItem = item;
     }
 
     public Vector3 getPosition() {

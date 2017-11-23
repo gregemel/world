@@ -11,7 +11,7 @@ public class PlayerItemDrawer {
     public static void draw(RenderSystemState renderSystemState) {
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
         renderSystemState.getBatch().begin(renderSystemState.getPlayerItemCamera());
-        renderSystemState.getBatch().render(renderSystemState.getGun().getComponent(ModelComponent.class).getInstance());
+        renderSystemState.getBatch().render(renderSystemState.getPlayerItem().getComponent(ModelComponent.class).getInstance());
         renderSystemState.getBatch().end();
     }
 

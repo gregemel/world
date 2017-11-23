@@ -1,6 +1,5 @@
 package com.emelwerx.world.services.factories;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -19,56 +18,30 @@ public class RenderSystemFactory {
 
     public static RenderSystem create(World world) {
         Gdx.app.log("RenderSystemFactory", "creating");
+
         RenderSystemState renderSystemState = new RenderSystemState();
-
-        PerspectiveCamera perspectiveCamera = getPerspectiveCamera(renderSystemState);
-        renderSystemState.setWorldPerspectiveCamera(perspectiveCamera);
-        world.setPerspectiveCamera(perspectiveCamera);
-
-        Environment environment = getAttributes(renderSystemState);
-        renderSystemState.setEnvironment(environment);
-
-        ModelBatch batch = new ModelBatch();
-        renderSystemState.setBatch(batch);
-
-        PerspectiveCamera itemCamera = getItemPerspectiveCamera(renderSystemState);
-        renderSystemState.setPlayerItemCamera(itemCamera);
-
+        PerspectiveCamera worldCamera = createWorldPerspectiveCamera(world, renderSystemState);
+        attachEnvironment(renderSystemState);
+        attachModelBatch(renderSystemState);
+        attachPlayerItemCamera(renderSystemState);
         renderSystemState.setPosition(new Vector3());
-
-        ParticleSystem particleSystem = ParticleSystem.get();
-
-        BillboardParticleBatch billboardParticleBatch = getBillboardParticleBatch(perspectiveCamera);
-
-        particleSystem.add(billboardParticleBatch);
-        renderSystemState.setParticleSystem(particleSystem);
+        attachParticleSystem(renderSystemState, worldCamera);
 
         return new RenderSystem(renderSystemState);
     }
 
-    private static BillboardParticleBatch getBillboardParticleBatch(PerspectiveCamera perspectiveCamera) {
-        BillboardParticleBatch billboardParticleBatch = new BillboardParticleBatch();
-        billboardParticleBatch.setCamera(perspectiveCamera);
-        return billboardParticleBatch;
-    }
-
-    private static PerspectiveCamera getItemPerspectiveCamera(RenderSystemState renderSystemState) {
-        PerspectiveCamera gunCamera = new PerspectiveCamera(renderSystemState.getFOV(), WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT);
-        gunCamera.far = 100f;
-        return gunCamera;
-    }
-
-    private static PerspectiveCamera getPerspectiveCamera(RenderSystemState renderSystemState) {
+    private static PerspectiveCamera createWorldPerspectiveCamera(World world, RenderSystemState renderSystemState) {
         PerspectiveCamera perspectiveCamera = new PerspectiveCamera(
                 renderSystemState.getFOV(),
                 WorldCore.VIRTUAL_WIDTH,
                 WorldCore.VIRTUAL_HEIGHT);
-
         perspectiveCamera.far = 10000f;
+        renderSystemState.setWorldPerspectiveCamera(perspectiveCamera);
+        world.setPerspectiveCamera(perspectiveCamera);
         return perspectiveCamera;
     }
 
-    private static Environment getAttributes(RenderSystemState renderSystemState) {
+    private static void attachEnvironment(RenderSystemState renderSystemState) {
         Environment environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.5f, 0.5f, 0.5f, 1f));
         DirectionalShadowLight shadowLight = new DirectionalShadowLight(
@@ -83,7 +56,26 @@ public class RenderSystemFactory {
         environment.shadowMap = shadowLight;
 
         renderSystemState.setShadowLight(shadowLight);
-        return environment;
+        renderSystemState.setEnvironment(environment);
     }
 
+    private static void attachModelBatch(RenderSystemState renderSystemState) {
+        ModelBatch batch = new ModelBatch();
+        renderSystemState.setBatch(batch);
+    }
+
+    private static void attachPlayerItemCamera(RenderSystemState renderSystemState) {
+        PerspectiveCamera itemCamera = new PerspectiveCamera(renderSystemState.getFOV(),
+                WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT);
+        itemCamera.far = 100f;
+        renderSystemState.setPlayerItemCamera(itemCamera);
+    }
+
+    private static void attachParticleSystem(RenderSystemState renderSystemState, PerspectiveCamera perspectiveCamera) {
+        ParticleSystem particleSystem = ParticleSystem.get();
+        BillboardParticleBatch billboardParticleBatch = new BillboardParticleBatch();
+        billboardParticleBatch.setCamera(perspectiveCamera);
+        particleSystem.add(billboardParticleBatch);
+        renderSystemState.setParticleSystem(particleSystem);
+    }
 }
