@@ -17,11 +17,11 @@ public class ParticleComponentFactory {
         Gdx.app.log("ParticleComponentFactory", format("creating particle component: %s", name));
 
         ParticleComponent particleComponent = new ParticleComponent();
-        particleComponent.setOriginalEffect(getParticleEffect(name, particleSystem));
+        particleComponent.setOriginalEffect(loadParticleEffect(name, particleSystem));
         return particleComponent;
     }
 
-    private static ParticleEffect getParticleEffect(String name, ParticleSystem particleSystem) {
+    private static ParticleEffect loadParticleEffect(String name, ParticleSystem particleSystem) {
 
         ParticleEffectLoader.ParticleEffectLoadParameter loadParam =
                 new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
@@ -34,7 +34,7 @@ public class ParticleComponentFactory {
         return Assets.assetManager.get("data/" + name + ".pfx");
     }
 
-    public static ParticleEffect createParticleEffect(ModelComponent creatureModelComponent, ParticleComponent particleComponent) {
+    public static ParticleEffect cloneParticleEffect(ModelComponent creatureModelComponent, ParticleComponent particleComponent) {
         ParticleEffect effect = particleComponent.getOriginalEffect().copy();
         RegularEmitter emitter = (RegularEmitter) effect.getControllers().first().emitter;
         emitter.setEmissionMode(RegularEmitter.EmissionMode.EnabledUntilCycleEnd);

@@ -11,7 +11,6 @@ import com.emelwerx.world.systems.CollisionSystem;
 public class PhysicsSystemState {
     private static final int maxSubSteps = 5;
     private static final float fixedTimeStep = 1f / 60f;
-
     private btCollisionConfiguration collisionConfiguration;
     private btCollisionDispatcher dispatcher;
     private btBroadphaseInterface broadphaseInterface;

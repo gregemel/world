@@ -10,7 +10,6 @@ public class CharacterComponent extends Component {
     private btPairCachingGhostObject ghostObject;
     private btConvexShape ghostShape;
     private btKinematicCharacterController characterController;
-
     private Vector3 characterDirection;
     private Vector3 walkDirection;
 

@@ -45,11 +45,10 @@ public class CreatureDyingUpdater {
 
     private static void updateParticles(Entity entity, ModelComponent creatureModelComponent, World world) {
         ParticleComponent particleComponent = entity.getComponent(ParticleComponent.class);
-
         boolean isParticleStartNeeded = !particleComponent.isUsed();
         if (isParticleStartNeeded) {
             particleComponent.setUsed(true);
-            ParticleEffect particleEffect = ParticleComponentFactory.createParticleEffect(creatureModelComponent, particleComponent);
+            ParticleEffect particleEffect = ParticleComponentFactory.cloneParticleEffect(creatureModelComponent, particleComponent);
             ParticleSystem particleSystem = world.getRenderSystem().getRenderSystemState().getParticleSystem();
             particleSystem.add(particleEffect);
         }

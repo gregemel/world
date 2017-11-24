@@ -116,18 +116,25 @@ public class SceneLoader {
 
     private static void attachSceneComponent(Entity groundEntity, ModelComponent modelComponent) {
         SceneComponent sceneComponent = new SceneComponent();
-
         btCollisionShape shape = Bullet.obtainStaticNodeShape(modelComponent.getModel().nodes);
+        btRigidBody rigidBody = createStaticRigidBody(sceneComponent, shape);
+        sceneComponent.setBody(rigidBody);
+        sceneComponent.getBody().userData = groundEntity;
+        attachMotionState(modelComponent, sceneComponent, rigidBody);
+        groundEntity.add(sceneComponent);
+    }
 
+    private static void attachMotionState(ModelComponent modelComponent, SceneComponent sceneComponent, btRigidBody rigidBody) {
+        MotionState motionState = new MotionState(modelComponent.getInstance().transform);
+        sceneComponent.setMotionState(motionState);
+        rigidBody.setMotionState(motionState);
+    }
+
+    private static btRigidBody createStaticRigidBody(SceneComponent sceneComponent, btCollisionShape shape) {
         btRigidBody.btRigidBodyConstructionInfo bodyInfo =
                 new btRigidBody.btRigidBodyConstructionInfo(0, null, shape, Vector3.Zero);
         sceneComponent.setBodyInfo(bodyInfo);
-        sceneComponent.setBody(new btRigidBody(sceneComponent.getBodyInfo()));
-        sceneComponent.getBody().userData = groundEntity;
-        sceneComponent.setMotionState(new MotionState(modelComponent.getInstance().transform));
-
-        ((btRigidBody) sceneComponent.getBody()).setMotionState(sceneComponent.getMotionState());
-        groundEntity.add(sceneComponent);
+        return new btRigidBody(bodyInfo);
     }
 
     private static ModelComponent attachModelComponent(String name, int x, int y, int z, Entity groundEntity) {

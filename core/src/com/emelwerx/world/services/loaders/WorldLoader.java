@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.badlogic.gdx.physics.bullet.DebugDrawer;
+import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -78,7 +79,8 @@ public class WorldLoader {
         Engine entityEngine = new Engine();
         RenderSystem renderSystem = createRenderSystem(world, entityEngine);
         createPhysicsSystem(world, entityEngine);
-        createPlayerSystem(world, entityEngine, renderSystem.getRenderSystemState().getWorldPerspectiveCamera(), worldUiSystem);
+        PerspectiveCamera worldPerspectiveCamera = renderSystem.getRenderSystemState().getWorldPerspectiveCamera();
+        createPlayerSystem(world, entityEngine, worldPerspectiveCamera, worldUiSystem);
         createCreatureSystem(world, entityEngine);
         world.setEntityEngine(entityEngine);
     }
@@ -95,11 +97,15 @@ public class WorldLoader {
         world.setPhysicsSystem(physicsSystem);
         engine.addSystem(physicsSystem);
         if (world.isDebug()) {
-            physicsSystem.getPhysicsSystemState().getCollisionWorld().setDebugDrawer(world.getDebugDrawer());
+            btDiscreteDynamicsWorld collisionWorld = physicsSystem.getPhysicsSystemState().getCollisionWorld();
+            collisionWorld.setDebugDrawer(world.getDebugDrawer());
         }
     }
 
-    private static void createPlayerSystem(World world, Engine engine, PerspectiveCamera worldPerspectiveCamera, WorldUiSystem worldUiSystem) {
+    private static void createPlayerSystem(World world,
+                                           Engine engine,
+                                           PerspectiveCamera worldPerspectiveCamera,
+                                           WorldUiSystem worldUiSystem) {
         PlayerSystem playerSystem = PlayerSystemFactory.create(
                 world, worldUiSystem, worldPerspectiveCamera);
         world.setPlayerSystem(playerSystem);

@@ -28,7 +28,6 @@ public class PlayerEntityFactory {
     public static Entity create(PhysicsSystem physicsSystem, float x, float y, float z) {
         Gdx.app.log("PlayerEntityFactory", format(Locale.US,"creating entity %s, %f, %f, %f",
                 physicsSystem.toString(), x, y, z));
-
         Entity entity = new Entity();
         attachComponents(entity, x, y, z);
         attachPhysicsSystem(physicsSystem, entity);
@@ -48,7 +47,6 @@ public class PlayerEntityFactory {
         Texture playerTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
         Material material = new Material(TextureAttribute.createDiffuse(playerTexture),
                 ColorAttribute.createSpecular(1, 1, 1, 1), FloatAttribute.createShininess(8f));
-
         Model playerModel=  modelBuilder.createCapsule(
                 2f, 6f, 16, material,
                 VertexAttributes.Usage.Position

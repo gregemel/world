@@ -144,7 +144,6 @@ public class CreatureEntityFactory {
                 characterComponent.getGhostObject(),
                 (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,
                 (short) (btBroadphaseProxy.CollisionFilterGroups.AllFilter));
-        collisionWorld.addAction(
-                characterComponent.getCharacterController());
+        collisionWorld.addAction(characterComponent.getCharacterController());
     }
 }

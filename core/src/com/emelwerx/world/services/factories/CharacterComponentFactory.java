@@ -25,8 +25,8 @@ public class CharacterComponentFactory {
     }
 
     private static void attachController(Entity entity, ModelComponent modelComponent, CharacterComponent characterComponent) {
-        btPairCachingGhostObject ghostObject = getBtPairCachingGhostObject(entity, modelComponent);
-        btCapsuleShape capsuleShape = getBtCapsuleShape(characterComponent, ghostObject);
+        btPairCachingGhostObject ghostObject = createBtPairCachingGhostObject(entity, modelComponent);
+        btCapsuleShape capsuleShape = createBtCapsuleShape(characterComponent, ghostObject);
         btKinematicCharacterController characterController = new btKinematicCharacterController(
                 ghostObject,
                 capsuleShape,
@@ -34,19 +34,19 @@ public class CharacterComponentFactory {
         characterComponent.setCharacterController(characterController);
     }
 
-    private static btCapsuleShape getBtCapsuleShape(CharacterComponent characterComponent, btPairCachingGhostObject ghostObject) {
-        btCapsuleShape capsuleShape = new btCapsuleShape(2f, 2f);
-        ghostObject.setCollisionShape(capsuleShape);
-        characterComponent.setGhostObject(ghostObject);
-        characterComponent.setGhostShape(capsuleShape);
-        return capsuleShape;
-    }
-
-    private static btPairCachingGhostObject getBtPairCachingGhostObject(Entity entity, ModelComponent modelComponent) {
+    private static btPairCachingGhostObject createBtPairCachingGhostObject(Entity entity, ModelComponent modelComponent) {
         btPairCachingGhostObject ghostObject = new btPairCachingGhostObject();
         ghostObject.userData = entity;
         ghostObject.setWorldTransform(modelComponent.getInstance().transform);
         ghostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
         return ghostObject;
+    }
+
+    private static btCapsuleShape createBtCapsuleShape(CharacterComponent characterComponent, btPairCachingGhostObject ghostObject) {
+        btCapsuleShape capsuleShape = new btCapsuleShape(2f, 2f);
+        ghostObject.setCollisionShape(capsuleShape);
+        characterComponent.setGhostObject(ghostObject);
+        characterComponent.setGhostShape(capsuleShape);
+        return capsuleShape;
     }
 }
