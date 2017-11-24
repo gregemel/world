@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.emelwerx.world.databags.components.AnimationComponent;
 import com.emelwerx.world.databags.components.CreatureComponent;
-import com.emelwerx.world.databags.components.PlayerComponent;
 import com.emelwerx.world.databags.systemstates.PhysicsSystemState;
 import com.emelwerx.world.databags.systemstates.PlayerSystemState;
 
@@ -25,7 +24,7 @@ public class Shooter {
     }
 
     private static ClosestRayResultCallback createRayTestCallback(PlayerSystemState playerSystemState) {
-        Ray ray = playerSystemState.getCamera().getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        Ray ray = playerSystemState.getWorldPerspectiveCamera().getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         Vector3 rayFrom = playerSystemState.getRayFrom();
         Vector3 rayTo = playerSystemState.getRayTo();
         ClosestRayResultCallback rayTestCB = getClosestRayResultCallback(playerSystemState, ray, rayFrom, rayTo);

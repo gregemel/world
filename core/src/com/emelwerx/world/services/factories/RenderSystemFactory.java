@@ -37,7 +37,7 @@ public class RenderSystemFactory {
                 WorldCore.VIRTUAL_HEIGHT);
         perspectiveCamera.far = 10000f;
         renderSystemState.setWorldPerspectiveCamera(perspectiveCamera);
-        world.setPerspectiveCamera(perspectiveCamera);
+        world.setWorldPerspectiveCamera(perspectiveCamera);
         return perspectiveCamera;
     }
 

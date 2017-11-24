@@ -22,7 +22,6 @@ public class CreatureUpdater {
             lastUpdated = 0f;
         } else {
             lastUpdated+=delta;
-            isLogging = false;
         }
 
         for(Entity creatureEntity: creatureSystemState.getCreatures()) {

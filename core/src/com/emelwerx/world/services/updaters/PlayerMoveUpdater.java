@@ -28,7 +28,7 @@ public class PlayerMoveUpdater {
     public static void update(float delta, PlayerSystemState playerSystemState) {
         CharacterComponent characterComponent = playerSystemState.getCharacterComponent();
         ModelComponent modelComponent = playerSystemState.getModelComponent();
-        Camera camera = playerSystemState.getCamera();
+        Camera camera = playerSystemState.getWorldPerspectiveCamera();
 
         updateCameraRotation(playerSystemState, camera);
         updatePlayerDirection(delta, playerSystemState, characterComponent, modelComponent, camera);
@@ -42,11 +42,11 @@ public class PlayerMoveUpdater {
             PlayerSystemState playerSystemState,
             CharacterComponent characterComponent,
             ModelComponent modelComponent,
-            Camera camera) {
+            Camera worldPerspectiveCamera) {
         characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
         Vector3 playerVector = playerSystemState.getTmp();
         playerVector.set(0, 0, 0);
-        Vector3 walkDirection = getWalkDirection(playerVector, camera, characterComponent);
+        Vector3 walkDirection = getWalkDirection(playerVector, worldPerspectiveCamera, characterComponent);
         walkDirection.add(playerVector);
         walkDirection.scl(10f * delta);
         characterComponent.getCharacterController().setWalkDirection(walkDirection);
@@ -54,7 +54,7 @@ public class PlayerMoveUpdater {
         log(delta, modelComponent);
     }
 
-    private static void updateCameraRotation(PlayerSystemState playerSystemState, Camera camera) {
+    private static void updateCameraRotation(PlayerSystemState playerSystemState, Camera worldPerspectiveCamera) {
         float deltaX;
         float deltaY;
 
@@ -69,9 +69,9 @@ public class PlayerMoveUpdater {
 
         Vector3 cameraRotation = playerSystemState.getTmp();
         cameraRotation.set(0, 0, 0);
-        camera.rotate(camera.up, deltaX);
-        cameraRotation.set(camera.direction).crs(camera.up).nor();
-        camera.direction.rotate(cameraRotation, deltaY);
+        worldPerspectiveCamera.rotate(worldPerspectiveCamera.up, deltaX);
+        cameraRotation.set(worldPerspectiveCamera.direction).crs(worldPerspectiveCamera.up).nor();
+        worldPerspectiveCamera.direction.rotate(cameraRotation, deltaY);
     }
 
     private static Vector3 getWalkDirection(Vector3 playerVector, Camera camera, CharacterComponent characterComponent) {
@@ -105,7 +105,7 @@ public class PlayerMoveUpdater {
             PlayerSystemState playerSystemState,
             CharacterComponent characterComponent,
             ModelComponent modelComponent,
-            Camera camera) {
+            Camera worldPerspectiveCamera) {
         Vector3 translation = playerSystemState.getTranslation();
         translation.set(0, 0, 0);
 
@@ -113,10 +113,10 @@ public class PlayerMoveUpdater {
 
         modelComponent.getInstance().transform.set(
                 translation.x, translation.y, translation.z,
-                camera.direction.x, camera.direction.y, camera.direction.z,
+                worldPerspectiveCamera.direction.x, worldPerspectiveCamera.direction.y, worldPerspectiveCamera.direction.z,
                 0);
-        camera.position.set(translation.x, translation.y, translation.z);
-        camera.update(true);
+        worldPerspectiveCamera.position.set(translation.x, translation.y, translation.z);
+        worldPerspectiveCamera.update(true);
 
         //this doesn't seem to do anything... -ge[201-11-21]
 //        playerSystemState.getSkyEntity().getComponent(ModelComponent.class).getInstance()

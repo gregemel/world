@@ -12,11 +12,11 @@ import com.emelwerx.world.systems.PlayerSystem;
 import static java.lang.String.format;
 
 public class PlayerSystemFactory {
-    public static PlayerSystem create(World world, WorldUiSystem worldUiSystem, Camera camera) {
-        Gdx.app.log("PlayerSystemFactory", format("creating player system %s, %s, %s", world.toString(), worldUiSystem.toString(), camera.toString()));
+    public static PlayerSystem create(World world, WorldUiSystem worldUiSystem, Camera worldPerspectiveCamera) {
+        Gdx.app.log("PlayerSystemFactory", format("creating player system %s, %s, %s", world.toString(), worldUiSystem.toString(), worldPerspectiveCamera.toString()));
 
         PlayerSystemState playerSystemState = new PlayerSystemState();
-        playerSystemState.setCamera(camera);
+        playerSystemState.setWorldPerspectiveCamera(worldPerspectiveCamera);
         playerSystemState.setWorld(world);
         playerSystemState.setWorldUiSystem(worldUiSystem);
         playerSystemState.setWeaponRayResultCallback(new ClosestRayResultCallback(Vector3.Zero, Vector3.Z));

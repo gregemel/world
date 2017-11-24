@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.emelwerx.world.databags.World;
-import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.components.CreatureComponent;
-import com.emelwerx.world.databags.systemstates.CreatureSystemState;
+import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.components.ParticleComponent;
 import com.emelwerx.world.services.factories.ParticleComponentFactory;
 
@@ -22,7 +21,10 @@ public class CreatureDyingUpdater {
         ModelComponent creatureModelComponent = creatureEntity.getComponent(ModelComponent.class);
         updateOpacity(delta, creatureModelComponent);
         updateParticles(creatureEntity, creatureModelComponent, world);
+        updateDeath(delta, creatureEntity, world);
+    }
 
+    private static void updateDeath(float delta, Entity creatureEntity, World world) {
         CreatureComponent creatureComponent = creatureEntity.getComponent(CreatureComponent.class);
         float timeSinceDeath = creatureComponent.getTimeSinceDeath() + delta;
         if (timeSinceDeath >= deathDuration) {

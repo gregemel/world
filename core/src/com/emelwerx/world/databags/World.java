@@ -18,16 +18,16 @@ public class World {
     private PhysicsSystem physicsSystem;
     private PlayerSystem playerSystem;
     private RenderSystem renderSystem;
-    private PerspectiveCamera perspectiveCamera;
+    private PerspectiveCamera worldPerspectiveCamera;
     private Scene currentScene;
     private String firstSceneName;
 
-    public PerspectiveCamera getPerspectiveCamera() {
-        return perspectiveCamera;
+    public PerspectiveCamera getWorldPerspectiveCamera() {
+        return worldPerspectiveCamera;
     }
 
-    public void setPerspectiveCamera(PerspectiveCamera perspectiveCamera) {
-        this.perspectiveCamera = perspectiveCamera;
+    public void setWorldPerspectiveCamera(PerspectiveCamera worldPerspectiveCamera) {
+        this.worldPerspectiveCamera = worldPerspectiveCamera;
     }
 
     public String getName() {

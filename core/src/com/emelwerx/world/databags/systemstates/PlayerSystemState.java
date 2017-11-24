@@ -14,7 +14,7 @@ import com.emelwerx.world.services.factories.AnimationComponentFactory;
 
 public class PlayerSystemState {
     private Vector3 tmp = new Vector3();
-    private Camera camera;
+    private Camera worldPerspectiveCamera;
     private Entity itemEntity;
     private Entity skyEntity;
     private Entity playerEntity;
@@ -47,12 +47,12 @@ public class PlayerSystemState {
         this.tmp = tmp;
     }
 
-    public Camera getCamera() {
-        return camera;
+    public Camera getWorldPerspectiveCamera() {
+        return worldPerspectiveCamera;
     }
 
-    public void setCamera(Camera camera) {
-        this.camera = camera;
+    public void setWorldPerspectiveCamera(Camera worldPerspectiveCamera) {
+        this.worldPerspectiveCamera = worldPerspectiveCamera;
     }
 
     public Entity getPlayerItemEntity() {

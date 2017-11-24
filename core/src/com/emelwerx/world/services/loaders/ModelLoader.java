@@ -24,13 +24,11 @@ public class ModelLoader {
 
     public static Model load(String name, float scalar) {
         Gdx.app.log("ModelLoader", format(Locale.US,"load %s, %f", name, scalar));
-
         Model model = load(name);
         for (Node node : model.nodes) {
             node.scale.scl(scalar);
         }
         model.calculateTransforms();
-
         return model;
     }
 
@@ -39,5 +37,4 @@ public class ModelLoader {
         G3dModelLoader modelLoader = new G3dModelLoader(new UBJsonReader());
         return modelLoader.loadModel(Gdx.files.getFileHandle("data/" + name, Files.FileType.Internal));
     }
-
 }
