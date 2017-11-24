@@ -9,7 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.emelwerx.world.databags.components.CharacterComponent;
-import com.emelwerx.world.databags.components.PhysicsComponent;
+import com.emelwerx.world.databags.components.SceneComponent;
 import com.emelwerx.world.databags.systemstates.PhysicsSystemState;
 
 import static java.lang.String.format;
@@ -29,7 +29,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
     @Override
     public void addedToEngine(Engine engine) {
         Gdx.app.log("PhysicsSystem", format("addedToEngine: %s", engine.toString()));
-        engine.addEntityListener(Family.all(PhysicsComponent.class).get(), this);
+        engine.addEntityListener(Family.all(SceneComponent.class).get(), this);
     }
 
     @Override
@@ -44,17 +44,16 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
     @Override
     public void entityAdded(Entity entity) {
         Gdx.app.log("PhysicsSystem", format("entity added: %s", entity.toString()));
-        PhysicsComponent physicsComponent = entity.getComponent(PhysicsComponent.class);
-
-        if (physicsComponent.getBody() != null) {
-            physicsSystemState.getCollisionWorld().addRigidBody((btRigidBody)physicsComponent.getBody());
+        SceneComponent sceneComponent = entity.getComponent(SceneComponent.class);
+        if (sceneComponent != null && sceneComponent.getBody() != null) {
+            physicsSystemState.getCollisionWorld().addRigidBody((btRigidBody) sceneComponent.getBody());
         }
     }
 
     public void removeBody(Entity entity) {
         Gdx.app.log("PhysicsSystem", format("entity removed: %s", entity.toString()));
         btDiscreteDynamicsWorld collisionWorld = physicsSystemState.getCollisionWorld();
-        removePhysicsComponent(entity, collisionWorld);
+        removeSceneComponent(entity, collisionWorld);
         removeCharacterComponent(entity, collisionWorld);
     }
 
@@ -66,10 +65,10 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
         }
     }
 
-    private void removePhysicsComponent(Entity entity, btDiscreteDynamicsWorld collisionWorld) {
-        PhysicsComponent physicsComponent = entity.getComponent(PhysicsComponent.class);
-        if (physicsComponent != null) {
-            collisionWorld.removeCollisionObject(physicsComponent.getBody());
+    private void removeSceneComponent(Entity entity, btDiscreteDynamicsWorld collisionWorld) {
+        SceneComponent sceneComponent = entity.getComponent(SceneComponent.class);
+        if (sceneComponent != null) {
+            collisionWorld.removeCollisionObject(sceneComponent.getBody());
         }
     }
 

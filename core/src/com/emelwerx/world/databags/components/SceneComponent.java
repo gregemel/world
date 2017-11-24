@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.physics.bullet.linearmath.btMotionState;
 
-public class PhysicsComponent extends Component{
+public class SceneComponent extends Component{
 
     private btMotionState motionState;
     private btCollisionObject body;

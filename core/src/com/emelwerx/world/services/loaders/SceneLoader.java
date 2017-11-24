@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.systemstates.MotionState;
-import com.emelwerx.world.databags.components.PhysicsComponent;
+import com.emelwerx.world.databags.components.SceneComponent;
 import com.emelwerx.world.databags.Scene;
 import com.emelwerx.world.databags.World;
 import com.emelwerx.world.services.factories.CreatureEntityFactory;
@@ -45,8 +45,13 @@ public class SceneLoader {
         JsonValue ground = jsonScene.get("ground");
         String groundModelFilename = ground.getString("modelFile");
 
-        Scene scene = new Scene();
+        return createScene(world, x, y, z, sceneName, jsonScene, skyModelFilename, groundModelFilename);
+    }
 
+    private static Scene createScene(World world, int x, int y, int z,
+                                    String sceneName, JsonValue jsonScene,
+                                    String skyModelFilename, String groundModelFilename) {
+        Scene scene = new Scene();
         scene.setName(sceneName);
         scene.setSky(loadSky(skyModelFilename, x, y, z));
         scene.setGround(loadGround(groundModelFilename, x, y, z));
@@ -56,7 +61,6 @@ public class SceneLoader {
         world.setCurrentScene(scene);
         attachToEntityEngine(world.getEntityEngine(), scene);
         world.getPlayerSystem().getPlayerSystemState().setSkyEntity(scene.getSky());
-
         return scene;
     }
 
@@ -104,36 +108,32 @@ public class SceneLoader {
 
     private static Entity loadGround(String name, int x, int y, int z) {
         Gdx.app.log("SceneLoader", format(Locale.US,"loadGround %s, %d, %d, %d", name, x, y, z));
-
-        Entity entity = new Entity();
-
-        ModelComponent modelComponent = getModelComponent(name, x, y, z);
-        entity.add(modelComponent);
-
-        PhysicsComponent physicsComponent = getPhysicsComponent(entity, modelComponent);
-        entity.add(physicsComponent);
-
-        return entity;
+        Entity groundEntity = new Entity();
+        ModelComponent modelComponent = attachModelComponent(name, x, y, z, groundEntity);
+        attachSceneComponent(groundEntity, modelComponent);
+        return groundEntity;
     }
 
-    private static ModelComponent getModelComponent(String name, int x, int y, int z) {
-        Model model = ModelLoader.load(name);
-        return ModelComponentFactory.create(model, x, y, z);
-    }
-
-    private static PhysicsComponent getPhysicsComponent(Entity entity, ModelComponent modelComponent) {
-        PhysicsComponent physicsComponent = new PhysicsComponent();
+    private static void attachSceneComponent(Entity groundEntity, ModelComponent modelComponent) {
+        SceneComponent sceneComponent = new SceneComponent();
 
         btCollisionShape shape = Bullet.obtainStaticNodeShape(modelComponent.getModel().nodes);
 
         btRigidBody.btRigidBodyConstructionInfo bodyInfo =
                 new btRigidBody.btRigidBodyConstructionInfo(0, null, shape, Vector3.Zero);
-        physicsComponent.setBodyInfo(bodyInfo);
-        physicsComponent.setBody(new btRigidBody(physicsComponent.getBodyInfo()));
-        physicsComponent.getBody().userData = entity;
-        physicsComponent.setMotionState(new MotionState(modelComponent.getInstance().transform));
+        sceneComponent.setBodyInfo(bodyInfo);
+        sceneComponent.setBody(new btRigidBody(sceneComponent.getBodyInfo()));
+        sceneComponent.getBody().userData = groundEntity;
+        sceneComponent.setMotionState(new MotionState(modelComponent.getInstance().transform));
 
-        ((btRigidBody) physicsComponent.getBody()).setMotionState(physicsComponent.getMotionState());
-        return physicsComponent;
+        ((btRigidBody) sceneComponent.getBody()).setMotionState(sceneComponent.getMotionState());
+        groundEntity.add(sceneComponent);
+    }
+
+    private static ModelComponent attachModelComponent(String name, int x, int y, int z, Entity groundEntity) {
+        Model model = ModelLoader.load(name);
+        ModelComponent modelComponent = ModelComponentFactory.create(model, x, y, z);
+        groundEntity.add(modelComponent);
+        return modelComponent;
     }
 }
