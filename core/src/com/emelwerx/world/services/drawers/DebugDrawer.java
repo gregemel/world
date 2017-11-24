@@ -2,9 +2,8 @@ package com.emelwerx.world.services.drawers;
 
 import com.emelwerx.world.databags.World;
 
-public class WorldDrawer {
+public class DebugDrawer {
     public static void draw(World world, float delta) {
-        world.getEntityEngine().update(delta);
         if (world.isDebug()) {
             world.getDebugDrawer().begin(world.getWorldPerspectiveCamera());
             world.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld().debugDrawWorld();

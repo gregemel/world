@@ -1,6 +1,5 @@
 package com.emelwerx.world.databags.systemstates;
 
-
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
@@ -20,8 +19,7 @@ public class CreatureSystemState {
     private Matrix4 ghost;
     private Vector3 translation;
     private Quaternion quaternion;
-
-    private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
+    private ComponentMapper<CharacterComponent> characterComponentMapper = ComponentMapper.getFor(CharacterComponent.class);
     private ComponentMapper<CreatureComponent> sm = ComponentMapper.getFor(CreatureComponent.class);
 
     public ImmutableArray<Entity> getCreatures() {
@@ -47,14 +45,6 @@ public class CreatureSystemState {
     public void setQuaternion(Quaternion quaternion) {
         this.quaternion = quaternion;
     }
-
-//    public Engine getEntityEngine() {
-//        return entityEngine;
-//    }
-//
-//    public void setEntityEngine(Engine entityEngine) {
-//        this.entityEngine = entityEngine;
-//    }
 
     public World getWorld() {
         return world;
@@ -97,12 +87,12 @@ public class CreatureSystemState {
     }
 
 
-    public ComponentMapper<CharacterComponent> getCm() {
-        return cm;
+    public ComponentMapper<CharacterComponent> getCharacterComponentMapper() {
+        return characterComponentMapper;
     }
 
-    public void setCm(ComponentMapper<CharacterComponent> cm) {
-        this.cm = cm;
+    public void setCharacterComponentMapper(ComponentMapper<CharacterComponent> characterComponentMapper) {
+        this.characterComponentMapper = characterComponentMapper;
     }
 
     public ComponentMapper<CreatureComponent> getSm() {

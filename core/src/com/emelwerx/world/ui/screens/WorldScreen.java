@@ -10,7 +10,7 @@ import com.emelwerx.world.databags.World;
 import com.emelwerx.world.services.Pauser;
 import com.emelwerx.world.services.Disposer;
 import com.emelwerx.world.services.loaders.WorldLoader;
-import com.emelwerx.world.services.drawers.WorldDrawer;
+import com.emelwerx.world.services.drawers.DebugDrawer;
 
 public class WorldScreen implements Screen {
     private WorldUiSystem worldUiSystem;
@@ -32,7 +32,8 @@ public class WorldScreen implements Screen {
     @Override
     public void render(float delta) {
         worldUiSystem.update(delta);
-        WorldDrawer.draw(world, delta);
+        world.getEntityEngine().update(delta);
+        DebugDrawer.draw(world, delta);
         Pauser.check(world);
         worldUiSystem.render();
     }

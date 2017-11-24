@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.emelwerx.world.databags.components.ModelComponent;
 
 import java.util.Locale;
@@ -18,6 +19,7 @@ public class ModelComponentFactory {
         Matrix4 matrix4 = new Matrix4();
         modelComponent.setMatrix4(matrix4);
         modelComponent.setModel(model);
+        modelComponent.setPosition(new Vector3(x, y, z));
         ModelInstance modelInstance = new ModelInstance(model, matrix4.setToTranslation(x, y, z));
         modelComponent.setInstance(modelInstance);
         return modelComponent;

@@ -14,29 +14,29 @@ import com.emelwerx.world.databags.systemstates.RenderSystemState;
 
 public class ShadowDrawer {
 
-    public static void draw(RenderSystemState renderSystemState, float delta) {
+    public static void draw(RenderSystemState renderSystemState) {
         DirectionalShadowLight shadowLight = renderSystemState.getShadowLight();
         shadowLight.begin(Vector3.Zero, renderSystemState.getWorldPerspectiveCamera().direction);
-        drawEntities(renderSystemState, delta, shadowLight);
+        drawEntities(renderSystemState, shadowLight);
         shadowLight.end();
     }
 
-    private static void drawEntities(RenderSystemState renderSystemState, float delta, DirectionalShadowLight shadowLight) {
+    private static void drawEntities(RenderSystemState renderSystemState, DirectionalShadowLight shadowLight) {
         ModelBatch modelBatch = renderSystemState.getBatch();
         modelBatch.begin(shadowLight.getCamera());
-        for(Entity entity : renderSystemState.getEntities()) {
-            renderEntityShadow(renderSystemState, modelBatch, entity);
-        }
+        renderEachEntity(renderSystemState, modelBatch);
         modelBatch.end();
     }
 
-    private static void renderEntityShadow(RenderSystemState renderSystemState, ModelBatch modelBatch, Entity entity) {
-        boolean isPlayerOrCreature = entity.getComponent(PlayerComponent.class) != null
-                || entity.getComponent(CreatureComponent.class) != null;
-        if (isPlayerOrCreature) {
-            ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
-            if (isVisible(renderSystemState, modelComponent.getInstance())) {
-                modelBatch.render(modelComponent.getInstance());
+    private static void renderEachEntity(RenderSystemState renderSystemState, ModelBatch modelBatch) {
+        for(Entity entity : renderSystemState.getEntities()) {
+            boolean isPlayerOrCreature = entity.getComponent(PlayerComponent.class) != null
+                    || entity.getComponent(CreatureComponent.class) != null;
+            if (isPlayerOrCreature) {
+                ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
+                if (isVisible(renderSystemState, modelComponent.getInstance())) {
+                    modelBatch.render(modelComponent.getInstance());
+                }
             }
         }
     }
