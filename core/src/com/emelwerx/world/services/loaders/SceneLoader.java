@@ -66,9 +66,8 @@ public class SceneLoader {
 
     private static void setPlayerStartLocation(JsonValue jsonScene, Scene scene) {
         JsonValue location = jsonScene.get("player").get("startLocation");
-        scene.getPlayerStartLocation().x = location.getFloat("x");
-        scene.getPlayerStartLocation().y = location.getFloat("y");
-        scene.getPlayerStartLocation().z = location.getFloat("z");
+        Vector3 vector3 = new Vector3(location.getFloat("x"), location.getFloat("y"), location.getFloat("z"));
+        scene.setPlayerStartLocation(vector3);
     }
 
     private static void loadCreatures(World world, JsonValue value) {

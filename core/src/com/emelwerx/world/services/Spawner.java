@@ -12,7 +12,6 @@ public class Spawner {
     public static void update(CreatureSystemState creatureSystemState) {
         World world = creatureSystemState.getWorld();
         if (getCurrentCreatureCount(creatureSystemState) < getMaxSpawnCount(world)) {
-            Gdx.app.log("Spawner", "spawning creature...");
             spawnCreature(world);
         }
     }
@@ -22,15 +21,12 @@ public class Spawner {
     }
 
     private static int getCurrentCreatureCount(CreatureSystemState creatureSystemState) {
-        return creatureSystemState.getCreatures()
-                .size();
+        return creatureSystemState.getCreatures().size();
     }
 
     private static void spawnCreature(World world) {
-
         Entity creatureEntity = CreatureEntityFactory.create("monster.g3dj", world);
         world.getEntityEngine().addEntity(creatureEntity);
-
         Gdx.app.log("Spawner", format("spawned: %s", creatureEntity.toString()));
     }
 }

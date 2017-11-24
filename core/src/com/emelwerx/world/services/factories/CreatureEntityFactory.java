@@ -51,28 +51,49 @@ public class CreatureEntityFactory {
                 "creating creature %s, %s", name, world.toString()));
 
         Entity entity = new Entity();
-        attachComponents(name, world, x, y, z, entity);
+        attachComponents(entity, world, name, x, y, z);
         return entity;
     }
 
-    private static void attachComponents(String name, World world, float x, float y, float z, Entity entity) {
+    private static void attachComponents(Entity entity, World world, String name, float x, float y, float z) {
+        ModelComponent modelComponent = createModelComponent(entity, name, x, y, z);
+        attachCaracterComponent(entity, modelComponent);
+        attachPhysicsSystem(world, entity);
+        AnimationComponent animationComponent = createAnimationComponent(entity, modelComponent);
+        attachCreatureComponent(entity, animationComponent);
+        attachParticleComponent(world, entity);
+    }
+
+    private static ModelComponent createModelComponent(Entity entity, String name, float x, float y, float z) {
         ModelComponent modelComponent = getModelComponent(name, x, y, z);
         entity.add(modelComponent);
+        return modelComponent;
+    }
 
-        CharacterComponent characterComponent = CharacterComponentFactory.create(entity, modelComponent);
-        entity.add(characterComponent);
-
-        PhysicsSystem physicsSystem = world.getPhysicsSystem();
-        setPhysics(physicsSystem, entity);
-
-        AnimationComponent animationComponent = getAnimationComponent(modelComponent);
-        entity.add(animationComponent);
-
-        CreatureComponent creatureComponent = CreatureComponentFactory.create(animationComponent);
-        entity.add(creatureComponent);
-
+    private static void attachParticleComponent(World world, Entity entity) {
         ParticleComponent particleComponent = getParticleComponent(world);
         entity.add(particleComponent);
+    }
+
+    private static void attachCreatureComponent(Entity entity, AnimationComponent animationComponent) {
+        CreatureComponent creatureComponent = CreatureComponentFactory.create(animationComponent);
+        entity.add(creatureComponent);
+    }
+
+    private static AnimationComponent createAnimationComponent(Entity entity, ModelComponent modelComponent) {
+        AnimationComponent animationComponent = getAnimationComponent(modelComponent);
+        entity.add(animationComponent);
+        return animationComponent;
+    }
+
+    private static void attachPhysicsSystem(World world, Entity entity) {
+        PhysicsSystem physicsSystem = world.getPhysicsSystem();
+        setPhysics(physicsSystem, entity);
+    }
+
+    private static void attachCaracterComponent(Entity entity, ModelComponent modelComponent) {
+        CharacterComponent characterComponent = CharacterComponentFactory.create(entity, modelComponent);
+        entity.add(characterComponent);
     }
 
     private static ModelComponent getModelComponent(String name, float x, float y, float z) {

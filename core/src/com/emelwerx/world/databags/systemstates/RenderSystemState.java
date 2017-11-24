@@ -22,7 +22,6 @@ public class RenderSystemState {
     private DirectionalShadowLight shadowLight;
     private Entity playerItem;
     private Vector3 position;
-    private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
     private PerspectiveCamera worldPerspectiveCamera;
     private PerspectiveCamera playerItemCamera;
     private ParticleSystem particleSystem;
@@ -86,14 +85,6 @@ public class RenderSystemState {
 
     public void setPosition(Vector3 position) {
         this.position = position;
-    }
-
-    public AnimationComponentFactory getAnimationComponentFactory() {
-        return animationComponentFactory;
-    }
-
-    public void setAnimationComponentFactory(AnimationComponentFactory animationComponentFactory) {
-        this.animationComponentFactory = animationComponentFactory;
     }
 
     public PerspectiveCamera getWorldPerspectiveCamera() {

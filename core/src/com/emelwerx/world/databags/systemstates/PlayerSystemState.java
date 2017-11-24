@@ -25,7 +25,7 @@ public class PlayerSystemState {
     private World world;
     private Vector3 rayFrom = new Vector3();
     private Vector3 rayTo = new Vector3();
-    private ClosestRayResultCallback rayTestCB;
+    private ClosestRayResultCallback weaponRayResultCallback;
     private Vector3 translation = new Vector3();
     private Matrix4 ghost = new Matrix4();
     private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
@@ -135,12 +135,12 @@ public class PlayerSystemState {
         this.rayTo = rayTo;
     }
 
-    public ClosestRayResultCallback getRayTestCB() {
-        return rayTestCB;
+    public ClosestRayResultCallback getWeaponRayResultCallback() {
+        return weaponRayResultCallback;
     }
 
-    public void setRayTestCB(ClosestRayResultCallback rayTestCB) {
-        this.rayTestCB = rayTestCB;
+    public void setWeaponRayResultCallback(ClosestRayResultCallback weaponRayResultCallback) {
+        this.weaponRayResultCallback = weaponRayResultCallback;
     }
 
     public Vector3 getTranslation() {

@@ -19,7 +19,7 @@ public class PlayerSystemFactory {
         playerSystemState.setCamera(camera);
         playerSystemState.setWorld(world);
         playerSystemState.setWorldUiSystem(worldUiSystem);
-        playerSystemState.setRayTestCB(new ClosestRayResultCallback(Vector3.Zero, Vector3.Z));
+        playerSystemState.setWeaponRayResultCallback(new ClosestRayResultCallback(Vector3.Zero, Vector3.Z));
 
         return new PlayerSystem(playerSystemState);
     }
