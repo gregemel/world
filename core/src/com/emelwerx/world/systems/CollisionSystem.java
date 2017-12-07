@@ -34,7 +34,7 @@ public class CollisionSystem extends ContactListener {
                 && playerComponent != null;
 
         if(isTransitionToPlayerAndCreatureCollision) {
-            Damager.playerCreatureCollide(playerComponent, creatureComponent);
+            Damager.collideWithCreature(playerComponent, creatureComponent);
         } else {
             collideOther(playerComponent, creatureComponent);
         }

@@ -53,7 +53,7 @@ public class Shooter {
             Entity entity = (Entity)obj.userData;
             CreatureComponent creatureComponent = entity.getComponent(CreatureComponent.class);
             if (creatureComponent != null) {
-                Damager.playerShotCreature(creatureComponent);
+                Damager.shootCreature(creatureComponent);
             } else {
                 playerShotEntity(entity);
             }
