@@ -34,16 +34,16 @@ public class RenderSystem extends EntitySystem {
     }
 
     public void update(float delta) {
-        ShadowDrawer.draw(renderSystemState, delta);
-        ModelDrawer.drawEntities(renderSystemState);
+        ShadowDrawer.draw(renderSystemState);
+        ModelDrawer.drawEntities(renderSystemState, delta);
         ParticleDrawer.draw(renderSystemState);
-        PlayerItemDrawer.draw(renderSystemState);
+        PlayerItemDrawer.draw(renderSystemState, delta);
     }
 
     public void resize(int width, int height) {
         Gdx.app.log("RenderSystem", String.format(Locale.US,"resizing (%d, %d)", width, height));
-        renderSystemState.getPerspectiveCamera().viewportHeight = height;
-        renderSystemState.getPerspectiveCamera().viewportWidth = width;
+        renderSystemState.getWorldPerspectiveCamera().viewportHeight = height;
+        renderSystemState.getWorldPerspectiveCamera().viewportWidth = width;
         renderSystemState.getPlayerItemCamera().viewportHeight = height;
         renderSystemState.getPlayerItemCamera().viewportWidth = width;
     }

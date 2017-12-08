@@ -1,8 +1,6 @@
 package com.emelwerx.world.databags.systemstates;
 
-
 import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Matrix4;
@@ -12,27 +10,16 @@ import com.emelwerx.world.databags.World;
 import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.CreatureComponent;
 
-import java.util.Random;
-
 public class CreatureSystemState {
     private ImmutableArray<Entity> creatures;
     private Entity player;
-    private World gameWorld;
-
-    private Engine entityEngine;
-
-    //this should come from the character component
-    private Vector3 playerPosition = new Vector3();
-
-    //this should come from the character component
-    private Vector3 currentCreaturePosition = new Vector3();
-
-    private Matrix4 ghost = new Matrix4();
-    private Vector3 translation = new Vector3();
-    private Quaternion quaternion = new Quaternion();
-    private Random random = new Random();
-
-    private ComponentMapper<CharacterComponent> cm = ComponentMapper.getFor(CharacterComponent.class);
+    private World world;
+    private Vector3 playerPosition;
+    private Vector3 currentCreaturePosition;
+    private Matrix4 ghost;
+    private Vector3 translation;
+    private Quaternion quaternion;
+    private ComponentMapper<CharacterComponent> characterComponentMapper = ComponentMapper.getFor(CharacterComponent.class);
     private ComponentMapper<CreatureComponent> sm = ComponentMapper.getFor(CreatureComponent.class);
 
     public ImmutableArray<Entity> getCreatures() {
@@ -59,20 +46,12 @@ public class CreatureSystemState {
         this.quaternion = quaternion;
     }
 
-    public Engine getEntityEngine() {
-        return entityEngine;
+    public World getWorld() {
+        return world;
     }
 
-    public void setEntityEngine(Engine entityEngine) {
-        this.entityEngine = entityEngine;
-    }
-
-    public World getGameWorld() {
-        return gameWorld;
-    }
-
-    public void setGameWorld(World gameWorld) {
-        this.gameWorld = gameWorld;
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public Vector3 getPlayerPosition() {
@@ -108,12 +87,12 @@ public class CreatureSystemState {
     }
 
 
-    public ComponentMapper<CharacterComponent> getCm() {
-        return cm;
+    public ComponentMapper<CharacterComponent> getCharacterComponentMapper() {
+        return characterComponentMapper;
     }
 
-    public void setCm(ComponentMapper<CharacterComponent> cm) {
-        this.cm = cm;
+    public void setCharacterComponentMapper(ComponentMapper<CharacterComponent> characterComponentMapper) {
+        this.characterComponentMapper = characterComponentMapper;
     }
 
     public ComponentMapper<CreatureComponent> getSm() {

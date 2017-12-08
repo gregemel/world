@@ -4,18 +4,20 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.emelwerx.world.ui.screens.MainMenuScreen;
+import com.emelwerx.world.services.ui.screens.MainMenuScreen;
 import com.emelwerx.world.services.Assets;
 import com.emelwerx.world.services.Settings;
 
-public class WorldCore extends ApplicationAdapter {
+import static java.lang.String.format;
+
+public class WorldAdapter extends ApplicationAdapter {
     public static final float VIRTUAL_WIDTH = 960;
     public static final float VIRTUAL_HEIGHT = 540;
     private Screen screen;
 
     @Override
     public void create() {
-        Gdx.app.log("WorldCore", "create");
+        Gdx.app.log("WorldAdapter", "create");
         Assets.init();
         Settings.load();
         Gdx.input.setCatchBackKey(true);
@@ -32,11 +34,12 @@ public class WorldCore extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.log("WorldCore", "resize");
+        Gdx.app.log("WorldAdapter", "resize");
         screen.resize(width, height);
     }
 
     public void setScreen(Screen screen) {
+        Gdx.app.log("WorldAdapter", format("setScreen(%s)", screen.toString()));
         if (this.screen != null) {
             this.screen.hide();
             this.screen.dispose();
@@ -50,7 +53,7 @@ public class WorldCore extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-        Gdx.app.log("WorldCore", "dispose");
+        Gdx.app.log("WorldAdapter", "dispose");
         Settings.save();
         Assets.dispose();
     }

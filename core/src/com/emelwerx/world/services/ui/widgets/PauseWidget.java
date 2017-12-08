@@ -1,4 +1,4 @@
-package com.emelwerx.world.ui.widgets;
+package com.emelwerx.world.services.ui.widgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,18 +9,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.emelwerx.world.WorldAdapter;
 import com.emelwerx.world.services.Assets;
-import com.emelwerx.world.WorldCore;
 import com.emelwerx.world.services.Settings;
-import com.emelwerx.world.ui.screens.WorldScreen;
+import com.emelwerx.world.services.ui.screens.WorldScreen;
 
 public class PauseWidget extends Actor {
-    private WorldCore game;
+    private WorldAdapter game;
     private Window window;
     private TextButton closeDialog, restartButton, quitButton;
     private Stage stage;
 
-    public PauseWidget(WorldCore game, Stage stage) {
+    public PauseWidget(WorldAdapter game, Stage stage) {
         this.game = game;
         this.stage = stage;
         setWidgets();
@@ -87,7 +87,7 @@ public class PauseWidget extends Actor {
     @Override
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
-        window.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - window.getWidth() / 2, WorldCore.VIRTUAL_HEIGHT / 2 - window.getHeight() / 2);
+        window.setPosition(WorldAdapter.VIRTUAL_WIDTH / 2 - window.getWidth() / 2, WorldAdapter.VIRTUAL_HEIGHT / 2 - window.getHeight() / 2);
     }
 
     @Override

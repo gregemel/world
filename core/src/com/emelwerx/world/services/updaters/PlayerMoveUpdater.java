@@ -6,8 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.emelwerx.world.services.GunShooter;
-import com.emelwerx.world.ui.widgets.ControllerWidget;
+import com.emelwerx.world.services.Shooter;
+import com.emelwerx.world.services.ui.widgets.ControllerWidget;
 import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.systemstates.PlayerSystemState;
@@ -28,7 +28,7 @@ public class PlayerMoveUpdater {
     public static void update(float delta, PlayerSystemState playerSystemState) {
         CharacterComponent characterComponent = playerSystemState.getCharacterComponent();
         ModelComponent modelComponent = playerSystemState.getModelComponent();
-        Camera camera = playerSystemState.getCamera();
+        Camera camera = playerSystemState.getWorldPerspectiveCamera();
 
         updateCameraRotation(playerSystemState, camera);
         updatePlayerDirection(delta, playerSystemState, characterComponent, modelComponent, camera);
@@ -37,31 +37,24 @@ public class PlayerMoveUpdater {
         checkJump(playerSystemState, characterComponent);
     }
 
-    private static void updatePlayerDirection(float delta, PlayerSystemState playerSystemState, CharacterComponent characterComponent, ModelComponent modelComponent, Camera camera) {
+    private static void updatePlayerDirection(
+            float delta,
+            PlayerSystemState playerSystemState,
+            CharacterComponent characterComponent,
+            ModelComponent modelComponent,
+            Camera worldPerspectiveCamera) {
         characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
         Vector3 playerVector = playerSystemState.getTmp();
         playerVector.set(0, 0, 0);
-        Vector3 walkDirection = getWalkDirection(playerVector, camera, characterComponent);
+        Vector3 walkDirection = getWalkDirection(playerVector, worldPerspectiveCamera, characterComponent);
         walkDirection.add(playerVector);
         walkDirection.scl(10f * delta);
         characterComponent.getCharacterController().setWalkDirection(walkDirection);
 
-        lastLog+=delta;
-        if(lastLog>5f) {
-            lastLog=0f;
-
-//            Gdx.app.log("PlayerMoveUpdater", format("walkDirection(%s), playerVector(%s)",
-//                    walkDirection.toString(), playerVector.toString()));
-
-            Matrix4 matrix4 = modelComponent.getInstance().transform;
-
-            Gdx.app.log("**player location**", format(Locale.US,"(%f, %f, %f)",
-                    matrix4.getValues()[12], matrix4.getValues()[13], matrix4.getValues()[14]));
-
-        }
+        log(delta, modelComponent);
     }
 
-    private static void updateCameraRotation(PlayerSystemState playerSystemState, Camera camera) {
+    private static void updateCameraRotation(PlayerSystemState playerSystemState, Camera worldPerspectiveCamera) {
         float deltaX;
         float deltaY;
 
@@ -76,9 +69,9 @@ public class PlayerMoveUpdater {
 
         Vector3 cameraRotation = playerSystemState.getTmp();
         cameraRotation.set(0, 0, 0);
-        camera.rotate(camera.up, deltaX);
-        cameraRotation.set(camera.direction).crs(camera.up).nor();
-        camera.direction.rotate(cameraRotation, deltaY);
+        worldPerspectiveCamera.rotate(worldPerspectiveCamera.up, deltaX);
+        cameraRotation.set(worldPerspectiveCamera.direction).crs(worldPerspectiveCamera.up).nor();
+        worldPerspectiveCamera.direction.rotate(cameraRotation, deltaY);
     }
 
     private static Vector3 getWalkDirection(Vector3 playerVector, Camera camera, CharacterComponent characterComponent) {
@@ -112,7 +105,7 @@ public class PlayerMoveUpdater {
             PlayerSystemState playerSystemState,
             CharacterComponent characterComponent,
             ModelComponent modelComponent,
-            Camera camera) {
+            Camera worldPerspectiveCamera) {
         Vector3 translation = playerSystemState.getTranslation();
         translation.set(0, 0, 0);
 
@@ -120,17 +113,18 @@ public class PlayerMoveUpdater {
 
         modelComponent.getInstance().transform.set(
                 translation.x, translation.y, translation.z,
-                camera.direction.x, camera.direction.y, camera.direction.z,
+                worldPerspectiveCamera.direction.x, worldPerspectiveCamera.direction.y, worldPerspectiveCamera.direction.z,
                 0);
-        camera.position.set(translation.x, translation.y, translation.z);
-        camera.update(true);
+        worldPerspectiveCamera.position.set(translation.x, translation.y, translation.z);
+        worldPerspectiveCamera.update(true);
 
         //this doesn't seem to do anything... -ge[201-11-21]
 //        playerSystemState.getSkyEntity().getComponent(ModelComponent.class).getInstance()
 //                .transform.setToTranslation(translation.x, translation.y, translation.z);
     }
 
-    private static void setPlayerGhostTranslation(PlayerSystemState playerSystemState, CharacterComponent characterComponent, Vector3 translation) {
+    private static void setPlayerGhostTranslation(
+            PlayerSystemState playerSystemState, CharacterComponent characterComponent, Vector3 translation) {
         Matrix4 ghost = playerSystemState.getGhost();
         ghost.set(0, 0, 0, 0);
         characterComponent.getGhostObject().getWorldTransform(ghost);
@@ -139,7 +133,7 @@ public class PlayerMoveUpdater {
 
     private static void checkAttack(PlayerSystemState playerSystemState) {
         if (Gdx.input.justTouched()) {
-            GunShooter.fire(playerSystemState);
+            Shooter.fire(playerSystemState);
         }
     }
 
@@ -147,6 +141,16 @@ public class PlayerMoveUpdater {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             characterComponent.getCharacterController().setJumpSpeed(playerSystemState.getJumpForce());
             characterComponent.getCharacterController().jump();
+        }
+    }
+
+    private static void log(float delta, ModelComponent modelComponent) {
+        lastLog+=delta;
+        if(lastLog>5f) {
+            lastLog=0f;
+            Matrix4 matrix4 = modelComponent.getInstance().transform;
+            Gdx.app.log("**player location**", format(Locale.US,"(%f, %f, %f)",
+                    matrix4.getValues()[12], matrix4.getValues()[13], matrix4.getValues()[14]));
         }
     }
 }

@@ -10,10 +10,8 @@ public class CharacterComponent extends Component {
     private btPairCachingGhostObject ghostObject;
     private btConvexShape ghostShape;
     private btKinematicCharacterController characterController;
-
-    //todo: should also put character location here
-    private Vector3 characterDirection = new Vector3();
-    private Vector3 walkDirection = new Vector3();
+    private Vector3 characterDirection;
+    private Vector3 walkDirection;
 
     public btPairCachingGhostObject getGhostObject() {
         return ghostObject;

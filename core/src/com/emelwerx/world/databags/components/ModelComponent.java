@@ -5,12 +5,22 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 
 public class ModelComponent extends Component {
     private Model model;
     private ModelInstance instance;
+    private Vector3 position;
     private Matrix4 matrix4;
     private BlendingAttribute blendingAttribute;
+
+    public Vector3 getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector3 position) {
+        this.position = position;
+    }
 
     public Model getModel() {
         return model;

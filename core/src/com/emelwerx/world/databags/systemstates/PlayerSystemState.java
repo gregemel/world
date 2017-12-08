@@ -9,23 +9,23 @@ import com.emelwerx.world.databags.World;
 import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.components.PlayerComponent;
-import com.emelwerx.world.systems.WorldUiSystem;
+import com.emelwerx.world.systems.UserInterfaceSystem;
 import com.emelwerx.world.services.factories.AnimationComponentFactory;
 
 public class PlayerSystemState {
     private Vector3 tmp = new Vector3();
-    private Camera camera;
+    private Camera worldPerspectiveCamera;
     private Entity itemEntity;
     private Entity skyEntity;
     private Entity playerEntity;
     private PlayerComponent playerComponent;
     private CharacterComponent characterComponent;
     private ModelComponent modelComponent;
-    private WorldUiSystem worldUiSystem;
-    private World gameWorld;
+    private UserInterfaceSystem userInterfaceSystem;
+    private World world;
     private Vector3 rayFrom = new Vector3();
     private Vector3 rayTo = new Vector3();
-    private ClosestRayResultCallback rayTestCB;
+    private ClosestRayResultCallback weaponRayResultCallback;
     private Vector3 translation = new Vector3();
     private Matrix4 ghost = new Matrix4();
     private AnimationComponentFactory animationComponentFactory = new AnimationComponentFactory();
@@ -47,12 +47,12 @@ public class PlayerSystemState {
         this.tmp = tmp;
     }
 
-    public Camera getCamera() {
-        return camera;
+    public Camera getWorldPerspectiveCamera() {
+        return worldPerspectiveCamera;
     }
 
-    public void setCamera(Camera camera) {
-        this.camera = camera;
+    public void setWorldPerspectiveCamera(Camera worldPerspectiveCamera) {
+        this.worldPerspectiveCamera = worldPerspectiveCamera;
     }
 
     public Entity getPlayerItemEntity() {
@@ -103,20 +103,20 @@ public class PlayerSystemState {
         this.modelComponent = modelComponent;
     }
 
-    public WorldUiSystem getWorldUiSystem() {
-        return worldUiSystem;
+    public UserInterfaceSystem getUserInterfaceSystem() {
+        return userInterfaceSystem;
     }
 
-    public void setWorldUiSystem(WorldUiSystem worldUiSystem) {
-        this.worldUiSystem = worldUiSystem;
+    public void setUserInterfaceSystem(UserInterfaceSystem userInterfaceSystem) {
+        this.userInterfaceSystem = userInterfaceSystem;
     }
 
-    public World getGameWorld() {
-        return gameWorld;
+    public World getWorld() {
+        return world;
     }
 
-    public void setGameWorld(World gameWorld) {
-        this.gameWorld = gameWorld;
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public Vector3 getRayFrom() {
@@ -135,12 +135,12 @@ public class PlayerSystemState {
         this.rayTo = rayTo;
     }
 
-    public ClosestRayResultCallback getRayTestCB() {
-        return rayTestCB;
+    public ClosestRayResultCallback getWeaponRayResultCallback() {
+        return weaponRayResultCallback;
     }
 
-    public void setRayTestCB(ClosestRayResultCallback rayTestCB) {
-        this.rayTestCB = rayTestCB;
+    public void setWeaponRayResultCallback(ClosestRayResultCallback weaponRayResultCallback) {
+        this.weaponRayResultCallback = weaponRayResultCallback;
     }
 
     public Vector3 getTranslation() {

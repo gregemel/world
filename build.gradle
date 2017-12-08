@@ -14,9 +14,9 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '1.0'
+    version = '0.1'
     ext {
-        appName = 'Space Gladiators'
+        appName = 'emelWerx World'
         gdxVersion = '1.6.4'
         roboVMVersion = '1.5.0'
         box2DLightsVersion = '1.4'
@@ -81,6 +81,6 @@ project(":core") {
     }
 }
 
-tasks.eclipse.doLast {
-    delete ".project"
-}
+//tasks.eclipse.doLast {
+//    delete ".project"
+//}

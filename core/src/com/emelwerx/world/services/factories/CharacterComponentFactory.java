@@ -2,6 +2,7 @@ package com.emelwerx.world.services.factories;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.btCapsuleShape;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.badlogic.gdx.physics.bullet.collision.btPairCachingGhostObject;
@@ -17,24 +18,35 @@ public class CharacterComponentFactory {
                 entity.toString(), modelComponent.toString()));
 
         CharacterComponent characterComponent = new CharacterComponent();
+        attachController(entity, modelComponent, characterComponent);
+        characterComponent.setWalkDirection(new Vector3());
+        characterComponent.setCharacterDirection(new Vector3());
+        return characterComponent;
+    }
 
-        btPairCachingGhostObject ghostObject = new btPairCachingGhostObject();
-        characterComponent.setGhostObject(ghostObject);
-        ghostObject.setWorldTransform(modelComponent.getInstance().transform);
-
-        btCapsuleShape capsuleShape = new btCapsuleShape(2f, 2f);
-        characterComponent.setGhostShape(capsuleShape);
-        ghostObject.setCollisionShape(capsuleShape);
-        ghostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
-
+    private static void attachController(Entity entity, ModelComponent modelComponent, CharacterComponent characterComponent) {
+        btPairCachingGhostObject ghostObject = createBtPairCachingGhostObject(entity, modelComponent);
+        btCapsuleShape capsuleShape = createBtCapsuleShape(characterComponent, ghostObject);
         btKinematicCharacterController characterController = new btKinematicCharacterController(
                 ghostObject,
                 capsuleShape,
                 .35f);
         characterComponent.setCharacterController(characterController);
-
-        ghostObject.userData = entity;
-        return characterComponent;
     }
 
+    private static btPairCachingGhostObject createBtPairCachingGhostObject(Entity entity, ModelComponent modelComponent) {
+        btPairCachingGhostObject ghostObject = new btPairCachingGhostObject();
+        ghostObject.userData = entity;
+        ghostObject.setWorldTransform(modelComponent.getInstance().transform);
+        ghostObject.setCollisionFlags(btCollisionObject.CollisionFlags.CF_CHARACTER_OBJECT);
+        return ghostObject;
+    }
+
+    private static btCapsuleShape createBtCapsuleShape(CharacterComponent characterComponent, btPairCachingGhostObject ghostObject) {
+        btCapsuleShape capsuleShape = new btCapsuleShape(2f, 2f);
+        ghostObject.setCollisionShape(capsuleShape);
+        characterComponent.setGhostObject(ghostObject);
+        characterComponent.setGhostShape(capsuleShape);
+        return capsuleShape;
+    }
 }

@@ -11,22 +11,12 @@ import com.emelwerx.world.systems.CollisionSystem;
 public class PhysicsSystemState {
     private static final int maxSubSteps = 5;
     private static final float fixedTimeStep = 1f / 60f;
-
     private btCollisionConfiguration collisionConfiguration;
     private btCollisionDispatcher dispatcher;
-    private CollisionSystem collisionListener;
     private btBroadphaseInterface broadphaseInterface;
     private btConstraintSolver solver;
     private btDiscreteDynamicsWorld collisionWorld;
     private btGhostPairCallback ghostPairCallback;
-
-    public CollisionSystem getCollisionListener() {
-        return collisionListener;
-    }
-
-    public void setCollisionListener(CollisionSystem collisionListener) {
-        this.collisionListener = collisionListener;
-    }
 
     public btCollisionConfiguration getCollisionConfiguration() {
         return collisionConfiguration;

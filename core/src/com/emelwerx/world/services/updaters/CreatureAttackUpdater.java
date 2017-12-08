@@ -28,17 +28,17 @@ public class CreatureAttackUpdater {
     }
 
     private static Quaternion getRotationToFaceTarget(float delta,
-                                                    ModelComponent target,
+                                                    ModelComponent targetModelComponent,
                                                     Entity entity,
-                                                    ModelComponent creatureModelComponent,
+                                                    ModelComponent hunterModelComponent,
                                                     CreatureSystemState creatureSystemState) {
 
-        float theta = getTheta(target, creatureModelComponent, creatureSystemState);
+        float theta = getTheta(targetModelComponent, hunterModelComponent);
 
         Quaternion rot = creatureSystemState.getQuaternion().setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
 
-        CharacterComponent characterComponent = creatureSystemState.getCm().get(entity);
-        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(creatureModelComponent.getInstance().transform);
+        CharacterComponent characterComponent = creatureSystemState.getCharacterComponentMapper().get(entity);
+        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(hunterModelComponent.getInstance().transform);
 
         Vector3 walkDirection = getWalkDirection(delta, characterComponent);
         characterComponent.getCharacterController().setWalkDirection(walkDirection);
@@ -54,16 +54,15 @@ public class CreatureAttackUpdater {
     }
 
     private static float getTheta(ModelComponent target,
-                                  ModelComponent creatureModelComponent,
-                                  CreatureSystemState creatureSystemState) {
-        Vector3 targetPosition = creatureSystemState.getPlayerPosition();
+                                  ModelComponent hunter) {
+        Vector3 targetPosition = target.getPosition();
         target.getInstance().transform.getTranslation(targetPosition);
 
-        Vector3 creaturePosition = creatureSystemState.getCurrentCreaturePosition();
-        creatureModelComponent.getInstance().transform.getTranslation(creaturePosition);
+        Vector3 hunterPosition = hunter.getPosition();
+        hunter.getInstance().transform.getTranslation(hunterPosition);
 
-        float dX = targetPosition.x - creaturePosition.x;
-        float dZ = targetPosition.z - creaturePosition.z;
+        float dX = targetPosition.x - hunterPosition.x;
+        float dZ = targetPosition.z - hunterPosition.z;
         return (float) (Math.atan2(dX, dZ));
     }
 

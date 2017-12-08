@@ -9,16 +9,14 @@ public class Scene {
     private Entity sky;
     private Entity ground;
     private int maxSpawnCount;
-    private Vector3 playerStartLocation = new Vector3();
+    private Vector3 playerStartLocation;
 
     public Vector3 getPlayerStartLocation() {
         return playerStartLocation;
     }
 
     public void setPlayerStartLocation(Vector3 playerStartLocation) {
-        this.playerStartLocation.x = playerStartLocation.x;
-        this.playerStartLocation.y = playerStartLocation.y;
-        this.playerStartLocation.z = playerStartLocation.z;
+        this.playerStartLocation = playerStartLocation;
     }
 
     //create spawn spots
