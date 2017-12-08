@@ -6,98 +6,98 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.emelwerx.world.WorldCore;
-import com.emelwerx.world.databags.systemstates.WorldUiSystemState;
+import com.emelwerx.world.WorldAdapter;
+import com.emelwerx.world.databags.systemstates.UserInterfaceSystemState;
 import com.emelwerx.world.services.Assets;
-import com.emelwerx.world.systems.WorldUiSystem;
-import com.emelwerx.world.ui.widgets.ControllerWidget;
-import com.emelwerx.world.ui.widgets.CrosshairWidget;
-import com.emelwerx.world.ui.widgets.GameOverWidget;
-import com.emelwerx.world.ui.widgets.HealthWidget;
-import com.emelwerx.world.ui.widgets.PauseWidget;
-import com.emelwerx.world.ui.widgets.ScoreWidget;
+import com.emelwerx.world.systems.UserInterfaceSystem;
+import com.emelwerx.world.services.ui.widgets.ControllerWidget;
+import com.emelwerx.world.services.ui.widgets.CrosshairWidget;
+import com.emelwerx.world.services.ui.widgets.GameOverWidget;
+import com.emelwerx.world.services.ui.widgets.HealthWidget;
+import com.emelwerx.world.services.ui.widgets.PauseWidget;
+import com.emelwerx.world.services.ui.widgets.ScoreWidget;
 
 public class WorldUiSystemFactory {
-    public static WorldUiSystem create(WorldCore worldCore) {
-        WorldUiSystemState worldUiSystemState = createWorldUiSystemState(worldCore);
-        attachStage(worldUiSystemState);
-        createWidgets(worldUiSystemState);
-        return new WorldUiSystem(worldUiSystemState);
+    public static UserInterfaceSystem create(WorldAdapter worldAdapter) {
+        UserInterfaceSystemState userInterfaceSystemState = createWorldUiSystemState(worldAdapter);
+        attachStage(userInterfaceSystemState);
+        createWidgets(userInterfaceSystemState);
+        return new UserInterfaceSystem(userInterfaceSystemState);
     }
 
-    private static void attachStage(WorldUiSystemState worldUiSystemState) {
-        Stage stage = new Stage(new FitViewport(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT));
-        worldUiSystemState.setStage(stage);
+    private static void attachStage(UserInterfaceSystemState userInterfaceSystemState) {
+        Stage stage = new Stage(new FitViewport(WorldAdapter.VIRTUAL_WIDTH, WorldAdapter.VIRTUAL_HEIGHT));
+        userInterfaceSystemState.setStage(stage);
     }
 
-    private static WorldUiSystemState createWorldUiSystemState(WorldCore worldCore) {
-        WorldUiSystemState worldUiSystemState = new WorldUiSystemState();
-        worldUiSystemState.setWorldCore(worldCore);
-        return worldUiSystemState;
+    private static UserInterfaceSystemState createWorldUiSystemState(WorldAdapter worldAdapter) {
+        UserInterfaceSystemState userInterfaceSystemState = new UserInterfaceSystemState();
+        userInterfaceSystemState.setWorldAdapter(worldAdapter);
+        return userInterfaceSystemState;
     }
 
-    private static void createWidgets(WorldUiSystemState worldUiSystemState) {
-        attachHealthWidget(worldUiSystemState);
-        attachScoreWidget(worldUiSystemState);
-        attachPauseWidget(worldUiSystemState);
-        attachGameOverWidget(worldUiSystemState);
-        attachCrosshairWidget(worldUiSystemState);
-        attachFpsWidget(worldUiSystemState);
-        attachControllerWidget(worldUiSystemState);
+    private static void createWidgets(UserInterfaceSystemState userInterfaceSystemState) {
+        attachHealthWidget(userInterfaceSystemState);
+        attachScoreWidget(userInterfaceSystemState);
+        attachPauseWidget(userInterfaceSystemState);
+        attachGameOverWidget(userInterfaceSystemState);
+        attachCrosshairWidget(userInterfaceSystemState);
+        attachFpsWidget(userInterfaceSystemState);
+        attachControllerWidget(userInterfaceSystemState);
     }
 
-    private static void attachControllerWidget(WorldUiSystemState worldUiSystemState) {
+    private static void attachControllerWidget(UserInterfaceSystemState userInterfaceSystemState) {
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             ControllerWidget controllerWidget = new ControllerWidget();
-            worldUiSystemState.setControllerWidget(controllerWidget);
-            controllerWidget.addToStage(worldUiSystemState.getStage());
+            userInterfaceSystemState.setControllerWidget(controllerWidget);
+            controllerWidget.addToStage(userInterfaceSystemState.getStage());
         }
     }
 
-    private static void attachFpsWidget(WorldUiSystemState worldUiSystemState) {
+    private static void attachFpsWidget(UserInterfaceSystemState userInterfaceSystemState) {
         Label fpsLabel = new Label("", Assets.skin);
-        worldUiSystemState.setFpsLabel(fpsLabel);
+        userInterfaceSystemState.setFpsLabel(fpsLabel);
         fpsLabel.setPosition(0, 10);
-        worldUiSystemState.getStage().addActor(fpsLabel);
+        userInterfaceSystemState.getStage().addActor(fpsLabel);
     }
 
-    private static void attachCrosshairWidget(WorldUiSystemState worldUiSystemState) {
+    private static void attachCrosshairWidget(UserInterfaceSystemState userInterfaceSystemState) {
         CrosshairWidget crosshairWidget = new CrosshairWidget();
-        worldUiSystemState.setCrosshairWidget(crosshairWidget);
-        crosshairWidget.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - 16, WorldCore.VIRTUAL_HEIGHT / 2 - 16);
+        userInterfaceSystemState.setCrosshairWidget(crosshairWidget);
+        crosshairWidget.setPosition(WorldAdapter.VIRTUAL_WIDTH / 2 - 16, WorldAdapter.VIRTUAL_HEIGHT / 2 - 16);
         crosshairWidget.setSize(32, 32);
-        worldUiSystemState.getStage().addActor(crosshairWidget);
+        userInterfaceSystemState.getStage().addActor(crosshairWidget);
     }
 
-    private static void attachGameOverWidget(WorldUiSystemState worldUiSystemState) {
-        GameOverWidget gameOverWidget = new GameOverWidget(worldUiSystemState.getWorldCore(), worldUiSystemState.getStage());
-        worldUiSystemState.setGameOverWidget(gameOverWidget);
+    private static void attachGameOverWidget(UserInterfaceSystemState userInterfaceSystemState) {
+        GameOverWidget gameOverWidget = new GameOverWidget(userInterfaceSystemState.getWorldAdapter(), userInterfaceSystemState.getStage());
+        userInterfaceSystemState.setGameOverWidget(gameOverWidget);
         gameOverWidget.setSize(280, 100);
-        gameOverWidget.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - 280 / 2, WorldCore.VIRTUAL_HEIGHT / 2);
+        gameOverWidget.setPosition(WorldAdapter.VIRTUAL_WIDTH / 2 - 280 / 2, WorldAdapter.VIRTUAL_HEIGHT / 2);
     }
 
-    private static void attachPauseWidget(WorldUiSystemState worldUiSystemState) {
-        PauseWidget pauseWidget = new PauseWidget(worldUiSystemState.getWorldCore(), worldUiSystemState.getStage());
-        worldUiSystemState.setPauseWidget(pauseWidget);
+    private static void attachPauseWidget(UserInterfaceSystemState userInterfaceSystemState) {
+        PauseWidget pauseWidget = new PauseWidget(userInterfaceSystemState.getWorldAdapter(), userInterfaceSystemState.getStage());
+        userInterfaceSystemState.setPauseWidget(pauseWidget);
         pauseWidget.setSize(64, 64);
-        pauseWidget.setPosition(WorldCore.VIRTUAL_WIDTH - pauseWidget.getWidth(),
-                WorldCore.VIRTUAL_HEIGHT - pauseWidget.getHeight());
-        worldUiSystemState.getStage().setKeyboardFocus(pauseWidget);
+        pauseWidget.setPosition(WorldAdapter.VIRTUAL_WIDTH - pauseWidget.getWidth(),
+                WorldAdapter.VIRTUAL_HEIGHT - pauseWidget.getHeight());
+        userInterfaceSystemState.getStage().setKeyboardFocus(pauseWidget);
     }
 
-    private static void attachScoreWidget(WorldUiSystemState worldUiSystemState) {
+    private static void attachScoreWidget(UserInterfaceSystemState userInterfaceSystemState) {
         ScoreWidget scoreWidget = new ScoreWidget();
-        worldUiSystemState.setScoreWidget(scoreWidget);
+        userInterfaceSystemState.setScoreWidget(scoreWidget);
         scoreWidget.setSize(140, 25);
-        scoreWidget.setPosition(0, WorldCore.VIRTUAL_HEIGHT - scoreWidget.getHeight());
-        worldUiSystemState.getStage().addActor(scoreWidget);
+        scoreWidget.setPosition(0, WorldAdapter.VIRTUAL_HEIGHT - scoreWidget.getHeight());
+        userInterfaceSystemState.getStage().addActor(scoreWidget);
     }
 
-    private static void attachHealthWidget(WorldUiSystemState worldUiSystemState) {
+    private static void attachHealthWidget(UserInterfaceSystemState userInterfaceSystemState) {
         HealthWidget healthWidget = new HealthWidget();
-        worldUiSystemState.setHealthWidget(healthWidget);
+        userInterfaceSystemState.setHealthWidget(healthWidget);
         healthWidget.setSize(140, 25);
-        healthWidget.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - healthWidget.getWidth() / 2, 0);
-        worldUiSystemState.getStage().addActor(healthWidget);
+        healthWidget.setPosition(WorldAdapter.VIRTUAL_WIDTH / 2 - healthWidget.getWidth() / 2, 0);
+        userInterfaceSystemState.getStage().addActor(healthWidget);
     }
 }

@@ -1,4 +1,4 @@
-package com.emelwerx.world.ui.widgets;
+package com.emelwerx.world.services.ui.widgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,18 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.emelwerx.world.WorldAdapter;
 import com.emelwerx.world.services.Assets;
-import com.emelwerx.world.WorldCore;
-import com.emelwerx.world.ui.screens.WorldScreen;
-import com.emelwerx.world.ui.screens.LeaderboardsScreen;
+import com.emelwerx.world.services.ui.screens.WorldScreen;
+import com.emelwerx.world.services.ui.screens.LeaderboardsScreen;
 
 public class GameOverWidget extends Actor {
-    private WorldCore game;
+    private WorldAdapter game;
     private Stage stage;
     private Image image;
     private TextButton retryB, leaderB, quitB;
 
-    public GameOverWidget(WorldCore game, Stage stage) {
+    public GameOverWidget(WorldAdapter game, Stage stage) {
         this.game = game;
         this.stage = stage;
         setWidgets();
@@ -65,7 +65,7 @@ public class GameOverWidget extends Actor {
 
     @Override
     public void setSize(float width, float height) {
-        super.setSize(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT);
+        super.setSize(WorldAdapter.VIRTUAL_WIDTH, WorldAdapter.VIRTUAL_HEIGHT);
         image.setSize(width, height);
         retryB.setSize(width / 2.5f, height / 2);
         leaderB.setSize(width / 2.5f, height / 2);

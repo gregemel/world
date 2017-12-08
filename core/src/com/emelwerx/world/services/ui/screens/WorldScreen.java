@@ -1,11 +1,11 @@
-package com.emelwerx.world.ui.screens;
+package com.emelwerx.world.services.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.emelwerx.world.WorldAdapter;
 import com.emelwerx.world.services.Settings;
 import com.emelwerx.world.services.factories.WorldUiSystemFactory;
-import com.emelwerx.world.systems.WorldUiSystem;
-import com.emelwerx.world.WorldCore;
+import com.emelwerx.world.systems.UserInterfaceSystem;
 import com.emelwerx.world.databags.World;
 import com.emelwerx.world.services.Pauser;
 import com.emelwerx.world.services.Disposer;
@@ -13,15 +13,15 @@ import com.emelwerx.world.services.loaders.WorldLoader;
 import com.emelwerx.world.services.drawers.DebugDrawer;
 
 public class WorldScreen implements Screen {
-    private WorldUiSystem worldUiSystem;
+    private UserInterfaceSystem userInterfaceSystem;
     private World world;
 
-    public WorldScreen(WorldCore game) {
-        worldUiSystem = WorldUiSystemFactory.create(game);
-        world = WorldLoader.create("arena", worldUiSystem);
+    public WorldScreen(WorldAdapter game) {
+        userInterfaceSystem = WorldUiSystemFactory.create(game);
+        world = WorldLoader.create("arena", userInterfaceSystem);
 
         Settings.setPaused(false);
-        Gdx.input.setInputProcessor(worldUiSystem.getWorldUiSystemState().getStage());
+        Gdx.input.setInputProcessor(userInterfaceSystem.getUserInterfaceSystemState().getStage());
         Gdx.input.setCursorCatched(true);
     }
 
@@ -31,23 +31,23 @@ public class WorldScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        worldUiSystem.update(delta);
+        userInterfaceSystem.update(delta);
         world.getEntityEngine().update(delta);
         DebugDrawer.draw(world, delta);
         Pauser.check(world);
-        worldUiSystem.render();
+        userInterfaceSystem.render();
     }
 
     @Override
     public void resize(int width, int height) {
-        worldUiSystem.resize(width, height);
+        userInterfaceSystem.resize(width, height);
         world.getRenderSystem().resize(width, height);
     }
 
     @Override
     public void dispose() {
         Disposer.dispose(world);
-        worldUiSystem.dispose();
+        userInterfaceSystem.dispose();
     }
 
     @Override

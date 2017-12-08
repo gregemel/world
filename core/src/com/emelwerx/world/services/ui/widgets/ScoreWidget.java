@@ -1,4 +1,4 @@
-package com.emelwerx.world.ui.widgets;
+package com.emelwerx.world.services.ui.widgets;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;

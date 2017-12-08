@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.emelwerx.world.services.Shooter;
-import com.emelwerx.world.ui.widgets.ControllerWidget;
+import com.emelwerx.world.services.ui.widgets.ControllerWidget;
 import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.systemstates.PlayerSystemState;

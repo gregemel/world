@@ -9,7 +9,7 @@ import com.emelwerx.world.databags.World;
 import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.components.PlayerComponent;
-import com.emelwerx.world.systems.WorldUiSystem;
+import com.emelwerx.world.systems.UserInterfaceSystem;
 import com.emelwerx.world.services.factories.AnimationComponentFactory;
 
 public class PlayerSystemState {
@@ -21,7 +21,7 @@ public class PlayerSystemState {
     private PlayerComponent playerComponent;
     private CharacterComponent characterComponent;
     private ModelComponent modelComponent;
-    private WorldUiSystem worldUiSystem;
+    private UserInterfaceSystem userInterfaceSystem;
     private World world;
     private Vector3 rayFrom = new Vector3();
     private Vector3 rayTo = new Vector3();
@@ -103,12 +103,12 @@ public class PlayerSystemState {
         this.modelComponent = modelComponent;
     }
 
-    public WorldUiSystem getWorldUiSystem() {
-        return worldUiSystem;
+    public UserInterfaceSystem getUserInterfaceSystem() {
+        return userInterfaceSystem;
     }
 
-    public void setWorldUiSystem(WorldUiSystem worldUiSystem) {
-        this.worldUiSystem = worldUiSystem;
+    public void setUserInterfaceSystem(UserInterfaceSystem userInterfaceSystem) {
+        this.userInterfaceSystem = userInterfaceSystem;
     }
 
     public World getWorld() {

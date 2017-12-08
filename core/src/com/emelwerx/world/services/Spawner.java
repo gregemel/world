@@ -10,9 +10,8 @@ import static java.lang.String.format;
 
 public class Spawner {
     public static void update(CreatureSystemState creatureSystemState) {
-        World world = creatureSystemState.getWorld();
-        if (getCurrentCreatureCount(creatureSystemState) < getMaxSpawnCount(world)) {
-            spawnCreature(world);
+        if (getCurrentCreatureCount(creatureSystemState) < getMaxSpawnCount(creatureSystemState.getWorld())) {
+            spawnCreature(creatureSystemState.getWorld());
         }
     }
 

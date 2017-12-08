@@ -19,7 +19,7 @@ The libDGX based application targets Android, but the core module can run on a L
 
 ## Purpose
 * An exploration in building immersive 3D games for Android tablets and phones.
-* Learning about extending open source 3D worldCore engines for Java on Android.
+* Learning about extending open source 3D worldAdapter engines for Java on Android.
 * Finding ways to amuse my kids.
 
 ## Next
@@ -40,4 +40,68 @@ Creature, scene models, textures came from the book's repository and may be copy
 * more models and textures at: https://opengameart.org/
 
 #### copyright
-This source code is made available under the MIT license, 2017.
+This source code is made available under the MIT license, which basically means enjoy it, use it, change it, make money off of it, but please don't ever sue me if things go wrong.
+
+
+#More Code Details
+* databags
+* systems
+* services
+* WorldAdapter
+
+#### purpose
+Why is the code divided up into these 3 directories and a java file?
+* making complex code easier to understand
+* grouping code by functional purpose
+* a databag holds data, like monster properties
+* a system updates some kind of continuous process, like moving a monster
+* a service is a tool used by systems or other services, like move monster
+* the WorldAdapter connects World to Android
+
+#### behavior and state
+* code that separates data from action.  
+
+#### single purpose principle
+* A java class should do only 1 thing and do it well.
+
+## databags
+What is a databag?
+* A databag is a java class that holds data.  
+* It can only hold data and not do any action, like math, drawing, or physics.
+* data like monster location and scenery model
+
+### World
+* the owner of everything
+* a collection of scenes
+
+### Scene
+* a collection of creatures, scenery, and sounds
+* a player start location
+
+### component
+* a collection of properties associated with an entity (e.g. position)
+* tagging and tracking an entity in your world
+* animation state, ai state
+* models and skins
+
+### systemstate
+* scratch pads for systems
+
+
+## systems
+What is a system?
+* A system performs a function, over and over again.
+* systems have frame rates (e.g. 60fps)
+* handles things that change, like graphics, input, and motion
+* uses services
+
+## services
+What is a service?
+* doing one thing and doing it well
+* used by systems to do things like graphics, input, and motion
+
+### drawers
+### factories
+### loaders
+### ui
+### updaters

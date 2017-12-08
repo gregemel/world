@@ -1,4 +1,4 @@
-package com.emelwerx.world.ui.screens;
+package com.emelwerx.world.services.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,21 +10,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.emelwerx.world.WorldAdapter;
 import com.emelwerx.world.services.Assets;
-import com.emelwerx.world.WorldCore;
 import com.emelwerx.world.services.Settings;
 
 public class LeaderboardsScreen implements Screen {
-    private WorldCore game;
+    private WorldAdapter game;
     private Stage stage;
     private Image backgroundImage;
     private TextButton backButton;
     private Label label[];
     private boolean loaded;
 
-    public LeaderboardsScreen(WorldCore game) {
+    public LeaderboardsScreen(WorldAdapter game) {
         this.game = game;
-        stage = new Stage(new FitViewport(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT));
+        stage = new Stage(new FitViewport(WorldAdapter.VIRTUAL_WIDTH, WorldAdapter.VIRTUAL_HEIGHT));
         setWidgets();
         configureWidgers();
         setListeners();
@@ -40,15 +40,15 @@ public class LeaderboardsScreen implements Screen {
     }
 
     private void configureWidgers() {
-        backgroundImage.setSize(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT);
+        backgroundImage.setSize(WorldAdapter.VIRTUAL_WIDTH, WorldAdapter.VIRTUAL_HEIGHT);
         backButton.setSize(128, 64);
-        backButton.setPosition(WorldCore.VIRTUAL_WIDTH - backButton.getWidth() - 5, 5);
+        backButton.setPosition(WorldAdapter.VIRTUAL_WIDTH - backButton.getWidth() - 5, 5);
 
         stage.addActor(backgroundImage);
         stage.addActor(backButton);
 
         label[0].setFontScale(3);
-        label[0].setPosition(15, WorldCore.VIRTUAL_HEIGHT - label[0].getHeight() - 25);
+        label[0].setPosition(15, WorldAdapter.VIRTUAL_HEIGHT - label[0].getHeight() - 25);
         stage.addActor(label[0]);
     }
 
@@ -76,7 +76,7 @@ public class LeaderboardsScreen implements Screen {
             int y = 0;
             for (int i = 0; i < label.length; i++) {
                 label[i].setFontScale(3);
-                label[i].setPosition(15, WorldCore.VIRTUAL_HEIGHT - label[i].getHeight() - 25 - y);
+                label[i].setPosition(15, WorldAdapter.VIRTUAL_HEIGHT - label[i].getHeight() - 25 - y);
                 y += 96;
                 stage.addActor(label[i]);
             }

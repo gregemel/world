@@ -2,17 +2,17 @@ package com.emelwerx.world.databags.systemstates;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.emelwerx.world.WorldCore;
-import com.emelwerx.world.ui.widgets.ControllerWidget;
-import com.emelwerx.world.ui.widgets.CrosshairWidget;
-import com.emelwerx.world.ui.widgets.GameOverWidget;
-import com.emelwerx.world.ui.widgets.HealthWidget;
-import com.emelwerx.world.ui.widgets.PauseWidget;
-import com.emelwerx.world.ui.widgets.ScoreWidget;
+import com.emelwerx.world.WorldAdapter;
+import com.emelwerx.world.services.ui.widgets.ControllerWidget;
+import com.emelwerx.world.services.ui.widgets.CrosshairWidget;
+import com.emelwerx.world.services.ui.widgets.GameOverWidget;
+import com.emelwerx.world.services.ui.widgets.HealthWidget;
+import com.emelwerx.world.services.ui.widgets.PauseWidget;
+import com.emelwerx.world.services.ui.widgets.ScoreWidget;
 
 
-public class WorldUiSystemState {
-    private WorldCore worldCore;
+public class UserInterfaceSystemState {
+    private WorldAdapter worldAdapter;
     private Stage stage;
     private HealthWidget healthWidget;
     private ScoreWidget scoreWidget;
@@ -22,12 +22,12 @@ public class WorldUiSystemState {
     private Label fpsLabel;
     private ControllerWidget controllerWidget;
 
-    public WorldCore getWorldCore() {
-        return worldCore;
+    public WorldAdapter getWorldAdapter() {
+        return worldAdapter;
     }
 
-    public void setWorldCore(WorldCore worldCore) {
-        this.worldCore = worldCore;
+    public void setWorldAdapter(WorldAdapter worldAdapter) {
+        this.worldAdapter = worldAdapter;
     }
 
     public Stage getStage() {

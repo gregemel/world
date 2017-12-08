@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.emelwerx.world.WorldCore;
+import com.emelwerx.world.WorldAdapter;
 import com.emelwerx.world.databags.World;
 import com.emelwerx.world.databags.systemstates.RenderSystemState;
 import com.emelwerx.world.systems.RenderSystem;
@@ -33,8 +33,8 @@ public class RenderSystemFactory {
     private static PerspectiveCamera createWorldPerspectiveCamera(World world, RenderSystemState renderSystemState) {
         PerspectiveCamera perspectiveCamera = new PerspectiveCamera(
                 renderSystemState.getFOV(),
-                WorldCore.VIRTUAL_WIDTH,
-                WorldCore.VIRTUAL_HEIGHT);
+                WorldAdapter.VIRTUAL_WIDTH,
+                WorldAdapter.VIRTUAL_HEIGHT);
         perspectiveCamera.far = 10000f;
         renderSystemState.setWorldPerspectiveCamera(perspectiveCamera);
         world.setWorldPerspectiveCamera(perspectiveCamera);
@@ -66,7 +66,7 @@ public class RenderSystemFactory {
 
     private static void attachPlayerItemCamera(RenderSystemState renderSystemState) {
         PerspectiveCamera itemCamera = new PerspectiveCamera(renderSystemState.getFOV(),
-                WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT);
+                WorldAdapter.VIRTUAL_WIDTH, WorldAdapter.VIRTUAL_HEIGHT);
         itemCamera.far = 100f;
         renderSystemState.setPlayerItemCamera(itemCamera);
     }

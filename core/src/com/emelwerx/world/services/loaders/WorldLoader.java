@@ -20,7 +20,7 @@ import com.emelwerx.world.services.factories.PlayerItemFactory;
 import com.emelwerx.world.services.factories.PlayerSystemFactory;
 import com.emelwerx.world.services.factories.RenderSystemFactory;
 import com.emelwerx.world.systems.CreatureSystem;
-import com.emelwerx.world.systems.WorldUiSystem;
+import com.emelwerx.world.systems.UserInterfaceSystem;
 import com.emelwerx.world.databags.Scene;
 import com.emelwerx.world.systems.PhysicsSystem;
 import com.emelwerx.world.systems.PlayerSystem;
@@ -30,7 +30,7 @@ import static java.lang.String.format;
 
 public class WorldLoader {
 
-    public static World create(String name, WorldUiSystem ui) {
+    public static World create(String name, UserInterfaceSystem ui) {
         Gdx.app.log("WorldLoader", format("creating world: %s", name));
         Bullet.init();
         World world = new World();
@@ -75,12 +75,12 @@ public class WorldLoader {
         }
     }
 
-    private static void addSystems(World world, WorldUiSystem worldUiSystem) {
+    private static void addSystems(World world, UserInterfaceSystem userInterfaceSystem) {
         Engine entityEngine = new Engine();
         RenderSystem renderSystem = createRenderSystem(world, entityEngine);
         createPhysicsSystem(world, entityEngine);
         PerspectiveCamera worldPerspectiveCamera = renderSystem.getRenderSystemState().getWorldPerspectiveCamera();
-        createPlayerSystem(world, entityEngine, worldPerspectiveCamera, worldUiSystem);
+        createPlayerSystem(world, entityEngine, worldPerspectiveCamera, userInterfaceSystem);
         createCreatureSystem(world, entityEngine);
         world.setEntityEngine(entityEngine);
     }
@@ -105,9 +105,9 @@ public class WorldLoader {
     private static void createPlayerSystem(World world,
                                            Engine engine,
                                            PerspectiveCamera worldPerspectiveCamera,
-                                           WorldUiSystem worldUiSystem) {
+                                           UserInterfaceSystem userInterfaceSystem) {
         PlayerSystem playerSystem = PlayerSystemFactory.create(
-                world, worldUiSystem, worldPerspectiveCamera);
+                world, userInterfaceSystem, worldPerspectiveCamera);
         world.setPlayerSystem(playerSystem);
         engine.addSystem(playerSystem);
     }

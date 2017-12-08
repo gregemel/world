@@ -1,4 +1,4 @@
-package com.emelwerx.world.ui.screens;
+package com.emelwerx.world.services.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,11 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.emelwerx.world.WorldAdapter;
 import com.emelwerx.world.services.Assets;
-import com.emelwerx.world.WorldCore;
 
 public class MainMenuScreen implements Screen {
-    private WorldCore game;
+    private WorldAdapter worldAdapter;
     private Stage stage;
     private Image backgroundImage;
     private Image titleImage;
@@ -23,9 +23,9 @@ public class MainMenuScreen implements Screen {
     private TextButton leaderboardsButton;
     private TextButton quitButton;
 
-    public MainMenuScreen(WorldCore game) {
-        this.game = game;
-        stage = new Stage(new FitViewport(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT));
+    public MainMenuScreen(WorldAdapter adapter) {
+        this.worldAdapter = adapter;
+        stage = new Stage(new FitViewport(WorldAdapter.VIRTUAL_WIDTH, WorldAdapter.VIRTUAL_HEIGHT));
         setWidgets();
         configureWidgers();
         setListeners();
@@ -42,23 +42,23 @@ public class MainMenuScreen implements Screen {
     }
 
     private void configureWidgers() {
-        backgroundImage.setSize(WorldCore.VIRTUAL_WIDTH, WorldCore.VIRTUAL_HEIGHT);
+        backgroundImage.setSize(WorldAdapter.VIRTUAL_WIDTH, WorldAdapter.VIRTUAL_HEIGHT);
         backgroundImage.setColor(1, 1, 1, 0);
         backgroundImage.addAction(Actions.fadeIn(0.65f));
         titleImage.setSize(620, 200);
-        titleImage.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - titleImage.getWidth() / 2, WorldCore.VIRTUAL_HEIGHT / 2);
+        titleImage.setPosition(WorldAdapter.VIRTUAL_WIDTH / 2 - titleImage.getWidth() / 2, WorldAdapter.VIRTUAL_HEIGHT / 2);
         titleImage.setColor(1, 1, 1, 0);
         titleImage.addAction(new SequenceAction(Actions.delay(0.65f), Actions.fadeIn(0.75f)));
         playButton.setSize(128, 64);
-        playButton.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, WorldCore.VIRTUAL_HEIGHT / 2 - 100);
+        playButton.setPosition(WorldAdapter.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, WorldAdapter.VIRTUAL_HEIGHT / 2 - 100);
         playButton.setColor(1, 1, 1, 0);
         playButton.addAction(new SequenceAction(Actions.delay(0.65f), Actions.fadeIn(0.75f)));
         leaderboardsButton.setSize(128, 64);
-        leaderboardsButton.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, WorldCore.VIRTUAL_HEIGHT / 2 - 170);
+        leaderboardsButton.setPosition(WorldAdapter.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, WorldAdapter.VIRTUAL_HEIGHT / 2 - 170);
         leaderboardsButton.setColor(1, 1, 1, 0);
         leaderboardsButton.addAction(new SequenceAction(Actions.delay(0.65f), Actions.fadeIn(0.75f)));
         quitButton.setSize(128, 64);
-        quitButton.setPosition(WorldCore.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, WorldCore.VIRTUAL_HEIGHT / 2 - 240);
+        quitButton.setPosition(WorldAdapter.VIRTUAL_WIDTH / 2 - playButton.getWidth() / 2, WorldAdapter.VIRTUAL_HEIGHT / 2 - 240);
         quitButton.setColor(1, 1, 1, 0);
         quitButton.addAction(new SequenceAction(Actions.delay(0.65f), Actions.fadeIn(0.75f)));
 
@@ -73,14 +73,14 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                WorldScreen nextWorldScreen = new WorldScreen(game);
-                game.setScreen(nextWorldScreen);
+                WorldScreen nextWorldScreen = new WorldScreen(worldAdapter);
+                worldAdapter.setScreen(nextWorldScreen);
             }
         });
         leaderboardsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LeaderboardsScreen(game));
+                worldAdapter.setScreen(new LeaderboardsScreen(worldAdapter));
             }
         });
         quitButton.addListener(new ClickListener() {
