@@ -18,7 +18,7 @@ public class WorldScreen implements Screen {
 
     public WorldScreen(WorldAdapter game) {
         userInterfaceSystem = WorldUiSystemFactory.create(game);
-        world = WorldLoader.create("arena", userInterfaceSystem);
+        world = WorldLoader.load("arena", userInterfaceSystem);
 
         Settings.setPaused(false);
         Gdx.input.setInputProcessor(userInterfaceSystem.getUserInterfaceSystemState().getStage());

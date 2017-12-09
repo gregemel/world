@@ -2,14 +2,6 @@ package com.emelwerx.world.services.factories;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.physics.bullet.collision.btBroadphaseProxy;
 import com.badlogic.gdx.physics.bullet.collision.btPairCachingGhostObject;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
@@ -35,24 +27,12 @@ public class PlayerEntityFactory {
     }
 
     private static void attachComponents(Entity entity, float x, float y, float z) {
-        ModelComponent modelComponent = createModelComponent(x, y, z);
+        String textureFilename = "data/badlogic.jpg";
+        ModelComponent modelComponent = ModelComponentFactory.createTextured(textureFilename, x, y, z);
         entity.add(modelComponent);
         CharacterComponent characterComponent = CharacterComponentFactory.create(entity, modelComponent);
         entity.add(characterComponent);
         entity.add(new PlayerComponent());
-    }
-
-    private static ModelComponent createModelComponent(float x, float y, float z) {
-        ModelBuilder modelBuilder = new ModelBuilder();
-        Texture playerTexture = new Texture(Gdx.files.internal("data/badlogic.jpg"));
-        Material material = new Material(TextureAttribute.createDiffuse(playerTexture),
-                ColorAttribute.createSpecular(1, 1, 1, 1), FloatAttribute.createShininess(8f));
-        Model playerModel=  modelBuilder.createCapsule(
-                2f, 6f, 16, material,
-                VertexAttributes.Usage.Position
-                        | VertexAttributes.Usage.Normal
-                        | VertexAttributes.Usage.TextureCoordinates);
-        return ModelComponentFactory.create(playerModel, x, y, z);
     }
 
     private static void attachPhysicsSystem(PhysicsSystem physicsSystem, Entity entity) {

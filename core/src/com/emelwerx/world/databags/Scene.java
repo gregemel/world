@@ -19,7 +19,7 @@ public class Scene {
         this.playerStartLocation = playerStartLocation;
     }
 
-    //create spawn spots
+    //load spawn spots
 
     //max number of concurrent creatures
 
