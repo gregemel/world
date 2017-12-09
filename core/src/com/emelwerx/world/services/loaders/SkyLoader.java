@@ -1,6 +1,5 @@
 package com.emelwerx.world.services.loaders;
 
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;

@@ -1,6 +1,5 @@
 package com.emelwerx.world.databags.systemstates;
 
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.graphics.PerspectiveCamera;

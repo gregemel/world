@@ -13,7 +13,6 @@ public class CreatureSpawner {
         if (getCount(state) >= getMaxCount(state)) {
             return;
         }
-
         spawn(state.getWorld());
     }
 

@@ -1,6 +1,5 @@
 package com.emelwerx.world.services;
 
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.bullet.collision.ClosestRayResultCallback;

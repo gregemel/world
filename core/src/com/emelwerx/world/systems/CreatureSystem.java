@@ -16,7 +16,6 @@ import com.emelwerx.world.services.updaters.CreatureUpdater;
 
 import static java.lang.String.format;
 
-
 public class CreatureSystem extends EntitySystem implements EntityListener {
 
     private CreatureSystemState creatureSystemState;

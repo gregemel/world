@@ -1,6 +1,5 @@
 package com.emelwerx.world.services;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;

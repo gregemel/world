@@ -1,6 +1,5 @@
 package com.emelwerx.world.databags;
 
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector3;
 

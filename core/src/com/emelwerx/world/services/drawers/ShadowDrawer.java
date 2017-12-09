@@ -1,6 +1,5 @@
 package com.emelwerx.world.services.drawers;
 
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -14,35 +13,35 @@ import com.emelwerx.world.databags.systemstates.RenderSystemState;
 
 public class ShadowDrawer {
 
-    public static void draw(RenderSystemState renderSystemState) {
-        DirectionalShadowLight shadowLight = renderSystemState.getShadowLight();
-        shadowLight.begin(Vector3.Zero, renderSystemState.getWorldPerspectiveCamera().direction);
-        drawEntities(renderSystemState, shadowLight);
+    public static void draw(RenderSystemState state) {
+        DirectionalShadowLight shadowLight = state.getShadowLight();
+        shadowLight.begin(Vector3.Zero, state.getWorldPerspectiveCamera().direction);
+        drawEntityShadows(state, shadowLight);
         shadowLight.end();
     }
 
-    private static void drawEntities(RenderSystemState renderSystemState, DirectionalShadowLight shadowLight) {
-        ModelBatch modelBatch = renderSystemState.getBatch();
+    private static void drawEntityShadows(RenderSystemState state, DirectionalShadowLight shadowLight) {
+        ModelBatch modelBatch = state.getBatch();
         modelBatch.begin(shadowLight.getCamera());
-        renderEachEntity(renderSystemState, modelBatch);
+        drawEachEntityShadow(state, modelBatch);
         modelBatch.end();
     }
 
-    private static void renderEachEntity(RenderSystemState renderSystemState, ModelBatch modelBatch) {
-        for(Entity entity : renderSystemState.getEntities()) {
+    private static void drawEachEntityShadow(RenderSystemState state, ModelBatch modelBatch) {
+        for(Entity entity : state.getEntities()) {
             boolean isPlayerOrCreature = entity.getComponent(PlayerComponent.class) != null
                     || entity.getComponent(CreatureComponent.class) != null;
             if (isPlayerOrCreature) {
-                ModelComponent modelComponent = entity.getComponent(ModelComponent.class);
-                if (isVisible(renderSystemState, modelComponent.getInstance())) {
-                    modelBatch.render(modelComponent.getInstance());
+                ModelInstance modelInstance = entity.getComponent(ModelComponent.class).getInstance();
+                if (isVisible(state, modelInstance)) {
+                    modelBatch.render(modelInstance);
                 }
             }
         }
     }
 
-    private static boolean isVisible(RenderSystemState renderSystemState, final ModelInstance instance) {
-        PerspectiveCamera cam = renderSystemState.getWorldPerspectiveCamera();
-        return cam.frustum.pointInFrustum(instance.transform.getTranslation(renderSystemState.getPosition()));
+    private static boolean isVisible(RenderSystemState state, final ModelInstance instance) {
+        PerspectiveCamera cam = state.getWorldPerspectiveCamera();
+        return cam.frustum.pointInFrustum(instance.transform.getTranslation(state.getPosition()));
     }
 }

@@ -14,12 +14,13 @@ public class CreatureDamager {
     }
 
     public static void shoot(CreatureComponent creatureComponent) {
-        if(creatureComponent.getCreatureState() != CreatureComponent.CREATURE_STATE.DYING) {
-            Gdx.app.log("CreatureDamager", format("HIT creature %s", creatureComponent.toString()));
-            creatureComponent.setCreatureState(CreatureComponent.CREATURE_STATE.DYING);
-            PlayerComponent.setScore(PlayerComponent.getScore() + 100);
-        } else {
+        if(creatureComponent.getCreatureState() == CreatureComponent.CREATURE_STATE.DYING) {
             Gdx.app.log("CreatureDamager", format("you hit a dying creature %s", creatureComponent.toString()));
+            return;
         }
+
+        Gdx.app.log("CreatureDamager", format("HIT creature %s", creatureComponent.toString()));
+        creatureComponent.setCreatureState(CreatureComponent.CREATURE_STATE.DYING);
+        PlayerComponent.setScore(PlayerComponent.getScore() + 100);
     }
 }

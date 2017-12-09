@@ -6,7 +6,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.systemstates.RenderSystemState;
-import com.emelwerx.world.services.drawers.ModelDrawer;
+import com.emelwerx.world.services.drawers.EntitiesDrawer;
 import com.emelwerx.world.services.drawers.ParticleDrawer;
 import com.emelwerx.world.services.drawers.PlayerItemDrawer;
 import com.emelwerx.world.services.drawers.ShadowDrawer;
@@ -14,7 +14,6 @@ import com.emelwerx.world.services.drawers.ShadowDrawer;
 import java.util.Locale;
 
 import static java.lang.String.format;
-
 
 public class RenderSystem extends EntitySystem {
 
@@ -35,7 +34,7 @@ public class RenderSystem extends EntitySystem {
 
     public void update(float delta) {
         ShadowDrawer.draw(renderSystemState);
-        ModelDrawer.drawEntities(renderSystemState, delta);
+        EntitiesDrawer.draw(renderSystemState, delta);
         ParticleDrawer.draw(renderSystemState);
         PlayerItemDrawer.draw(renderSystemState, delta);
     }

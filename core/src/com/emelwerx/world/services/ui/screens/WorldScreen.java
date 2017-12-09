@@ -33,7 +33,7 @@ public class WorldScreen implements Screen {
     public void render(float delta) {
         userInterfaceSystem.update(delta);
         world.getEntityEngine().update(delta);
-        DebugDrawer.draw(world, delta);
+        DebugDrawer.draw(world);
         Pauser.check(world);
         userInterfaceSystem.render();
     }
