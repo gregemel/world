@@ -1,6 +1,5 @@
 package com.emelwerx.world.databags;
 
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector3;
 
@@ -19,7 +18,7 @@ public class Scene {
         this.playerStartLocation = playerStartLocation;
     }
 
-    //create spawn spots
+    //load spawn spots
 
     //max number of concurrent creatures
 

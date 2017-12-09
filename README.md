@@ -43,7 +43,7 @@ Creature, scene models, textures came from the book's repository and may be copy
 This source code is made available under the MIT license, which basically means enjoy it, use it, change it, make money off of it, but please don't ever sue me if things go wrong.
 
 
-#More Code Details
+# More Code Details
 * databags
 * systems
 * services
@@ -87,7 +87,6 @@ What is a databag?
 ### systemstate
 * scratch pads for systems
 
-
 ## systems
 What is a system?
 * A system performs a function, over and over again.
@@ -99,9 +98,21 @@ What is a system?
 What is a service?
 * doing one thing and doing it well
 * used by systems to do things like graphics, input, and motion
+* "stateless", static, no properties or class variables
+* driven only by parameters
 
 ### drawers
+* tools for drawing world images, like models, particles, and shadows
+
 ### factories
+* tools for making instances of databags or systems
+
 ### loaders
+* tools for loading files like worlds, scenes, models, etc.
+
 ### ui
+* user interface code
+
 ### updaters
+* services for updating world objects, like animation, player input, ai
+

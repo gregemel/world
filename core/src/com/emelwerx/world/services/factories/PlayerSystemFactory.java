@@ -23,5 +23,4 @@ public class PlayerSystemFactory {
 
         return new PlayerSystem(playerSystemState);
     }
-
 }

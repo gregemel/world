@@ -17,7 +17,7 @@ public class WorldAdapter extends ApplicationAdapter {
 
     @Override
     public void create() {
-        Gdx.app.log("WorldAdapter", "create");
+        Gdx.app.log("WorldAdapter", "load");
         Assets.init();
         Settings.load();
         Gdx.input.setCatchBackKey(true);

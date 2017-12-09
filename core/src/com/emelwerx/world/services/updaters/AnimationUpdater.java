@@ -12,5 +12,4 @@ public class AnimationUpdater {
             animationComponent.getAnimationController().update(delta);
         }
     }
-
 }

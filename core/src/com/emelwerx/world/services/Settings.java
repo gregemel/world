@@ -96,7 +96,7 @@ public class Settings {
 
     public static void sendScore(int score) {
         Net.HttpRequest request = new Net.HttpRequest("GET");
-        request.setUrl("http://dreamlo.com/lb/PLfBGtHgG02wU0lSzVNrPAG0uQf3J3-UGzK1i7mXmmxA/add/" + "world" + "/" + score);
+        request.setUrl("http://dreamlo.com/lb/PLfBGtHgG02wU0lSzVNrPAG0uQf3J3-UGzK1i7mXmmxA/create/" + "world" + "/" + score);
         Gdx.net.sendHttpRequest(request, new Net.HttpResponseListener() {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {

@@ -18,7 +18,7 @@ public class WorldScreen implements Screen {
 
     public WorldScreen(WorldAdapter game) {
         userInterfaceSystem = WorldUiSystemFactory.create(game);
-        world = WorldLoader.create("arena", userInterfaceSystem);
+        world = WorldLoader.load("arena", userInterfaceSystem);
 
         Settings.setPaused(false);
         Gdx.input.setInputProcessor(userInterfaceSystem.getUserInterfaceSystemState().getStage());
@@ -33,7 +33,7 @@ public class WorldScreen implements Screen {
     public void render(float delta) {
         userInterfaceSystem.update(delta);
         world.getEntityEngine().update(delta);
-        DebugDrawer.draw(world, delta);
+        DebugDrawer.draw(world);
         Pauser.check(world);
         userInterfaceSystem.render();
     }
