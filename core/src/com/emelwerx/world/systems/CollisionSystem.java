@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.bullet.collision.ContactListener;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionObject;
 import com.emelwerx.world.databags.components.CreatureComponent;
 import com.emelwerx.world.databags.components.PlayerComponent;
-import com.emelwerx.world.services.Damager;
+import com.emelwerx.world.services.CreatureDamager;
 
 import static java.lang.String.format;
 
@@ -34,7 +34,7 @@ public class CollisionSystem extends ContactListener {
                 && playerComponent != null;
 
         if(isTransitionToPlayerAndCreatureCollision) {
-            Damager.collideWithCreature(playerComponent, creatureComponent);
+            CreatureDamager.collide(playerComponent, creatureComponent);
         } else {
             collideOther(playerComponent, creatureComponent);
         }

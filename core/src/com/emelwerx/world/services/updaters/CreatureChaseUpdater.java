@@ -8,7 +8,7 @@ import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.systemstates.CreatureSystemState;
 
-public class CreatureAttackUpdater {
+public class CreatureChaseUpdater {
 
     public static void update(
             float delta,
@@ -70,9 +70,7 @@ public class CreatureAttackUpdater {
         Vector3 walkDirection = characterComponent.getWalkDirection();
         walkDirection.set(0, 0, 0);
         walkDirection.add(characterComponent.getCharacterDirection());
-        walkDirection.scl(10f * delta);   //TODO make this change on difficulty
+        walkDirection.scl(10f * delta);
         return walkDirection;
     }
 }
-
-

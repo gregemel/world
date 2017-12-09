@@ -34,7 +34,7 @@ public class CreatureUpdater {
                     break;
                 case HUNTING:
                     ModelComponent playerModel = creatureSystemState.getPlayer().getComponent(ModelComponent.class);
-                    CreatureAttackUpdater.update(delta, playerModel, creatureEntity, creatureSystemState);
+                    CreatureChaseUpdater.update(delta, playerModel, creatureEntity, creatureSystemState);
                     break;
                 case DYING:
                     CreatureDyingUpdater.update(delta, creatureEntity, creatureSystemState.getWorld());
