@@ -10,22 +10,22 @@ import com.emelwerx.world.databags.systemstates.PhysicsSystemState;
 import com.emelwerx.world.databags.systemstates.PlayerSystemState;
 
 public class RayCallbackFactory {
-    public static ClosestRayResultCallback create(PlayerSystemState playerSystemState) {
-        Ray ray = playerSystemState.getWorldPerspectiveCamera()
+    public static ClosestRayResultCallback create(PlayerSystemState state) {
+        Ray ray = state.getWorldPerspectiveCamera()
                 .getPickRay(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        Vector3 rayFrom = playerSystemState.getRayFrom();
-        Vector3 rayTo = playerSystemState.getRayTo();
-        ClosestRayResultCallback rayTestCB = getClosestRayResultCallback(playerSystemState, ray, rayFrom, rayTo);
-        PhysicsSystemState physicsSystemState = playerSystemState.getWorld().getPhysicsSystem().getPhysicsSystemState();
-        btDiscreteDynamicsWorld collisionWorld = physicsSystemState.getCollisionWorld();
-        collisionWorld.rayTest(rayFrom, rayTo, rayTestCB);
-        return rayTestCB;
+        Vector3 rayFrom = state.getRayFrom();
+        Vector3 rayTo = state.getRayTo();
+        ClosestRayResultCallback callback = getClosestRayResultCallback(state, ray, rayFrom, rayTo);
+        PhysicsSystemState physicsState = state.getWorld().getPhysicsSystem().getPhysicsSystemState();
+        btDiscreteDynamicsWorld collisionWorld = physicsState.getCollisionWorld();
+        collisionWorld.rayTest(rayFrom, rayTo, callback);
+        return callback;
     }
 
     private static ClosestRayResultCallback getClosestRayResultCallback(
-            PlayerSystemState playerSystemState, Ray ray, Vector3 rayFrom, Vector3 rayTo) {
+            PlayerSystemState state, Ray ray, Vector3 rayFrom, Vector3 rayTo) {
 
-        ClosestRayResultCallback resultCallback = playerSystemState.getWeaponRayResultCallback();
+        ClosestRayResultCallback resultCallback = state.getWeaponRayResultCallback();
         rayFrom.set(ray.origin);
         rayTo.set(ray.direction).scl(50f).add(rayFrom);
         resultCallback.setCollisionObject(null);

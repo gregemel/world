@@ -9,24 +9,25 @@ import com.emelwerx.world.services.factories.CreatureEntityFactory;
 import static java.lang.String.format;
 
 public class CreatureSpawner {
-    public static void update(CreatureSystemState creatureSystemState) {
-        if (getCurrentCreatureCount(creatureSystemState) < getMaxSpawnCount(creatureSystemState.getWorld())) {
-            spawnCreature(creatureSystemState.getWorld());
+    public static void update(CreatureSystemState state) {
+        if (getCount(state) >= getMaxCount(state)) {
+            return;
         }
+
+        spawn(state.getWorld());
     }
 
-    private static int getMaxSpawnCount(World world) {
-        return world.getCurrentScene().getMaxSpawnCount();
+    private static int getMaxCount(CreatureSystemState state) {
+        return state.getWorld().getCurrentScene().getMaxSpawnCount();
     }
 
-    private static int getCurrentCreatureCount(CreatureSystemState creatureSystemState) {
-        return creatureSystemState.getCreatures().size();
+    private static int getCount(CreatureSystemState state) {
+        return state.getCreatures().size();
     }
 
-    private static void spawnCreature(World world) {
+    private static void spawn(World world) {
         Entity creatureEntity = CreatureEntityFactory.create("monster.g3dj", world);
         world.getEntityEngine().addEntity(creatureEntity);
         Gdx.app.log("CreatureSpawner", format("spawned: %s", creatureEntity.toString()));
     }
 }
-

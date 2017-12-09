@@ -16,21 +16,15 @@ import static java.lang.String.format;
 public class SceneLoader {
 
     public static Scene load(World world, int x, int y, int z) {
-
-        String worldName = world.getName();
         String sceneName = world.getFirstSceneName();
-
-        String sceneFilename = "worlds/" + worldName + "/" + sceneName + "/scene.json";
+        String sceneFilename = "worlds/" + world.getName() + "/" + sceneName + "/scene.json";
         Gdx.app.log("SceneLoader", format(Locale.US,"load %s, %d, %d, %d", sceneFilename, x, y, z));
-
         FileHandle fileHandle = Gdx.files.internal(sceneFilename);
-
         return createScene(world, x, y, z, sceneName, fileHandle);
     }
 
     private static Scene createScene(World world, int x, int y, int z,
                                     String sceneName, FileHandle fileHandle) {
-
         Scene scene = new Scene();
         scene.setName(sceneName);
 
@@ -51,7 +45,6 @@ public class SceneLoader {
         attachToEntityEngine(world.getEntityEngine(), scene);
         world.getPlayerSystem().getPlayerSystemState().setSkyEntity(scene.getSky());
     }
-
 
     private static void attachToEntityEngine(Engine entityEngine, Scene scene) {
         entityEngine.addEntity(scene.getGround());

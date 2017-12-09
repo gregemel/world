@@ -18,14 +18,14 @@ public class DamageChecker {
             if (creatureComponent != null) {
                 CreatureDamager.shoot(creatureComponent);
             } else {
-                playerShotEntity(entity);
+                shootNonCreature(entity);
             }
         } else {
             Gdx.app.log("Shooter", "miss");
         }
     }
 
-    private static void playerShotEntity(Entity entity) {
+    private static void shootNonCreature(Entity entity) {
         Gdx.app.log("Shooter", format("hit not a creature %s", entity.toString()));
     }
 }
