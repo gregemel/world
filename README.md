@@ -115,4 +115,3 @@ What is a service?
 
 ### updaters
 * services for updating world objects, like animation, player input, ai
-
