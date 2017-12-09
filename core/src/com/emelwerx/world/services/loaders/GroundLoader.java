@@ -32,6 +32,13 @@ public class GroundLoader {
         scene.setGround(groundEntity);
     }
 
+    private static ModelComponent attachModelComponent(String name, int x, int y, int z, Entity groundEntity) {
+        Model model = ModelLoader.load(name);
+        ModelComponent modelComponent = ModelComponentFactory.create(model, x, y, z);
+        groundEntity.add(modelComponent);
+        return modelComponent;
+    }
+
     private static void attachSceneComponent(Entity groundEntity, ModelComponent modelComponent) {
         SceneComponent sceneComponent = new SceneComponent();
         btCollisionShape shape = Bullet.obtainStaticNodeShape(modelComponent.getModel().nodes);
@@ -53,12 +60,5 @@ public class GroundLoader {
                 new btRigidBody.btRigidBodyConstructionInfo(0, null, shape, Vector3.Zero);
         sceneComponent.setBodyInfo(bodyInfo);
         return new btRigidBody(bodyInfo);
-    }
-
-    private static ModelComponent attachModelComponent(String name, int x, int y, int z, Entity groundEntity) {
-        Model model = ModelLoader.load(name);
-        ModelComponent modelComponent = ModelComponentFactory.create(model, x, y, z);
-        groundEntity.add(modelComponent);
-        return modelComponent;
     }
 }
