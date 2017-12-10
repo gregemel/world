@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.math.Vector3;
 import com.emelwerx.world.databags.components.CreatureComponent;
 import com.emelwerx.world.databags.components.ModelComponent;
-import com.emelwerx.world.databags.components.PlayerComponent;
 import com.emelwerx.world.databags.systemstates.RenderSystemState;
 
 public class ShadowDrawer {
@@ -29,13 +28,13 @@ public class ShadowDrawer {
 
     private static void drawEachEntityShadow(RenderSystemState state, ModelBatch modelBatch) {
         for(Entity entity : state.getEntities()) {
-            boolean isPlayerOrCreature = entity.getComponent(PlayerComponent.class) != null
-                    || entity.getComponent(CreatureComponent.class) != null;
-            if (isPlayerOrCreature) {
-                ModelInstance modelInstance = entity.getComponent(ModelComponent.class).getInstance();
-                if (isVisible(state, modelInstance)) {
-                    modelBatch.render(modelInstance);
-                }
+
+            if(entity.getComponent(CreatureComponent.class) == null)
+                return;
+
+            ModelInstance modelInstance = entity.getComponent(ModelComponent.class).getInstance();
+            if (isVisible(state, modelInstance)) {
+                modelBatch.render(modelInstance);
             }
         }
     }

@@ -2,11 +2,8 @@ package com.emelwerx.world.services.drawers;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.emelwerx.world.databags.components.ItemComponent;
-import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.systemstates.RenderSystemState;
-import com.emelwerx.world.services.updaters.AnimationUpdater;
 
 public class EntitiesDrawer {
 
@@ -19,12 +16,13 @@ public class EntitiesDrawer {
 
     private static void drawEachEntityModel(RenderSystemState state, float delta, ModelBatch modelBatch) {
         for (Entity entity: state.getEntities()) {
-            boolean isNotThePlayerItem = entity.getComponent(ItemComponent.class) == null;
-            if (isNotThePlayerItem) {
-                AnimationUpdater.update(entity, delta);
-                ModelInstance instance = entity.getComponent(ModelComponent.class).getInstance();
-                modelBatch.render(instance, state.getEnvironment());
-            }
+            if(isItem(entity))
+                continue;
+            ModelInstanceDrawer.draw(state.getEnvironment(), delta, modelBatch, entity);
         }
+    }
+
+    private static boolean isItem(Entity entity) {
+        return entity.getComponent(ItemComponent.class) != null;
     }
 }
