@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.math.Vector3;
-import com.emelwerx.world.databags.components.CreatureComponent;
+import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.systemstates.RenderSystemState;
 
@@ -28,19 +28,22 @@ public class ShadowDrawer {
 
     private static void drawEachEntityShadow(RenderSystemState state, ModelBatch modelBatch) {
         for(Entity entity : state.getEntities()) {
-
-            if(entity.getComponent(CreatureComponent.class) == null)
-                return;
-
-            ModelInstance modelInstance = entity.getComponent(ModelComponent.class).getInstance();
-            if (isVisible(state, modelInstance)) {
-                modelBatch.render(modelInstance);
+            if(isDrawn(entity) && isVisible(state, getModelInstance(entity))) {
+                modelBatch.render(getModelInstance(entity));
             }
         }
+    }
+
+    private static boolean isDrawn(Entity entity) {
+        return entity.getComponent(CharacterComponent.class) != null;
     }
 
     private static boolean isVisible(RenderSystemState state, final ModelInstance instance) {
         PerspectiveCamera cam = state.getWorldPerspectiveCamera();
         return cam.frustum.pointInFrustum(instance.transform.getTranslation(state.getPosition()));
+    }
+
+    private static ModelInstance getModelInstance(Entity entity) {
+        return entity.getComponent(ModelComponent.class).getInstance();
     }
 }
