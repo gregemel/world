@@ -17,7 +17,7 @@ public class PlayerMoveUpdater {
 
         CameraRotationUpdater.update(playerSystemState, camera);
         PlayerDirectionUpdater.update(delta, playerSystemState, characterComponent, modelComponent, camera);
-        TranslationUpdater.update(playerSystemState, characterComponent, modelComponent, camera);
+        PlayerTranslationUpdater.update(playerSystemState, characterComponent, modelComponent, camera);
         checkAttack(playerSystemState);
         checkJump(playerSystemState, characterComponent);
     }

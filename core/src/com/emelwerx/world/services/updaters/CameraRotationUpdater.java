@@ -1,6 +1,5 @@
 package com.emelwerx.world.services.updaters;
 
-
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
@@ -21,12 +20,10 @@ public class CameraRotationUpdater {
             deltaY = -Gdx.input.getDeltaY() * 0.5f;
         }
 
-
         Vector3 cameraRotation = playerSystemState.getTmp();
         cameraRotation.set(0, 0, 0);
         worldPerspectiveCamera.rotate(worldPerspectiveCamera.up, deltaX);
         cameraRotation.set(worldPerspectiveCamera.direction).crs(worldPerspectiveCamera.up).nor();
         worldPerspectiveCamera.direction.rotate(cameraRotation, deltaY);
     }
-
 }

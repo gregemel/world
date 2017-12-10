@@ -7,7 +7,7 @@ import com.emelwerx.world.databags.components.CharacterComponent;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.systemstates.PlayerSystemState;
 
-public class TranslationUpdater {
+public class PlayerTranslationUpdater {
     public static void update(
             PlayerSystemState playerSystemState,
             CharacterComponent characterComponent,
