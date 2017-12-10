@@ -11,7 +11,7 @@ import java.util.Locale;
 
 import static java.lang.String.format;
 
-public class CreatureUpdater {
+public class CreaturesUpdater {
 
     private static float lastUpdated = 5.1f;
 

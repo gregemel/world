@@ -12,7 +12,7 @@ import com.emelwerx.world.databags.components.CreatureComponent;
 import com.emelwerx.world.databags.systemstates.CreatureSystemState;
 import com.emelwerx.world.databags.components.PlayerComponent;
 import com.emelwerx.world.services.CreatureSpawner;
-import com.emelwerx.world.services.updaters.CreatureUpdater;
+import com.emelwerx.world.services.updaters.CreaturesUpdater;
 
 import static java.lang.String.format;
 
@@ -39,7 +39,7 @@ public class CreatureSystem extends EntitySystem implements EntityListener {
     //EntitySystem
     public void update(float delta) {
         CreatureSpawner.update(creatureSystemState);
-        CreatureUpdater.updateAll(delta, creatureSystemState);
+        CreaturesUpdater.updateAll(delta, creatureSystemState);
     }
 
     @Override   //EntityListener

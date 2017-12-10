@@ -14,13 +14,13 @@ import com.emelwerx.world.services.ui.screens.WorldScreen;
 import com.emelwerx.world.services.ui.screens.LeaderboardsScreen;
 
 public class GameOverWidget extends Actor {
-    private WorldAdapter game;
+    private WorldAdapter adapter;
     private Stage stage;
     private Image image;
     private TextButton retryB, leaderB, quitB;
 
-    public GameOverWidget(WorldAdapter game, Stage stage) {
-        this.game = game;
+    public GameOverWidget(WorldAdapter adapter, Stage stage) {
+        this.adapter = adapter;
         this.stage = stage;
         setWidgets();
         setListeners();
@@ -37,13 +37,13 @@ public class GameOverWidget extends Actor {
         retryB.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new WorldScreen(game));
+                adapter.setScreen(new WorldScreen(adapter));
             }
         });
         leaderB.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new LeaderboardsScreen(game));
+                adapter.setScreen(new LeaderboardsScreen(adapter));
             }
         });
         quitB.addListener(new ClickListener() {

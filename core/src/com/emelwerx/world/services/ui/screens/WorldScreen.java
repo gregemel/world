@@ -16,8 +16,8 @@ public class WorldScreen implements Screen {
     private UserInterfaceSystem userInterfaceSystem;
     private World world;
 
-    public WorldScreen(WorldAdapter game) {
-        userInterfaceSystem = WorldUiSystemFactory.create(game);
+    public WorldScreen(WorldAdapter adapter) {
+        userInterfaceSystem = WorldUiSystemFactory.create(adapter);
         world = WorldLoader.load("arena", userInterfaceSystem);
 
         Settings.setPaused(false);

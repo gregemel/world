@@ -18,23 +18,23 @@ public class CharacterComponentFactory {
                 entity.toString(), modelComponent.toString()));
 
         CharacterComponent characterComponent = new CharacterComponent();
-        attachController(entity, modelComponent, characterComponent);
+        createCharacterController(entity, modelComponent, characterComponent);
         characterComponent.setWalkDirection(new Vector3());
         characterComponent.setCharacterDirection(new Vector3());
         return characterComponent;
     }
 
-    private static void attachController(Entity entity, ModelComponent modelComponent, CharacterComponent characterComponent) {
-        btPairCachingGhostObject ghostObject = createBtPairCachingGhostObject(entity, modelComponent);
-        btCapsuleShape capsuleShape = createBtCapsuleShape(characterComponent, ghostObject);
+    private static void createCharacterController(Entity entity, ModelComponent modelComponent, CharacterComponent characterComponent) {
+        btPairCachingGhostObject ghostObject = getBtPairCachingGhostObject(entity, modelComponent);
+        btCapsuleShape btCapsuleShape = getBtCapsuleShape(characterComponent, ghostObject);
         btKinematicCharacterController characterController = new btKinematicCharacterController(
                 ghostObject,
-                capsuleShape,
+                btCapsuleShape,
                 .35f);
         characterComponent.setCharacterController(characterController);
     }
 
-    private static btPairCachingGhostObject createBtPairCachingGhostObject(Entity entity, ModelComponent modelComponent) {
+    private static btPairCachingGhostObject getBtPairCachingGhostObject(Entity entity, ModelComponent modelComponent) {
         btPairCachingGhostObject ghostObject = new btPairCachingGhostObject();
         ghostObject.userData = entity;
         ghostObject.setWorldTransform(modelComponent.getInstance().transform);
@@ -42,11 +42,11 @@ public class CharacterComponentFactory {
         return ghostObject;
     }
 
-    private static btCapsuleShape createBtCapsuleShape(CharacterComponent characterComponent, btPairCachingGhostObject ghostObject) {
-        btCapsuleShape capsuleShape = new btCapsuleShape(2f, 2f);
-        ghostObject.setCollisionShape(capsuleShape);
+    private static btCapsuleShape getBtCapsuleShape(CharacterComponent characterComponent, btPairCachingGhostObject ghostObject) {
+        btCapsuleShape btCapsuleShape = new btCapsuleShape(2f, 2f);
+        ghostObject.setCollisionShape(btCapsuleShape);
         characterComponent.setGhostObject(ghostObject);
-        characterComponent.setGhostShape(capsuleShape);
-        return capsuleShape;
+        characterComponent.setGhostShape(btCapsuleShape);
+        return btCapsuleShape;
     }
 }

@@ -45,10 +45,8 @@ public class WorldAdapter extends ApplicationAdapter {
             this.screen.dispose();
         }
         this.screen = screen;
-        if (this.screen != null) {
-            this.screen.show();
-            this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        }
+        this.screen.show();
+        this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override

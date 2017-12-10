@@ -36,7 +36,8 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
     @Override
     public void update(float delta) {
-        if (getPlayerSystemState().getPlayerEntity() == null) return;
+        if (getPlayerSystemState().getPlayerEntity() == null)
+            return;
         PlayerMoveUpdater.update(delta, playerSystemState);
         updateStatus();
         checkGameOver();
