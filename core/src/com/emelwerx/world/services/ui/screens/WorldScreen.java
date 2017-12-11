@@ -21,7 +21,7 @@ public class WorldScreen implements Screen {
         world = WorldLoader.load("arena", userInterfaceSystem);
 
         Settings.setPaused(false);
-        Gdx.input.setInputProcessor(userInterfaceSystem.getUserInterfaceSystemState().getStage());
+        Gdx.input.setInputProcessor(userInterfaceSystem.getState().getStage());
         Gdx.input.setCursorCatched(true);
     }
 

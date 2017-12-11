@@ -8,11 +8,11 @@ import com.emelwerx.world.databags.systemstates.PlayerSystemState;
 
 public class Shooter {
 
-    public static void fire(PlayerSystemState playerSystemState) {
+    public static void fire(PlayerSystemState state) {
         Gdx.app.log("Shooter", "fire!!!");
-        ClosestRayResultCallback resultCallback = RayCallbackFactory.create(playerSystemState);
+        ClosestRayResultCallback resultCallback = RayCallbackFactory.create(state);
         DamageChecker.check(resultCallback);
-        animatePlayerItem(playerSystemState.getPlayerItemEntity());
+        animatePlayerItem(state.getPlayerItemEntity());
     }
 
     private static void animatePlayerItem(Entity entity) {

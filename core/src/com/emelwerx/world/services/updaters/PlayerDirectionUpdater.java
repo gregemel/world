@@ -18,29 +18,29 @@ public class PlayerDirectionUpdater {
 
     public static void update(
             float delta,
-            PlayerSystemState playerSystemState,
-            CharacterComponent characterComponent,
+            PlayerSystemState state,
+            CharacterComponent playerCharacter,
             ModelComponent modelComponent,
             Camera worldPerspectiveCamera) {
-        characterComponent.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
-        Vector3 playerVector = playerSystemState.getTmp();
+        playerCharacter.getCharacterDirection().set(-1, 0, 0).rot(modelComponent.getInstance().transform).nor();
+        Vector3 playerVector = state.getTmp();
         playerVector.set(0, 0, 0);
-        Vector3 walkDirection = getWalkDirection(playerVector, worldPerspectiveCamera, characterComponent);
+        Vector3 walkDirection = getWalkDirection(playerVector, worldPerspectiveCamera, playerCharacter);
         walkDirection.add(playerVector);
         walkDirection.scl(10f * delta);
-        characterComponent.getCharacterController().setWalkDirection(walkDirection);
+        playerCharacter.getCharacterController().setWalkDirection(walkDirection);
 
-        log(delta, modelComponent);
+        logPlayerLocation(delta, modelComponent);
     }
 
-    private static Vector3 getWalkDirection(Vector3 playerVector, Camera camera, CharacterComponent characterComponent) {
-        Vector3 walkDirection = characterComponent.getWalkDirection();
+    private static Vector3 getWalkDirection(Vector3 playerVector, Camera camera, CharacterComponent playerCharacter) {
+        Vector3 walkDirection = playerCharacter.getWalkDirection();
         walkDirection.set(0, 0, 0);
         PlayerInputUpdater.update(playerVector, camera, walkDirection);
         return walkDirection;
     }
 
-    private static void log(float delta, ModelComponent modelComponent) {
+    private static void logPlayerLocation(float delta, ModelComponent modelComponent) {
         lastLog+=delta;
         if(lastLog>5f) {
             lastLog=0f;

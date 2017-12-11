@@ -15,7 +15,7 @@ public class CreaturesUpdater {
 
     private static float lastUpdated = 5.1f;
 
-    public static void updateAll(float delta, CreatureSystemState creatureSystemState) {
+    public static void updateAll(float delta, CreatureSystemState state) {
         boolean isLogging = false;
         if(lastUpdated>5.0f) {
             isLogging = true;
@@ -24,20 +24,20 @@ public class CreaturesUpdater {
             lastUpdated+=delta;
         }
 
-        for(Entity creatureEntity: creatureSystemState.getCreatures()) {
+        for(Entity creatureEntity: state.getCreatures()) {
             CreatureComponent creatureComponent = creatureEntity.getComponent(CreatureComponent.class);
-            CreatureComponent.CREATURE_STATE state = creatureComponent.getCreatureState();
+            CreatureComponent.CREATURE_STATE creatureState = creatureComponent.getCreatureState();
 
-            switch (state) {
+            switch (creatureState) {
                 case IDLE:
                     creatureComponent.setCreatureState(CreatureComponent.CREATURE_STATE.HUNTING);
                     break;
                 case HUNTING:
-                    ModelComponent playerModel = creatureSystemState.getPlayer().getComponent(ModelComponent.class);
-                    CreatureChaseUpdater.update(delta, playerModel, creatureEntity, creatureSystemState);
+                    ModelComponent playerModel = state.getPlayer().getComponent(ModelComponent.class);
+                    CreatureChaseUpdater.update(delta, playerModel, creatureEntity, state);
                     break;
                 case DYING:
-                    CreatureDyingUpdater.update(delta, creatureEntity, creatureSystemState.getWorld());
+                    CreatureDyingUpdater.update(delta, creatureEntity, state.getWorld());
                     break;
                 default:
                     break;

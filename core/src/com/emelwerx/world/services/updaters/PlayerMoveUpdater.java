@@ -10,16 +10,16 @@ import com.emelwerx.world.services.Shooter;
 
 public class PlayerMoveUpdater {
 
-    public static void update(float delta, PlayerSystemState playerSystemState) {
-        CharacterComponent characterComponent = playerSystemState.getCharacterComponent();
-        ModelComponent modelComponent = playerSystemState.getModelComponent();
-        Camera camera = playerSystemState.getWorldPerspectiveCamera();
+    public static void update(float delta, PlayerSystemState state) {
+        CharacterComponent characterComponent = state.getCharacterComponent();
+        ModelComponent modelComponent = state.getModelComponent();
+        Camera camera = state.getWorldPerspectiveCamera();
 
-        CameraRotationUpdater.update(playerSystemState, camera);
-        PlayerDirectionUpdater.update(delta, playerSystemState, characterComponent, modelComponent, camera);
-        PlayerTranslationUpdater.update(playerSystemState, characterComponent, modelComponent, camera);
-        checkAttack(playerSystemState);
-        checkJump(playerSystemState, characterComponent);
+        CameraRotationUpdater.update(state, camera);
+        PlayerDirectionUpdater.update(delta, state, characterComponent, modelComponent, camera);
+        PlayerTranslationUpdater.update(state, characterComponent, modelComponent, camera);
+        checkAttack(state);
+        checkJump(state, characterComponent);
     }
 
     private static void checkAttack(PlayerSystemState playerSystemState) {
@@ -28,10 +28,10 @@ public class PlayerMoveUpdater {
         }
     }
 
-    private static void checkJump(PlayerSystemState playerSystemState, CharacterComponent characterComponent) {
+    private static void checkJump(PlayerSystemState state, CharacterComponent player) {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            characterComponent.getCharacterController().setJumpSpeed(playerSystemState.getJumpForce());
-            characterComponent.getCharacterController().jump();
+            player.getCharacterController().setJumpSpeed(state.getJumpForce());
+            player.getCharacterController().jump();
         }
     }
 }

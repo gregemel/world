@@ -8,7 +8,7 @@ import com.emelwerx.world.databags.systemstates.PlayerSystemState;
 import com.emelwerx.world.services.ui.widgets.ControllerWidget;
 
 public class CameraRotationUpdater {
-    public static void update(PlayerSystemState playerSystemState, Camera worldPerspectiveCamera) {
+    public static void update(PlayerSystemState state, Camera worldPerspectiveCamera) {
         float deltaX;
         float deltaY;
 
@@ -20,7 +20,7 @@ public class CameraRotationUpdater {
             deltaY = -Gdx.input.getDeltaY() * 0.5f;
         }
 
-        Vector3 cameraRotation = playerSystemState.getTmp();
+        Vector3 cameraRotation = state.getTmp();
         cameraRotation.set(0, 0, 0);
         worldPerspectiveCamera.rotate(worldPerspectiveCamera.up, deltaX);
         cameraRotation.set(worldPerspectiveCamera.direction).crs(worldPerspectiveCamera.up).nor();

@@ -46,13 +46,13 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
     private void updateStatus() {
         UserInterfaceSystem userInterfaceSystem = state.getUserInterfaceSystem();
         PlayerComponent playerComponent = state.getPlayerComponent();
-        userInterfaceSystem.getUserInterfaceSystemState().getHealthWidget().setValue(playerComponent.getHealth());
+        userInterfaceSystem.getState().getHealthWidget().setValue(playerComponent.getHealth());
     }
 
     private void checkGameOver() {
         if (state.getPlayerComponent().getHealth() <= 0 && !Settings.isPaused()) {
             Settings.setPaused(true);
-            state.getUserInterfaceSystem().getUserInterfaceSystemState().getGameOverWidget().gameOver();
+            state.getUserInterfaceSystem().getState().getGameOverWidget().gameOver();
         }
     }
 

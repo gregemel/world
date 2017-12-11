@@ -9,14 +9,14 @@ import com.emelwerx.world.databags.systemstates.PlayerSystemState;
 
 public class PlayerTranslationUpdater {
     public static void update(
-            PlayerSystemState playerSystemState,
+            PlayerSystemState state,
             CharacterComponent characterComponent,
             ModelComponent modelComponent,
             Camera worldPerspectiveCamera) {
-        Vector3 translation = playerSystemState.getTranslation();
+        Vector3 translation = state.getTranslation();
         translation.set(0, 0, 0);
 
-        setPlayerGhostTranslation(playerSystemState, characterComponent, translation);
+        setPlayerGhostTranslation(state, characterComponent, translation);
 
         modelComponent.getInstance().transform.set(
                 translation.x, translation.y, translation.z,

@@ -9,9 +9,9 @@ public class CreatureRotationUpdater {
 
     public static Quaternion update(ModelComponent targetModelComponent,
                                                          ModelComponent hunterModelComponent,
-                                                         CreatureSystemState creatureSystemState) {
+                                                         CreatureSystemState state) {
         float theta = getTheta(targetModelComponent, hunterModelComponent);
-        return creatureSystemState.getQuaternion().setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
+        return state.getQuaternion().setFromAxis(0, 1, 0, (float) Math.toDegrees(theta) + 90);
     }
 
     private static float getTheta(ModelComponent target,

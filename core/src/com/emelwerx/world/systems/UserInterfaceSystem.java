@@ -5,30 +5,30 @@ import com.emelwerx.world.databags.systemstates.UserInterfaceSystemState;
 
 public class UserInterfaceSystem {
 
-    private UserInterfaceSystemState userInterfaceSystemState;
+    private UserInterfaceSystemState state;
 
-    public UserInterfaceSystem(UserInterfaceSystemState userInterfaceSystemState) {
-        this.userInterfaceSystemState = userInterfaceSystemState;
+    public UserInterfaceSystem(UserInterfaceSystemState state) {
+        this.state = state;
     }
 
-    public UserInterfaceSystemState getUserInterfaceSystemState() {
-        return userInterfaceSystemState;
+    public UserInterfaceSystemState getState() {
+        return state;
     }
 
     public void update(float delta) {
-        userInterfaceSystemState.getFpsLabel().setText("FPS: " + Gdx.graphics.getFramesPerSecond());
-        userInterfaceSystemState.getStage().act(delta);
+        state.getFpsLabel().setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+        state.getStage().act(delta);
     }
 
     public void render() {
-        userInterfaceSystemState.getStage().draw();
+        state.getStage().draw();
     }
 
     public void resize(int width, int height) {
-        userInterfaceSystemState.getStage().getViewport().update(width, height);
+        state.getStage().getViewport().update(width, height);
     }
 
     public void dispose() {
-        userInterfaceSystemState.getStage().dispose();
+        state.getStage().dispose();
     }
 }
