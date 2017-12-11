@@ -17,7 +17,7 @@ public class ParticleUpdater {
         if (isParticleStartNeeded) {
             particleComponent.setUsed(true);
             ParticleEffect particleEffect = ParticleComponentFactory.clone(creatureModelComponent, particleComponent);
-            ParticleSystem particleSystem = world.getRenderSystem().getRenderSystemState().getParticleSystem();
+            ParticleSystem particleSystem = world.getRenderSystem().getState().getParticleSystem();
             particleSystem.add(particleEffect);
         }
     }

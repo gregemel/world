@@ -18,10 +18,10 @@ import static java.lang.String.format;
 
 public class CreatureSystem extends EntitySystem implements EntityListener {
 
-    private CreatureSystemState creatureSystemState;
+    private CreatureSystemState state;
 
-    public CreatureSystem(CreatureSystemState creatureSystemState) {
-        this.creatureSystemState = creatureSystemState;
+    public CreatureSystem(CreatureSystemState state) {
+        this.state = state;
     }
 
     @Override   //EntitySystem
@@ -30,7 +30,7 @@ public class CreatureSystem extends EntitySystem implements EntityListener {
 
         Family creatureFamily = Family.all(CreatureComponent.class, CharacterComponent.class).get();
         ImmutableArray<Entity> creatureEntities = engine.getEntitiesFor(creatureFamily);
-        creatureSystemState.setCreatures(creatureEntities);
+        state.setCreatures(creatureEntities);
 
         Family player = Family.one(PlayerComponent.class).get();
         engine.addEntityListener(player, this);
@@ -38,14 +38,14 @@ public class CreatureSystem extends EntitySystem implements EntityListener {
 
     //EntitySystem
     public void update(float delta) {
-        CreatureSpawner.update(creatureSystemState);
-        CreaturesUpdater.updateAll(delta, creatureSystemState);
+        CreatureSpawner.update(state);
+        CreaturesUpdater.updateAll(delta, state);
     }
 
     @Override   //EntityListener
     public void entityAdded(Entity entity) {
         Gdx.app.log("CreatureSystem", format("entity added: %s", entity.toString()));
-        creatureSystemState.setPlayer(entity);
+        state.setPlayer(entity);
     }
 
     @Override   //EntityListener

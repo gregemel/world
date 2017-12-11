@@ -119,7 +119,7 @@ public class CreatureEntityFactory {
     }
 
     private static ParticleComponent getParticleComponent(World world) {
-        ParticleSystem particleSystem = world.getRenderSystem().getRenderSystemState().getParticleSystem();
+        ParticleSystem particleSystem = world.getRenderSystem().getState().getParticleSystem();
         return ParticleComponentFactory.create("dieparticle", particleSystem);
     }
 
@@ -138,7 +138,7 @@ public class CreatureEntityFactory {
     }
 
     private static void setPhysics(PhysicsSystem physicsSystem, Entity entity) {
-        btDiscreteDynamicsWorld collisionWorld = physicsSystem.getPhysicsSystemState().getCollisionWorld();
+        btDiscreteDynamicsWorld collisionWorld = physicsSystem.getState().getCollisionWorld();
         CharacterComponent characterComponent = entity.getComponent(CharacterComponent.class);
         collisionWorld.addCollisionObject(
                 characterComponent.getGhostObject(),

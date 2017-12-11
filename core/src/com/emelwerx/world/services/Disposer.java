@@ -11,7 +11,7 @@ public class Disposer {
     public static void dispose(World world) {
         Gdx.app.log("Disposer", format("dispose %s", world.toString()));
         CharacterComponent characterComponent = world.getEntityCharacter().getComponent(CharacterComponent.class);
-        btDiscreteDynamicsWorld collisionWorld = world.getPhysicsSystem().getPhysicsSystemState().getCollisionWorld();
+        btDiscreteDynamicsWorld collisionWorld = world.getPhysicsSystem().getState().getCollisionWorld();
 
         collisionWorld.removeAction(characterComponent.getCharacterController());
         collisionWorld.removeCollisionObject(characterComponent.getGhostObject());

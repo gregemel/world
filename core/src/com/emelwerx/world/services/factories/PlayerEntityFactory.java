@@ -36,7 +36,7 @@ public class PlayerEntityFactory {
     }
 
     private static void attachPhysicsSystem(PhysicsSystem physicsSystem, Entity entity) {
-        btDiscreteDynamicsWorld collisionWorld = physicsSystem.getPhysicsSystemState().getCollisionWorld();
+        btDiscreteDynamicsWorld collisionWorld = physicsSystem.getState().getCollisionWorld();
         btPairCachingGhostObject ghostObject = entity.getComponent(CharacterComponent.class).getGhostObject();
         collisionWorld.addCollisionObject(ghostObject,
                 (short) btBroadphaseProxy.CollisionFilterGroups.CharacterFilter,

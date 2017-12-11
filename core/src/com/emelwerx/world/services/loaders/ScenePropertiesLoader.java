@@ -14,7 +14,7 @@ public class ScenePropertiesLoader {
         CreatureLoader.load(world, jsonScene.get("creatures"));
         world.setCurrentScene(scene);
         attachToEntityEngine(world.getEntityEngine(), scene);
-        world.getPlayerSystem().getPlayerSystemState().setSkyEntity(scene.getSky());
+        world.getPlayerSystem().getState().setSkyEntity(scene.getSky());
     }
 
     private static void attachToEntityEngine(Engine entityEngine, Scene scene) {

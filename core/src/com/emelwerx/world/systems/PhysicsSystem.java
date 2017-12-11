@@ -16,14 +16,14 @@ import static java.lang.String.format;
 
 public class PhysicsSystem extends EntitySystem implements EntityListener {
 
-    private PhysicsSystemState physicsSystemState;
+    private PhysicsSystemState state;
 
-    public PhysicsSystem(PhysicsSystemState physicsSystemState) {
-        this.physicsSystemState = physicsSystemState;
+    public PhysicsSystem(PhysicsSystemState state) {
+        this.state = state;
     }
 
-    public PhysicsSystemState getPhysicsSystemState() {
-        return physicsSystemState;
+    public PhysicsSystemState getState() {
+        return state;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
 
     @Override
     public void update(float deltaTime) {
-        physicsSystemState.getCollisionWorld().stepSimulation(deltaTime);
+        state.getCollisionWorld().stepSimulation(deltaTime);
     }
 
     public void dispose() {
@@ -46,13 +46,13 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
         Gdx.app.log("PhysicsSystem", format("entity added: %s", entity.toString()));
         SceneComponent sceneComponent = entity.getComponent(SceneComponent.class);
         if (sceneComponent != null && sceneComponent.getBody() != null) {
-            physicsSystemState.getCollisionWorld().addRigidBody((btRigidBody) sceneComponent.getBody());
+            state.getCollisionWorld().addRigidBody((btRigidBody) sceneComponent.getBody());
         }
     }
 
     public void removeBody(Entity entity) {
         Gdx.app.log("PhysicsSystem", format("entity removed: %s", entity.toString()));
-        btDiscreteDynamicsWorld collisionWorld = physicsSystemState.getCollisionWorld();
+        btDiscreteDynamicsWorld collisionWorld = state.getCollisionWorld();
         removeSceneComponent(entity, collisionWorld);
         removeCharacterComponent(entity, collisionWorld);
     }
@@ -78,25 +78,25 @@ public class PhysicsSystem extends EntitySystem implements EntityListener {
     }
 
     private void cleanup() {
-        physicsSystemState.getCollisionWorld().dispose();
+        state.getCollisionWorld().dispose();
 
-        if (physicsSystemState.getSolver() != null) {
-            physicsSystemState.getSolver().dispose();
+        if (state.getSolver() != null) {
+            state.getSolver().dispose();
         }
 
-        if (physicsSystemState.getBroadphaseInterface() != null) {
-            physicsSystemState.getBroadphaseInterface().dispose();
+        if (state.getBroadphaseInterface() != null) {
+            state.getBroadphaseInterface().dispose();
         }
 
-        if (physicsSystemState.getDispatcher() != null) {
-            physicsSystemState.getDispatcher().dispose();
+        if (state.getDispatcher() != null) {
+            state.getDispatcher().dispose();
         }
 
-        if (physicsSystemState.getCollisionConfiguration() != null) {
-            physicsSystemState.getCollisionConfiguration().dispose();
+        if (state.getCollisionConfiguration() != null) {
+            state.getCollisionConfiguration().dispose();
         }
 
-        physicsSystemState.getGhostPairCallback().dispose();
+        state.getGhostPairCallback().dispose();
     }
 
 }

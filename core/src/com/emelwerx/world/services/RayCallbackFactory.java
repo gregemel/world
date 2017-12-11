@@ -15,7 +15,7 @@ public class RayCallbackFactory {
         Vector3 rayFrom = state.getRayFrom();
         Vector3 rayTo = state.getRayTo();
         ClosestRayResultCallback callback = getClosestRayResultCallback(state, ray, rayFrom, rayTo);
-        PhysicsSystemState physicsState = state.getWorld().getPhysicsSystem().getPhysicsSystemState();
+        PhysicsSystemState physicsState = state.getWorld().getPhysicsSystem().getState();
         btDiscreteDynamicsWorld collisionWorld = physicsState.getCollisionWorld();
         collisionWorld.rayTest(rayFrom, rayTo, callback);
         return callback;

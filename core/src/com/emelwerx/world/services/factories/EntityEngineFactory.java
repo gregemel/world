@@ -16,7 +16,7 @@ public class EntityEngineFactory {
         Engine entityEngine = new Engine();
         RenderSystem renderSystem = createRenderSystem(world, entityEngine);
         createPhysicsSystem(world, entityEngine);
-        PerspectiveCamera worldPerspectiveCamera = renderSystem.getRenderSystemState().getWorldPerspectiveCamera();
+        PerspectiveCamera worldPerspectiveCamera = renderSystem.getState().getWorldPerspectiveCamera();
         createPlayerSystem(world, entityEngine, worldPerspectiveCamera, userInterfaceSystem);
         createCreatureSystem(world, entityEngine);
         world.setEntityEngine(entityEngine);
@@ -35,7 +35,7 @@ public class EntityEngineFactory {
         world.setPhysicsSystem(physicsSystem);
         engine.addSystem(physicsSystem);
         if (world.isDebug()) {
-            btDiscreteDynamicsWorld collisionWorld = physicsSystem.getPhysicsSystemState().getCollisionWorld();
+            btDiscreteDynamicsWorld collisionWorld = physicsSystem.getState().getCollisionWorld();
             collisionWorld.setDebugDrawer(world.getDebugDrawer());
         }
     }

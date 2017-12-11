@@ -18,14 +18,14 @@ import static java.lang.String.format;
 
 public class PlayerSystem extends EntitySystem implements EntityListener, InputProcessor {
 
-    private PlayerSystemState playerSystemState;
+    private PlayerSystemState state;
 
-    public PlayerSystem (PlayerSystemState playerSystemState) {
-        this.playerSystemState = playerSystemState;
+    public PlayerSystem (PlayerSystemState state) {
+        this.state = state;
     }
 
-    public PlayerSystemState getPlayerSystemState() {
-        return playerSystemState;
+    public PlayerSystemState getState() {
+        return state;
     }
 
     @Override
@@ -36,33 +36,33 @@ public class PlayerSystem extends EntitySystem implements EntityListener, InputP
 
     @Override
     public void update(float delta) {
-        if (getPlayerSystemState().getPlayerEntity() == null)
+        if (getState().getPlayerEntity() == null)
             return;
-        PlayerMoveUpdater.update(delta, playerSystemState);
+        PlayerMoveUpdater.update(delta, state);
         updateStatus();
         checkGameOver();
     }
 
     private void updateStatus() {
-        UserInterfaceSystem userInterfaceSystem = playerSystemState.getUserInterfaceSystem();
-        PlayerComponent playerComponent = playerSystemState.getPlayerComponent();
+        UserInterfaceSystem userInterfaceSystem = state.getUserInterfaceSystem();
+        PlayerComponent playerComponent = state.getPlayerComponent();
         userInterfaceSystem.getUserInterfaceSystemState().getHealthWidget().setValue(playerComponent.getHealth());
     }
 
     private void checkGameOver() {
-        if (playerSystemState.getPlayerComponent().getHealth() <= 0 && !Settings.isPaused()) {
+        if (state.getPlayerComponent().getHealth() <= 0 && !Settings.isPaused()) {
             Settings.setPaused(true);
-            playerSystemState.getUserInterfaceSystem().getUserInterfaceSystemState().getGameOverWidget().gameOver();
+            state.getUserInterfaceSystem().getUserInterfaceSystemState().getGameOverWidget().gameOver();
         }
     }
 
     @Override
     public void entityAdded(Entity entity) {
         Gdx.app.log("PlayerSystem", format("entityAdded: %s", entity.toString()));
-        playerSystemState.setPlayerEntity(entity);
-        playerSystemState.setPlayerComponent(entity.getComponent(PlayerComponent.class));
-        playerSystemState.setCharacterComponent(entity.getComponent(CharacterComponent.class));
-        playerSystemState.setModelComponent(entity.getComponent(ModelComponent.class));
+        state.setPlayerEntity(entity);
+        state.setPlayerComponent(entity.getComponent(PlayerComponent.class));
+        state.setCharacterComponent(entity.getComponent(CharacterComponent.class));
+        state.setModelComponent(entity.getComponent(ModelComponent.class));
     }
 
     @Override

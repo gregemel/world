@@ -14,58 +14,48 @@ public class CollisionSystem extends ContactListener {
     @Override
     public void onContactStarted(btCollisionObject colObj0, btCollisionObject colObj1) {
         if (colObj0.userData instanceof Entity && colObj1.userData instanceof Entity) {
-            twoEntityCollision(colObj0, colObj1);
+            twoEntityCollision((Entity) colObj0.userData, (Entity) colObj1.userData);
         }
     }
 
-    private void twoEntityCollision(btCollisionObject colObj0, btCollisionObject colObj1) {
-        Entity entity0 = (Entity) colObj0.userData;
-        Entity entity1 = (Entity) colObj1.userData;
-
+    private void twoEntityCollision(Entity entity0, Entity entity1) {
         Gdx.app.log("CollisionSystem", format("two entities in contact %s, %s",
                 entity0.toString(), entity1.toString()));
 
-        PlayerComponent playerComponent = getPlayerComponent(entity0, entity1);
-        CreatureComponent creatureComponent = getCreatureComponent(entity0, entity1);
+        PlayerComponent player = getPlayerComponent(entity0, entity1);
+        CreatureComponent creature = getCreatureComponent(entity0, entity1);
 
-        boolean isCreatureInvolved = creatureComponent != null
-                && creatureComponent.getCreatureState() != CreatureComponent.CREATURE_STATE.DYING;
-        boolean isTransitionToPlayerAndCreatureCollision = isCreatureInvolved
-                && playerComponent != null;
-
-        if(isTransitionToPlayerAndCreatureCollision) {
-            CreatureDamager.collide(playerComponent, creatureComponent);
-        } else {
-            collideOther(playerComponent, creatureComponent);
+        if(creature == null) {
+            Gdx.app.log("CollisionSystem", "not a creature...");
+            return;
         }
-    }
 
-    private void collideOther(PlayerComponent playerComponent, CreatureComponent creatureComponent) {
-        if(creatureComponent != null
-                && creatureComponent.getCreatureState() != CreatureComponent.CREATURE_STATE.DYING) {
-            Gdx.app.log("CollisionSystem", format("creature hit something %s",
-                    creatureComponent.toString()));
-        } else {
-            if(playerComponent != null && creatureComponent == null) {
-                Gdx.app.log("CollisionSystem", format("player hit something %s",
-                        playerComponent.toString()));
-            }
+        if(player == null) {
+            Gdx.app.log("CollisionSystem", "not a player...");
+            return;
         }
+
+        if(creature.getCreatureState() == CreatureComponent.CREATURE_STATE.DYING) {
+            Gdx.app.log("CollisionSystem", "creature already dying...");
+            return;
+        }
+
+        CreatureDamager.collide(player, creature);
     }
 
     private CreatureComponent getCreatureComponent(Entity entity0, Entity entity1) {
         CreatureComponent creatureComponent = entity0.getComponent(CreatureComponent.class);
-        if(creatureComponent == null) {
-            creatureComponent = entity1.getComponent(CreatureComponent.class);
+        if(creatureComponent != null) {
+            return creatureComponent;
         }
-        return creatureComponent;
+        return entity1.getComponent(CreatureComponent.class);
     }
 
     private PlayerComponent getPlayerComponent(Entity entity0, Entity entity1) {
         PlayerComponent playerComponent = entity0.getComponent(PlayerComponent.class);
-        if(playerComponent == null) {
-            playerComponent = entity1.getComponent(PlayerComponent.class);
+        if(playerComponent != null) {
+            return playerComponent;
         }
-        return playerComponent;
+        return entity1.getComponent(PlayerComponent.class);
     }
 }

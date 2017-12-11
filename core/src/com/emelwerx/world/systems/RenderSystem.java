@@ -17,39 +17,39 @@ import static java.lang.String.format;
 
 public class RenderSystem extends EntitySystem {
 
-    private RenderSystemState renderSystemState;
+    private RenderSystemState state;
 
-    public RenderSystem(RenderSystemState renderSystemState) {
-        this.renderSystemState = renderSystemState;
+    public RenderSystem(RenderSystemState state) {
+        this.state = state;
     }
 
-    public RenderSystemState getRenderSystemState() {
-        return renderSystemState;
+    public RenderSystemState getState() {
+        return state;
     }
 
     public void addedToEngine(Engine e) {
         Gdx.app.log("RenderSystem", format("addedToEngine: %s", e.toString()));
-        renderSystemState.setEntities(e.getEntitiesFor(Family.all(ModelComponent.class).get()));
+        state.setEntities(e.getEntitiesFor(Family.all(ModelComponent.class).get()));
     }
 
     public void update(float delta) {
-        ShadowDrawer.draw(renderSystemState);
-        EntitiesDrawer.draw(renderSystemState, delta);
-        ParticleDrawer.draw(renderSystemState);
-        PlayerItemDrawer.draw(renderSystemState, delta);
+        ShadowDrawer.draw(state);
+        EntitiesDrawer.draw(state, delta);
+        ParticleDrawer.draw(state);
+        PlayerItemDrawer.draw(state, delta);
     }
 
     public void resize(int width, int height) {
         Gdx.app.log("RenderSystem", String.format(Locale.US,"resizing (%d, %d)", width, height));
-        renderSystemState.getWorldPerspectiveCamera().viewportHeight = height;
-        renderSystemState.getWorldPerspectiveCamera().viewportWidth = width;
-        renderSystemState.getPlayerItemCamera().viewportHeight = height;
-        renderSystemState.getPlayerItemCamera().viewportWidth = width;
+        state.getWorldPerspectiveCamera().viewportHeight = height;
+        state.getWorldPerspectiveCamera().viewportWidth = width;
+        state.getPlayerItemCamera().viewportHeight = height;
+        state.getPlayerItemCamera().viewportWidth = width;
     }
 
     public void dispose() {
         Gdx.app.log("RenderSystem", "disposing");
-        renderSystemState.getBatch().dispose();
-        renderSystemState.setBatch(null);
+        state.getBatch().dispose();
+        state.setBatch(null);
     }
 }
