@@ -102,7 +102,7 @@ What is a service?
 * driven only by parameters
 
 ### drawers
-* tools for drawing world images, like models, particles, and shadows
+* tools for drawing 3D images, like models, particles, and shadows
 
 ### factories
 * tools for making instances of databags or systems

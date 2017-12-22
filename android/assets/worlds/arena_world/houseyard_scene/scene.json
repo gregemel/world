@@ -1,0 +1,47 @@
+{
+  "sky": {
+    "modelFile": "spacedome.g3db"
+  },
+  "ground": {
+    "modelFile": "arena.g3dj"
+  },
+  "player": {
+    "startLocation": {
+      "x": "0",
+      "y": "6",
+      "z": "65"
+    }
+  },
+  "creatures": [
+    {
+      "goblin": {
+        "modelFile": "monster.g3dj",
+        "startLocation": {
+          "x": "-70",
+          "y": "10",
+          "z": "-10"
+        }
+      }
+    },
+    {
+      "goblin": {
+        "modelFile": "monster.g3dj",
+        "startLocation": {
+          "x": "70",
+          "y": "10",
+          "z": "-10"
+        }
+      }
+    },
+    {
+      "goblin": {
+        "modelFile": "monster.g3dj",
+        "startLocation": {
+          "x": "0",
+          "y": "10",
+          "z": "-70"
+        }
+      }
+    }
+  ]
+}

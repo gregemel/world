@@ -36,7 +36,7 @@ public class PlayerDirectionUpdater {
     private static Vector3 getWalkDirection(Vector3 playerVector, Camera camera, CharacterComponent playerCharacter) {
         Vector3 walkDirection = playerCharacter.getWalkDirection();
         walkDirection.set(0, 0, 0);
-        PlayerInputUpdater.update(playerVector, camera, walkDirection);
+        PlayerMoveInputUpdater.update(playerVector, camera, walkDirection);
         return walkDirection;
     }
 

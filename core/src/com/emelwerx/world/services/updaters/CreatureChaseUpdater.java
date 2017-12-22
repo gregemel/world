@@ -13,9 +13,9 @@ public class CreatureChaseUpdater {
 
     public static void update(
             float delta,
-            ModelComponent playerTarget,
             Entity chasingEntity,
             CreatureSystemState state) {
+        ModelComponent playerTarget = state.getPlayer().getComponent(ModelComponent.class);
 
         ModelComponent creatureModelComponent = chasingEntity.getComponent(ModelComponent.class);
         Quaternion rotation = CreatureRotationUpdater.update(playerTarget, creatureModelComponent, state);

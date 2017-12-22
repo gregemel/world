@@ -9,7 +9,7 @@ import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.components.ParticleComponent;
 import com.emelwerx.world.services.factories.ParticleComponentFactory;
 
-public class ParticleUpdater {
+public class CreatureDyingParticleUpdater {
 
     public static void update(Entity entity, ModelComponent creatureModelComponent, World world) {
         ParticleComponent particleComponent = entity.getComponent(ParticleComponent.class);

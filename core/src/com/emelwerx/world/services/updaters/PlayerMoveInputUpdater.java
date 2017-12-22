@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
 import com.emelwerx.world.services.ui.widgets.ControllerWidget;
 
-public class PlayerInputUpdater {
+public class PlayerMoveInputUpdater {
 
     private static final int forward = Input.Keys.W;
     private static final int backwards = Input.Keys.Z;

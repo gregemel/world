@@ -16,7 +16,7 @@ public class CreatureDyingUpdater {
     public static void update(float delta, Entity creatureEntity, World world) {
         ModelComponent creatureModelComponent = creatureEntity.getComponent(ModelComponent.class);
         updateOpacity(delta, creatureModelComponent);
-        ParticleUpdater.update(creatureEntity, creatureModelComponent, world);
+        CreatureDyingParticleUpdater.update(creatureEntity, creatureModelComponent, world);
         checkForDone(delta, creatureEntity, world);
     }
 
