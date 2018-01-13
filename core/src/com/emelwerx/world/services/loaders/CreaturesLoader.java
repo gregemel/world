@@ -10,7 +10,7 @@ import java.util.Locale;
 
 import static java.lang.String.format;
 
-public class CreatureLoader {
+public class CreaturesLoader {
 
     public static void load(World world, JsonValue value) {
         for(JsonValue item: value.iterator()) {
@@ -28,7 +28,7 @@ public class CreatureLoader {
         float y = location.getFloat("y");
         float z = location.getFloat("z");
 
-        Gdx.app.log("SceneLoader", format(Locale.US, "load goblin %s, %.2f, %.2f, %.2f", modelFilename, x, y, z));
+        Gdx.app.log("CreaturesLoader", format(Locale.US, "load goblin %s, %.2f, %.2f, %.2f", modelFilename, x, y, z));
         Entity creatureEntity = CreatureEntityFactory.create(world, modelFilename, x, y, z);
         world.getEntityEngine().addEntity(creatureEntity);
     }

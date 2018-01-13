@@ -11,7 +11,8 @@ public class ScenePropertiesLoader {
     public static void load(World world, Scene scene, JsonValue jsonScene) {
         setPlayerStartLocation(jsonScene, scene);
         scene.setMaxSpawnCount(3);
-        CreatureLoader.load(world, jsonScene.get("creatures"));
+        CreaturesLoader.load(world, jsonScene.get("creatures"));
+        ItemsLoader.load(world, jsonScene.get("items"));
         world.setCurrentScene(scene);
         attachToEntityEngine(world.getEntityEngine(), scene);
         world.getPlayerSystem().getState().setSkyEntity(scene.getSky());

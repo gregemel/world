@@ -80,7 +80,7 @@ What is a databag?
 
 ### component
 * a collection of properties associated with an entity (e.g. position)
-* tagging and tracking an entity in your world
+* tagging and tracking an entity in the world
 * animation state, ai state
 * models and skins
 
@@ -98,7 +98,7 @@ What is a system?
 What is a service?
 * doing one thing and doing it well
 * used by systems to do things like graphics, input, and motion
-* "stateless", static, no properties or class variables
+* "stateless", static, no properties or object variables
 * driven only by parameters
 
 ### drawers
@@ -108,7 +108,7 @@ What is a service?
 * tools for making instances of databags or systems
 
 ### loaders
-* tools for loading files like worlds, scenes, models, etc.
+* tools for loading (deserializing json) files like worlds, scenes, models, etc.
 
 ### ui
 * user interface code
@@ -116,3 +116,9 @@ What is a service?
 ### updaters
 * services for updating world objects, like animation, player input, ai
 
+# Dev Notes
+Why no unit tests?
+* proof of concept; learning exercise; 
+* low priority, low roi at this time
+* currently, a few seconds of playtime covers testing all the code
+* code is structured to make adding unit tests easy

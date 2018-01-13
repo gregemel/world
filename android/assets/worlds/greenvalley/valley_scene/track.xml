@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- Generated with script from SVN rev 15595 -->
+<track  name           = "Green Valley"
+        version        = "6"
+        groups         = "standard"
+        designer       = "Wolfs"
+        music          = "valley.music"
+        screenshot     = "sshot.jpg"
+        smooth-normals = "true"
+        default-number-of-laps = "2"
+        reverse        = "Y"
+        bloom          = "Y"
+        bloom-threshold = "0.75"
+        clouds         = "N"
+        shadows        = "Y"
+>
+</track>

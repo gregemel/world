@@ -1,4 +1,7 @@
 {
+  "name": "arena",
+  "release": 0.1,
+  "schema": 0.1,
   "sky": {
     "modelFile": "spacedome.g3db"
   },

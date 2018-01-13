@@ -17,9 +17,23 @@ import static java.lang.String.format;
 public class ModelLoader {
     public static Model load(String name) {
         Gdx.app.log("ModelLoader", format("load %s", name));
-        com.badlogic.gdx.assets.loaders.ModelLoader<?> modelLoader = new G3dModelLoader(new JsonReader());
+        G3dModelLoader modelLoader = getG3dModelLoader(name);
         ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name));
         return new Model(modelData, new TextureProvider.FileTextureProvider());
+    }
+
+    public static G3dModelLoader getG3dModelLoader(String name) {
+        G3dModelLoader modelLoader;
+        boolean isBinaryFile = false;
+
+        isBinaryFile = (name.contains("g3db"));
+
+        if(isBinaryFile) {
+            modelLoader = new G3dModelLoader(new UBJsonReader());
+        } else {
+            modelLoader = new G3dModelLoader(new JsonReader());
+        }
+        return modelLoader;
     }
 
     public static Model load(String name, float scalar) {

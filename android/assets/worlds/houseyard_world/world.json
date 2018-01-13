@@ -1,0 +1,10 @@
+{
+  "firstScene": "houseyard_scene",
+  "player": {
+    "startLocation": {
+      "x": "0",
+      "y": "0",
+      "z": "0"
+    }
+  }
+}

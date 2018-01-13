@@ -12,17 +12,19 @@
       "z": "65"
     }
   },
-  "creatures": [
+  "items": [
     {
-      "goblin": {
-        "modelFile": "monster.g3dj",
+      "table": {
+        "modelFile": "scene0_table_0.g3db",
         "startLocation": {
-          "x": "-70",
-          "y": "10",
-          "z": "-10"
+          "x": "10",
+          "y": "5",
+          "z": "55"
         }
       }
-    },
+    }
+  ],
+  "creatures": [
     {
       "goblin": {
         "modelFile": "monster.g3dj",
