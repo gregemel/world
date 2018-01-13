@@ -17,6 +17,7 @@ import com.emelwerx.world.databags.World;
 import com.emelwerx.world.databags.components.ModelComponent;
 import com.emelwerx.world.databags.components.CreatureAnimation;
 import com.emelwerx.world.databags.components.ParticleComponent;
+import com.emelwerx.world.services.loaders.ModelCache;
 import com.emelwerx.world.services.loaders.ModelLoader;
 import com.emelwerx.world.systems.PhysicsSystem;
 
@@ -97,7 +98,7 @@ public class CreatureEntityFactory {
     }
 
     private static ModelComponent getModelComponent(String name, float x, float y, float z) {
-        Model model = getCachedCreatureModel(name);
+        Model model = ModelCache.get(name, modelScalar);
         ModelComponent creatureModelComponent = ModelComponentFactory.create(model, x, y, z);
 
         Material material = creatureModelComponent.getInstance().materials.get(0);
@@ -108,14 +109,6 @@ public class CreatureEntityFactory {
         Matrix4 matrix4 = creatureModelComponent.getMatrix4();
         creatureModelComponent.getInstance().transform.set(matrix4.setTranslation(x, y, z));
         return creatureModelComponent;
-    }
-
-    private static Model getCachedCreatureModel(String name) {
-        //todo: model cache should be a hash map collection of name/model pairs -ge[2017-11-12]
-        if (cachedGoblinModel == null) {
-            cachedGoblinModel = ModelLoader.load(name, modelScalar);
-        }
-        return cachedGoblinModel;
     }
 
     private static ParticleComponent getParticleComponent(World world) {

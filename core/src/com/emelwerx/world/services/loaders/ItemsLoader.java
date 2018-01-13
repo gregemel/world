@@ -15,16 +15,16 @@ public class ItemsLoader {
 
     public static void load(World world, JsonValue value) {
         for(JsonValue item: value.iterator()) {
-            JsonValue goblin = item.get("table");
-            if(goblin != null) {
-                loadTable(world, goblin);
+            JsonValue tableJson = item.get("table");
+            if(tableJson != null) {
+                loadTable(world, tableJson);
             }
         }
     }
 
-    private static void loadTable(World world, JsonValue goblin) {
-        String modelFilename = goblin.getString("modelFile");
-        JsonValue location = goblin.get("startLocation");
+    private static void loadTable(World world, JsonValue json) {
+        String modelFilename = json.getString("modelFile");
+        JsonValue location = json.get("startLocation");
         float x = location.getFloat("x");
         float y = location.getFloat("y");
         float z = location.getFloat("z");

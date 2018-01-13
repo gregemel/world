@@ -16,7 +16,7 @@ import static java.lang.String.format;
 
 public class ModelLoader {
     public static Model load(String name) {
-        Gdx.app.log("ModelLoader", format("load %s", name));
+        Gdx.app.log("ModelLoader", format("load1 %s", name));
         G3dModelLoader modelLoader = getG3dModelLoader(name);
         ModelData modelData = modelLoader.loadModelData(Gdx.files.internal("data/" + name));
         return new Model(modelData, new TextureProvider.FileTextureProvider());
@@ -37,7 +37,7 @@ public class ModelLoader {
     }
 
     public static Model load(String name, float scalar) {
-        Gdx.app.log("ModelLoader", format(Locale.US,"load %s, %f", name, scalar));
+        Gdx.app.log("ModelLoader", format(Locale.US,"load2 %s, %f", name, scalar));
         Model model = load(name);
         for (Node node : model.nodes) {
             node.scale.scl(scalar);
